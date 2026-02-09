@@ -20,7 +20,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Verify session on mount
     supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log('Session check on mount:', session?.user?.id);
       setUser(session?.user ?? null);
       if (session?.user) {
         fetchProfile(session.user.id);
@@ -29,7 +31,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    // Listen for changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log('Auth state changed:', event, session?.user?.id);
       (async () => {
         setUser(session?.user ?? null);
         if (session?.user) {
@@ -45,6 +49,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const fetchProfile = async (userId: string) => {
+    console.log('Fetching profile for user ID:', userId);
     try {
       const { data, error } = await supabase
         .from('profiles')
@@ -53,6 +58,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .maybeSingle();
 
       if (error) throw error;
+      console.log('Profile data fetched:', data);
       setProfile(data);
     } catch (error) {
       console.error('Error fetching profile:', error);
@@ -69,19 +75,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     if (error) throw error;
 
-    if (data.user) {
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .insert([
-          {
-            id: data.user.id,
-            full_name: fullName,
-            voucher_coins: 100,
-          },
-        ]);
-
-      if (profileError) throw profileError;
-    }
+    // Profile creation is now handled by a database trigger (handle_new_user)
+    // This ensures the 100 coins are always credited and username is generated.
   };
 
   const signIn = async (email: string, password: string) => {
@@ -94,8 +89,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) throw error;
+    console.log('Signing out...');
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error('Error signing out:', error);
+      }
+    } catch (error) {
+      console.error('Unexpected error signing out:', error);
+    } finally {
+      // Clear local state immediately
+      console.log('Clearing local state');
+      setProfile(null);
+      setUser(null);
+    }
   };
 
   return (

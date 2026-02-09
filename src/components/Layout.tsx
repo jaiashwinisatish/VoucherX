@@ -48,7 +48,7 @@ export default function Layout({ children, currentPage, onNavigate, onOpenAI }: 
                 </span>
               </button>
 
-              <div className="hidden md:flex space-x-1">
+              <div className="hidden md:flex space-x-1 lg:space-x-2">
                 {navItems.map(item => {
                   const Icon = item.icon;
                   const isActive = currentPage === item.id;
@@ -56,14 +56,13 @@ export default function Layout({ children, currentPage, onNavigate, onOpenAI }: 
                     <button
                       key={item.id}
                       onClick={() => onNavigate(item.id)}
-                      className={`px-4 py-2 rounded-lg flex items-center space-x-2 transition-all ${
-                        isActive
-                          ? 'bg-gradient-to-r from-teal-500 to-blue-600 text-white shadow-md'
-                          : 'text-slate-600 hover:bg-slate-100'
-                      }`}
+                      className={`px-3 py-2 lg:px-4 rounded-lg flex items-center space-x-1.5 lg:space-x-2 transition-all ${isActive
+                        ? 'bg-gradient-to-r from-teal-500 to-blue-600 text-white shadow-md'
+                        : 'text-slate-600 hover:bg-slate-100'
+                        }`}
                     >
                       <Icon className="h-4 w-4" />
-                      <span className="text-sm font-medium">{item.label}</span>
+                      <span className="text-sm font-medium whitespace-nowrap">{item.label}</span>
                     </button>
                   );
                 })}
@@ -71,10 +70,10 @@ export default function Layout({ children, currentPage, onNavigate, onOpenAI }: 
             </div>
 
             <div className="flex items-center space-x-4">
-              <div className="hidden md:flex items-center bg-slate-100 rounded-full px-4 py-2 space-x-2">
+              <div className="hidden md:flex items-center bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-100 rounded-full px-4 py-1.5 shadow-sm space-x-2">
                 <Star className="h-4 w-4 text-amber-500 fill-amber-500" />
-                <span className="text-sm font-semibold text-slate-700">
-                  {profile?.voucher_coins || 0} Coins
+                <span className="text-sm font-bold text-amber-700 whitespace-nowrap">
+                  {profile?.voucher_coins?.toLocaleString() || 0} Coins
                 </span>
               </div>
 
@@ -128,11 +127,10 @@ export default function Layout({ children, currentPage, onNavigate, onOpenAI }: 
                       onNavigate(item.id);
                       setMobileMenuOpen(false);
                     }}
-                    className={`w-full px-4 py-3 rounded-lg flex items-center space-x-3 transition-all ${
-                      isActive
-                        ? 'bg-gradient-to-r from-teal-500 to-blue-600 text-white'
-                        : 'text-slate-600 hover:bg-slate-100'
-                    }`}
+                    className={`w-full px-4 py-3 rounded-lg flex items-center space-x-3 transition-all ${isActive
+                      ? 'bg-gradient-to-r from-teal-500 to-blue-600 text-white'
+                      : 'text-slate-600 hover:bg-slate-100'
+                      }`}
                   >
                     <Icon className="h-5 w-5" />
                     <span className="font-medium">{item.label}</span>
