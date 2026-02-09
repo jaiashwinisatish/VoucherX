@@ -121,7 +121,13 @@ export default function Home({ onNavigate, onOpenAI }: HomeProps) {
     <div className="space-y-8">
       <section className="relative overflow-hidden bg-gradient-to-br from-teal-500 via-blue-600 to-purple-600 rounded-3xl p-12 text-white">
         <div className="relative z-10 max-w-3xl">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">
+          <h1
+            className="text-5xl md:text-6xl font-bold mb-6 text-white bg-gradient-to-r from-amber-400 via-orange-600 to-pink-600 bg-clip-text text-transparent transition-all duration-700 hover:scale-105 hover:from-pink-500 hover:to-amber-400 animate-pulse"
+            style={{
+              letterSpacing: '0.02em',
+              cursor: 'pointer',
+            }}
+          >
             Don't Let Your Vouchers Expire
           </h1>
           <p className="text-xl mb-8 text-white/90">
@@ -153,7 +159,17 @@ export default function Home({ onNavigate, onOpenAI }: HomeProps) {
             <button
               key={index}
               onClick={() => onNavigate('marketplace')}
-              className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-slate-200 hover:shadow-xl hover:scale-105 transition-all text-center group"
+              // className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-slate-200 hover:shadow-xl hover:scale-105 transition-all text-center group"
+              className="
+  relative overflow-hidden
+  bg-white/70 dark:bg-blue-100/60
+  backdrop-blur-xl
+  rounded-2xl p-6
+  text-center group
+  transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]
+  hover:-translate-y-3 hover:scale-[1.05]
+  hover:shadow-[0_30px_70px_-20px_rgba(16,185,129,0.35)]
+"
             >
               <div className={`text-4xl mb-3 group-hover:scale-110 transition-transform`}>
                 {category.icon}
@@ -187,7 +203,17 @@ export default function Home({ onNavigate, onOpenAI }: HomeProps) {
             return (
               <div
                 key={voucher.id}
-                className="group bg-white/80 backdrop-blur-sm rounded-2xl overflow-hidden border border-slate-200 hover:shadow-2xl hover:scale-105 transition-all cursor-pointer"
+                // className="group bg-white/80 backdrop-blur-sm rounded-2xl overflow-hidden border border-slate-200 hover:shadow-2xl hover:scale-105 transition-all cursor-pointer"
+                className="
+  relative overflow-hidden
+  bg-white/80 dark:bg-blue-100/60
+  backdrop-blur-xl
+  rounded-2xl p-6
+  text-center group
+  transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]
+  hover:-translate-y-3 hover:scale-[1.05]
+  hover:shadow-[0_30px_70px_-20px_rgba(16,185,129,0.35)]
+"
               >
                 <div className="relative h-48 bg-gradient-to-br from-slate-100 to-slate-200 p-6 flex items-center justify-center">
                   <div className="text-center">
@@ -256,7 +282,9 @@ export default function Home({ onNavigate, onOpenAI }: HomeProps) {
                     </div>
                   </div>
 
-                  <button className="w-full bg-gradient-to-r from-teal-500 to-blue-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg group-hover:scale-105 transition-all">
+                  <button 
+                  
+                  className="w-full bg-gradient-to-r from-teal-500 to-blue-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg group-hover:scale-105 transition-all">
                     Buy Now
                   </button>
                 </div>
@@ -267,18 +295,18 @@ export default function Home({ onNavigate, onOpenAI }: HomeProps) {
       </section>
 
       <section className="grid md:grid-cols-3 gap-6">
-        <div className="bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl p-6 text-white">
-          <TrendingUp className="h-10 w-10 mb-4 opacity-80" />
+        <div className="bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl p-6 text-white transform hover:scale-105 transition-all duration-300 hover:shadow-xl cursor-pointer group hover:from-teal-600 hover:to-teal-700">
+          <TrendingUp className="h-10 w-10 mb-4 opacity-80 group-hover:scale-110 transition-transform duration-300" />
           <h3 className="text-2xl font-bold mb-2">2,547</h3>
           <p className="text-teal-100">Active Vouchers</p>
         </div>
-        <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 text-white">
-          <Star className="h-10 w-10 mb-4 opacity-80 fill-current" />
+        <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 text-white transform hover:scale-105 transition-all duration-300 hover:shadow-xl cursor-pointer group hover:from-blue-600 hover:to-blue-700">
+          <Star className="h-10 w-10 mb-4 opacity-80 fill-current group-hover:scale-110 transition-transform duration-300" />
           <h3 className="text-2xl font-bold mb-2">1,234</h3>
           <p className="text-blue-100">Happy Traders</p>
         </div>
-        <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl p-6 text-white">
-          <Tag className="h-10 w-10 mb-4 opacity-80" />
+        <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl p-6 text-white transform hover:scale-105 transition-all duration-300 hover:shadow-xl cursor-pointer group hover:from-purple-600 hover:to-purple-700">
+          <Tag className="h-10 w-10 mb-4 opacity-80 group-hover:scale-110 transition-transform duration-300" />
           <h3 className="text-2xl font-bold mb-2">35%</h3>
           <p className="text-purple-100">Average Savings</p>
         </div>
@@ -286,7 +314,12 @@ export default function Home({ onNavigate, onOpenAI }: HomeProps) {
 
       <section className="bg-gradient-to-r from-amber-500 to-orange-600 rounded-2xl p-8 text-white">
         <div className="max-w-2xl">
-          <h2 className="text-3xl font-bold mb-4">Start Trading Today</h2>
+          <h2
+          //  className="text-3xl font-bold mb-4 "
+           className="text-3xl md:text-6xl font-bold mb-4 text-white bg-gradient-to-r from-amber-400 via-orange-600 to-pink-600 bg-clip-text text-transparent transition-all duration-700 hover:scale-105 hover:from-pink-500 hover:to-amber-400 animate-pulse"
+           
+           >
+          Start Trading Today</h2>
           <p className="text-lg text-white/90 mb-6">
             Join thousands of users who are saving money and getting the most out of their vouchers.
           </p>
