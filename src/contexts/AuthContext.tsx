@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { User as SupabaseUser } from '@supabase/supabase-js';
-import { supabase } from '../lib/supabase';
+import { hasInvalidSupabaseConfig, supabase } from '../lib/supabase';
 import { User } from '../types';
 
 interface AuthContextType {
@@ -14,38 +14,85 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const INVALID_SUPABASE_CONFIG_MESSAGE =
+  'Supabase is not configured. Update VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in .env with real project values, then restart npm run dev.';
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<SupabaseUser | null>(null);
   const [profile, setProfile] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Verify session on mount
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      console.log('Session check on mount:', session?.user?.id);
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        fetchProfile(session.user.id);
-      } else {
+    let isMounted = true;
+
+    const getSessionWithTimeout = async (timeoutMs: number = 10000) => {
+      let timeoutId: ReturnType<typeof setTimeout> | null = null;
+      try {
+        return await Promise.race([
+          supabase.auth.getSession(),
+          new Promise<Awaited<ReturnType<typeof supabase.auth.getSession>>>((_, reject) => {
+            timeoutId = setTimeout(() => {
+              reject(new Error(`Session check timed out after ${timeoutMs}ms`));
+            }, timeoutMs);
+          }),
+        ]);
+      } finally {
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+        }
+      }
+    };
+
+    const initSession = async () => {
+      try {
+        const { data: { session }, error } = await getSessionWithTimeout();
+        if (error) throw error;
+
+        if (!isMounted) return;
+
+        console.log('Session check on mount:', session?.user?.id);
+        setUser(session?.user ?? null);
+
+        if (session?.user) {
+          await fetchProfile(session.user.id);
+        } else {
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error('Error checking initial session:', error);
+        if (!isMounted) return;
+        setUser(null);
+        setProfile(null);
         setLoading(false);
       }
-    });
+    };
+
+    initSession();
 
     // Listen for changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       console.log('Auth state changed:', event, session?.user?.id);
       (async () => {
-        setUser(session?.user ?? null);
-        if (session?.user) {
-          await fetchProfile(session.user.id);
-        } else {
+        try {
+          setUser(session?.user ?? null);
+          if (session?.user) {
+            await fetchProfile(session.user.id);
+          } else {
+            setProfile(null);
+            setLoading(false);
+          }
+        } catch (error) {
+          console.error('Error during auth state change:', error);
           setProfile(null);
           setLoading(false);
         }
       })();
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const fetchProfile = async (userId: string) => {
@@ -68,24 +115,50 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signUp = async (email: string, password: string, fullName: string) => {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
+    if (hasInvalidSupabaseConfig) {
+      throw new Error(INVALID_SUPABASE_CONFIG_MESSAGE);
+    }
 
-    if (error) throw error;
+    try {
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: fullName,
+          },
+        },
+      });
 
-    // Profile creation is now handled by a database trigger (handle_new_user)
-    // This ensures the 100 coins are always credited and username is generated.
+      if (error) throw error;
+    } catch (error) {
+      if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
+        throw new Error(INVALID_SUPABASE_CONFIG_MESSAGE);
+      }
+      throw error;
+    }
+
+    // Profile creation is handled by a database trigger (handle_new_user).
   };
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    if (hasInvalidSupabaseConfig) {
+      throw new Error(INVALID_SUPABASE_CONFIG_MESSAGE);
+    }
 
-    if (error) throw error;
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) throw error;
+    } catch (error) {
+      if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
+        throw new Error(INVALID_SUPABASE_CONFIG_MESSAGE);
+      }
+      throw error;
+    }
   };
 
   const signOut = async () => {
