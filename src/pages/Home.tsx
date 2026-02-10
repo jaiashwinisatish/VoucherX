@@ -1,3 +1,4 @@
+
 import { TrendingUp, Star, Tag, Calendar, Eye, Bot } from 'lucide-react';
 import { Voucher } from '../types';
 
@@ -109,6 +110,7 @@ const categories = [
 ];
 
 export default function Home({ onNavigate, onOpenAI }: HomeProps) {
+  
   const getDaysUntilExpiry = (expiryDate: string) => {
     const today = new Date();
     const expiry = new Date(expiryDate);
