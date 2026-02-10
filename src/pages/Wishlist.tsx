@@ -4,12 +4,16 @@ import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 import { WishlistItem } from '../types';
 
+
 export default function Wishlist() {
+  
+
   const { user } = useAuth();
   const [items, setItems] = useState<WishlistItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [formError, setFormError] = useState('');
 
   // Form State
   const [brandName, setBrandName] = useState('');
@@ -52,13 +56,61 @@ export default function Wishlist() {
 
     setSubmitting(true);
     try {
+     // Clear previous error
+setFormError('');
+
+// 1️⃣ Sanitize inputs
+const cleanBrand = brandName
+  .trim()
+  .replace(/[<>]/g, '')
+  .replace(/script/gi, '');
+
+const cleanCategory = category.trim();
+const cleanPrice = maxPrice.trim();
+
+// 2️⃣ Validate Brand Name
+if (!cleanBrand) {
+  setFormError('Brand name is required');
+  return;
+}
+
+if (cleanBrand.length < 2) {
+  setFormError('Brand name must be at least 2 characters');
+  return;
+}
+
+// 3️⃣ Validate Category
+if (!cleanCategory) {
+  setFormError('Please select a category');
+  return;
+}
+
+// 4️⃣ Validate Price
+let parsedPrice: number | null = null;
+
+if (cleanPrice) {
+  parsedPrice = parseFloat(cleanPrice);
+
+  if (isNaN(parsedPrice) || parsedPrice < 0) {
+    setFormError('Max price must be a valid positive number');
+    return;
+  }
+
+  if (parsedPrice > 100000) {
+    setFormError('Max price is too large');
+    return;
+  }
+}
+
+
       const newItem = {
-        user_id: user.id,
-        brand_name: brandName,
-        category,
-        max_price: maxPrice ? parseFloat(maxPrice) : null,
-        notify: true
-      };
+  user_id: user.id,
+  brand_name: cleanBrand,
+  category: cleanCategory,
+  max_price: parsedPrice,
+  notify: true
+};
+
 
       const { data, error } = await supabase
         .from('wishlists')
@@ -138,7 +190,7 @@ export default function Wishlist() {
               <X className="h-5 w-5" />
             </button>
           </div>
-          <form onSubmit={handleAddWishlist} className="space-y-4">
+          <form onSubmit={handleAddWishlist} noValidate className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
                 Brand Name
@@ -149,7 +201,7 @@ export default function Wishlist() {
                 onChange={(e) => setBrandName(e.target.value)}
                 className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                 placeholder="e.g., Amazon, Netflix, Starbucks"
-                required
+                
               />
             </div>
             <div className="grid md:grid-cols-2 gap-4">
@@ -161,7 +213,7 @@ export default function Wishlist() {
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                   className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-                  required
+                  
                 >
                   <option value="">Select category</option>
                   {categories.map(cat => (
@@ -185,6 +237,12 @@ export default function Wishlist() {
                 />
               </div>
             </div>
+            {formError && (
+  <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm">
+    {formError}
+  </div>
+)}
+
             <button
               type="submit"
               disabled={submitting}
