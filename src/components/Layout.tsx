@@ -181,7 +181,7 @@ export default function Layout({ children, currentPage, onNavigate, onOpenAI }: 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center text-slate-600">
             <p className="text-lg font-semibold mb-2">Don't let your vouchers expire. Trade. Earn. Repeat.</p>
-            <p className="text-sm">&copy; 2025 VoucherX. All rights reserved.</p>
+            <p className="text-sm">&copy; {new Date().getFullYear()} VoucherX. All rights reserved.</p>
           </div>
         </div>
       </footer>
