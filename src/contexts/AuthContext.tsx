@@ -48,6 +48,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
+  const createProfileIfNotExists = async (userId: string, email: string, fullName?: string) => {
+    try {
+      const username = fullName
+        ? fullName.toLowerCase().replace(/\s+/g, '_') + '_' + userId.slice(0, 4)
+        : email.split('@')[0] + '_' + userId.slice(0, 4);
+      
+      const { data, error } = await supabase
+        .from('profiles')
+        .insert([{
+          id: userId,
+          full_name: fullName || 'New User',
+          username: username,
+          voucher_coins: 100
+        }])
+        .select()
+        .single();
+
+      if (error && error.code !== '23505') { // 23505 is unique violation, which is ok
+        throw error;
+      }
+      
+      return data;
+    } catch (error) {
+      console.error('Error creating profile:', error);
+      return null;
+    }
+  };
+
   const fetchProfile = async (userId: string) => {
     console.log('Fetching profile for user ID:', userId);
     try {
@@ -59,9 +87,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (error) throw error;
       console.log('Profile data fetched:', data);
-      setProfile(data);
+      
+      // If profile doesn't exist, create it
+      if (!data) {
+        console.log('Profile not found, creating one...');
+        const user = (await supabase.auth.getUser()).data.user;
+        const createdProfile = await createProfileIfNotExists(userId, user?.email || '', user?.user_metadata?.full_name);
+        setProfile(createdProfile || null);
+      } else {
+        setProfile(data);
+      }
     } catch (error) {
       console.error('Error fetching profile:', error);
+      setProfile(null);
     } finally {
       setLoading(false);
     }
@@ -71,12 +109,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        data: {
+          full_name: fullName
+        }
+      }
     });
 
     if (error) throw error;
 
     // Profile creation is now handled by a database trigger (handle_new_user)
     // This ensures the 100 coins are always credited and username is generated.
+    // If trigger fails, the profile will be created on first fetch
   };
 
   const signIn = async (email: string, password: string) => {
