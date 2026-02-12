@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Search, Filter, Tag, Star, Calendar, Eye, ShoppingCart } from 'lucide-react';
+import { Search, Filter, Tag, Star, Calendar, Eye, ShoppingCart, Plus } from 'lucide-react';
 import { Voucher } from '../types';
+import AddVoucherModal from '../components/AddVoucherModal';
 
 interface MarketplaceProps {
   onNavigate: (page: string) => void;
@@ -134,12 +135,13 @@ export default function Marketplace({ onNavigate }: MarketplaceProps) {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState('newest');
   const [showFilters, setShowFilters] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
 
   const categories = ['all', 'food', 'fashion', 'travel', 'entertainment', 'tech', 'health'];
 
   const filteredVouchers = allVouchers.filter(voucher => {
     const matchesSearch = voucher.brand_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         voucher.description?.toLowerCase().includes(searchTerm.toLowerCase());
+      voucher.description?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || voucher.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
@@ -172,8 +174,19 @@ export default function Marketplace({ onNavigate }: MarketplaceProps) {
   return (
     <div className="space-y-6">
       <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-slate-200">
-        <h1 className="text-3xl font-bold text-slate-800 mb-2">Marketplace</h1>
-        <p className="text-slate-600">Discover verified vouchers from trusted sellers</p>
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h1 className="text-3xl font-bold text-slate-800 mb-2">Marketplace</h1>
+            <p className="text-slate-600">Discover verified vouchers from trusted sellers</p>
+          </div>
+          <button
+            onClick={() => setShowAddModal(true)}
+            className="flex items-center space-x-2 bg-gradient-to-r from-teal-500 to-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all"
+          >
+            <Plus className="h-5 w-5" />
+            <span>Add Voucher</span>
+          </button>
+        </div>
       </div>
 
       <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-slate-200 space-y-4">
@@ -206,11 +219,10 @@ export default function Marketplace({ onNavigate }: MarketplaceProps) {
                   <button
                     key={category}
                     onClick={() => setSelectedCategory(category)}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                      selectedCategory === category
-                        ? 'bg-gradient-to-r from-teal-500 to-blue-600 text-white'
-                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                    }`}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${selectedCategory === category
+                      ? 'bg-gradient-to-r from-teal-500 to-blue-600 text-white'
+                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                      }`}
                   >
                     {category.charAt(0).toUpperCase() + category.slice(1)}
                   </button>
@@ -322,6 +334,15 @@ export default function Marketplace({ onNavigate }: MarketplaceProps) {
           <p className="text-slate-600">Try adjusting your filters or search term</p>
         </div>
       )}
+
+      <AddVoucherModal
+        isOpen={showAddModal}
+        onClose={() => setShowAddModal(false)}
+        onSuccess={() => {
+          // Optionally refresh marketplace here
+          console.log('Voucher added successfully!');
+        }}
+      />
     </div>
   );
 }
