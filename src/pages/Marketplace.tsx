@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Search, Filter, Tag, Star, Calendar, Eye, ShoppingCart } from 'lucide-react';
+import { Search, Filter, Tag, Star, Calendar, Eye, ShoppingCart, Sparkles, X } from 'lucide-react';
 import { Voucher } from '../types';
+import { MarketDashboard, VoucherPredictionCard, PredictionBadge } from '../components/PricePrediction';
 
 interface MarketplaceProps {
   onNavigate: (page: string) => void;
@@ -134,6 +135,7 @@ export default function Marketplace({ onNavigate }: MarketplaceProps) {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState('newest');
   const [showFilters, setShowFilters] = useState(false);
+  const [selectedVoucherForAI, setSelectedVoucherForAI] = useState<Voucher | null>(null);
 
   const categories = ['all', 'food', 'fashion', 'travel', 'entertainment', 'tech', 'health'];
 
@@ -222,6 +224,7 @@ export default function Marketplace({ onNavigate }: MarketplaceProps) {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
+                aria-label="Sort vouchers"
                 className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
               >
                 <option value="newest">Newest First</option>
@@ -235,6 +238,32 @@ export default function Marketplace({ onNavigate }: MarketplaceProps) {
           </div>
         )}
       </div>
+
+      {/* AI Market Intelligence Dashboard */}
+      <MarketDashboard vouchers={allVouchers} />
+
+      {/* AI Prediction Modal */}
+      {selectedVoucherForAI && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setSelectedVoucherForAI(null)}>
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between p-4 border-b border-slate-200">
+              <div className="flex items-center space-x-2">
+                <Sparkles className="h-5 w-5 text-purple-500" />
+                <h3 className="font-bold text-slate-800">{selectedVoucherForAI.brand_name} — AI Analysis</h3>
+              </div>
+              <button onClick={() => setSelectedVoucherForAI(null)} title="Close AI analysis" className="p-1 hover:bg-slate-100 rounded-lg">
+                <X className="h-5 w-5 text-slate-400" />
+              </button>
+            </div>
+            <div className="p-4">
+              <VoucherPredictionCard
+                voucher={selectedVoucherForAI}
+                similarVouchers={allVouchers.filter(v => v.category === selectedVoucherForAI.category && v.id !== selectedVoucherForAI.id)}
+              />
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {sortedVouchers.map(voucher => {
@@ -303,6 +332,18 @@ export default function Marketplace({ onNavigate }: MarketplaceProps) {
                     <Eye className="h-3 w-3" />
                     <span>{voucher.views} views</span>
                   </div>
+                </div>
+
+                {/* AI Prediction Badge */}
+                <div className="flex items-center justify-between">
+                  <PredictionBadge voucher={voucher} similarVouchers={allVouchers.filter(v => v.category === voucher.category && v.id !== voucher.id)} />
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setSelectedVoucherForAI(voucher); }}
+                    className="text-xs text-purple-600 hover:text-purple-700 font-medium flex items-center space-x-1 hover:underline"
+                  >
+                    <Sparkles className="h-3 w-3" />
+                    <span>AI Details</span>
+                  </button>
                 </div>
 
                 <button className="w-full bg-gradient-to-r from-teal-500 to-blue-600 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all flex items-center justify-center space-x-2">

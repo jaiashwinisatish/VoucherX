@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Bot, Send, X, TrendingUp, AlertCircle, Sparkles, DollarSign, Lightbulb } from 'lucide-react';
+import { Bot, Send, X, TrendingUp, AlertCircle, Sparkles, DollarSign, Lightbulb, BarChart3 } from 'lucide-react';
 import { Voucher } from '../types';
 import {
   analyzeVouchers,
@@ -8,6 +8,7 @@ import {
   generateSmartRecommendations,
   optimizeVoucherPortfolio,
 } from '../utils/aiAssistant';
+import { predictVoucherDemand, analyzeMarket, formatSellTime, formatPriceRange } from '../utils/pricePrediction';
 
 interface Message {
   id: string;
@@ -46,6 +47,7 @@ export default function AIAssistant({ isOpen, onClose, userVouchers, marketplace
 
   const quickActions = [
     { label: 'Analyze My Vouchers', icon: TrendingUp, action: 'analyze' },
+    { label: 'Price Predictions', icon: BarChart3, action: 'predict' },
     { label: 'Check Expiry Status', icon: AlertCircle, action: 'expiry' },
     { label: 'Optimize Portfolio', icon: Sparkles, action: 'optimize' },
     { label: 'Calculate Discounts', icon: DollarSign, action: 'calculate' },
@@ -152,6 +154,39 @@ ${recommendations.length > 0
 • Check the challenges page to earn VoucherCoins for free vouchers`;
         break;
 
+      case 'predict':
+        userMessage = 'Show me price predictions for my vouchers';
+        {
+          const marketStats = analyzeMarket(marketplaceVouchers);
+          const predictions = userVouchers.slice(0, 5).map(v => {
+            const pred = predictVoucherDemand({
+              voucher: v,
+              similarVouchers: marketplaceVouchers.filter(mv => mv.category === v.category),
+            });
+            return { voucher: v, prediction: pred };
+          });
+
+          assistantResponse = `📊 **AI Price & Demand Predictions**
+
+**Market Overview:**
+• Avg Price: ₹${marketStats.avgPrice} | Avg Discount: ${marketStats.avgDiscount}%
+• Demand Trend: ${marketStats.demandTrend === 'rising' ? '📈 Rising' : marketStats.demandTrend === 'falling' ? '📉 Falling' : '➡️ Stable'}
+• Trending: ${marketStats.hotCategories.join(', ')}
+
+**Your Voucher Predictions:**
+${predictions.map(({ voucher: v, prediction: p }) => 
+`━━━━━━━━━━━━━━━━
+🏷️ **${v.brand_name}** (${v.category})
+💰 Suggested: ${formatPriceRange(p.suggestedPriceMin, p.suggestedPriceMax)}
+⏱️ Sell Time: ~${formatSellTime(p.expectedSellTimeHours, p.expectedSellTimeMax)}
+${p.demandEmoji} Demand: **${p.demandScore}** | Liquidity: ${p.liquidityScore}%
+${p.priceAction !== 'hold' ? `💡 ${p.priceAction === 'decrease' ? 'Reduce' : 'Increase'} by ₹${p.priceActionAmount}` : '✅ Price is optimal'}`
+).join('\n\n')}
+
+💡 *Go to Marketplace → click "AI Details" on any voucher for full analysis*`;
+        }
+        break;
+
       default:
         return;
     }
@@ -207,6 +242,12 @@ ${recommendations.length > 0
         response = recommendations.length > 0 ? recommendations[0] : 'Everything looks good! Keep exploring the marketplace for new opportunities.';
       } else if (lowerInput.includes('discount') || lowerInput.includes('calculate')) {
         response = 'I can help you calculate the total discount when stacking multiple vouchers! Use the "Calculate Discounts" quick action to see a detailed breakdown with your current vouchers.';
+      } else if (lowerInput.includes('price') || lowerInput.includes('predict') || lowerInput.includes('demand') || lowerInput.includes('sell time') || lowerInput.includes('how much')) {
+        const predictions = userVouchers.slice(0, 3).map(v => {
+          const pred = predictVoucherDemand({ voucher: v, similarVouchers: marketplaceVouchers.filter(mv => mv.category === v.category) });
+          return `${v.brand_name}: ${formatPriceRange(pred.suggestedPriceMin, pred.suggestedPriceMax)} ${pred.demandEmoji} ${pred.demandScore}`;
+        });
+        response = `📊 Here are quick price predictions for your vouchers:\n${predictions.join('\n')}\n\nUse the "Price Predictions" quick action for the full detailed analysis!`;
       } else if (lowerInput.includes('optimize') || lowerInput.includes('what should')) {
         const optimization = optimizeVoucherPortfolio(userVouchers);
         response = `I recommend keeping ${optimization.keepVouchers.length} voucher${optimization.keepVouchers.length !== 1 ? 's' : ''} for personal use, trading ${optimization.tradeVouchers.length}, and selling ${optimization.sellVouchers.length} quickly. Use the "Optimize Portfolio" action for detailed reasons!`;
@@ -244,6 +285,7 @@ ${recommendations.length > 0
           </div>
           <button
             onClick={onClose}
+            title="Close assistant"
             className="text-white hover:bg-white/20 p-2 rounded-lg transition-colors"
           >
             <X className="h-5 w-5" />
@@ -274,9 +316,9 @@ ${recommendations.length > 0
             <div className="flex justify-start">
               <div className="bg-white text-slate-800 border border-slate-200 rounded-2xl px-4 py-3">
                 <div className="flex space-x-2">
-                  <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                  <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                  <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                  <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce"></div>
+                  <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce [animation-delay:150ms]"></div>
+                  <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce [animation-delay:300ms]"></div>
                 </div>
               </div>
             </div>
@@ -313,6 +355,7 @@ ${recommendations.length > 0
             <button
               onClick={handleSendMessage}
               disabled={!inputValue.trim()}
+              title="Send message"
               className="px-4 py-3 bg-gradient-to-r from-purple-500 to-blue-600 text-white rounded-xl hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Send className="h-5 w-5" />
