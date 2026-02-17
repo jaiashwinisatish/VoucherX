@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { AuthProvider } from './contexts/AuthContext';
+import { useAuth } from './contexts/useAuth';
 import Auth from './components/Auth';
 import Layout from './components/Layout';
 import AIAssistant from './components/AIAssistant';
@@ -24,6 +25,7 @@ const mockUserVouchers: Voucher[] = [
     original_value: 100,
     selling_price: 85,
     discount_percentage: 15,
+    voucher_code: 'AMAZ85201',
     expiry_date: '2025-12-31',
     status: 'verified',
     is_verified: true,
@@ -38,6 +40,7 @@ const mockUserVouchers: Voucher[] = [
     original_value: 50,
     selling_price: 40,
     discount_percentage: 20,
+    voucher_code: 'STAR40301',
     expiry_date: '2025-11-15',
     status: 'verified',
     is_verified: true,
@@ -52,6 +55,7 @@ const mockUserVouchers: Voucher[] = [
     original_value: 150,
     selling_price: 120,
     discount_percentage: 20,
+    voucher_code: 'NIKE120501',
     expiry_date: '2025-10-25',
     status: 'verified',
     is_verified: true,
@@ -69,6 +73,7 @@ const mockMarketplaceVouchers: Voucher[] = [
     original_value: 200,
     selling_price: 170,
     discount_percentage: 15,
+    voucher_code: 'APPL170101',
     expiry_date: '2025-12-31',
     status: 'verified',
     is_verified: true,
@@ -83,6 +88,7 @@ const mockMarketplaceVouchers: Voucher[] = [
     original_value: 60,
     selling_price: 45,
     discount_percentage: 25,
+    voucher_code: 'NETF45202',
     expiry_date: '2025-11-30',
     status: 'verified',
     is_verified: true,
@@ -116,9 +122,9 @@ function AppContent() {
       case 'home':
         return <Home onNavigate={setCurrentPage} onOpenAI={() => setIsAIOpen(true)} />;
       case 'marketplace':
-        return <Marketplace onNavigate={setCurrentPage} />;
+        return <Marketplace />;
       case 'exchange':
-        return <Exchange onNavigate={setCurrentPage} />;
+        return <Exchange />;
       case 'wallet':
         return <Wallet />;
       case 'challenges':

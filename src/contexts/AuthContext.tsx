@@ -1,18 +1,9 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { useEffect, useState, ReactNode } from 'react';
 import { User as SupabaseUser } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
 import { User } from '../types';
-
-interface AuthContextType {
-  user: SupabaseUser | null;
-  profile: User | null;
-  loading: boolean;
-  signUp: (email: string, password: string, fullName: string) => Promise<void>;
-  signIn: (email: string, password: string) => Promise<void>;
-  signOut: () => Promise<void>;
-}
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+import { fetchProfile } from './authUtils';
+import { AuthContext } from './AuthContextType';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<SupabaseUser | null>(null);
@@ -25,58 +16,51 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       console.log('Session check on mount:', session?.user?.id);
       setUser(session?.user ?? null);
       if (session?.user) {
-        fetchProfile(session.user.id);
+        fetchProfile(session.user.id).then(profile => {
+          setProfile(profile);
+          setLoading(false);
+        });
       } else {
         setLoading(false);
       }
     });
 
     // Listen for changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log('Auth state changed:', event, session?.user?.id);
-      (async () => {
-        setUser(session?.user ?? null);
-        if (session?.user) {
-          await fetchProfile(session.user.id);
-        } else {
-          setProfile(null);
-          setLoading(false);
-        }
-      })();
+      setUser(session?.user ?? null);
+      if (session?.user) {
+        const profile = await fetchProfile(session.user.id);
+        setProfile(profile);
+      } else {
+        setProfile(null);
+        setLoading(false);
+      }
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
-  const fetchProfile = async (userId: string) => {
-    console.log('Fetching profile for user ID:', userId);
-    try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .maybeSingle();
-
-      if (error) throw error;
-      console.log('Profile data fetched:', data);
-      setProfile(data);
-    } catch (error) {
-      console.error('Error fetching profile:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const signUp = async (email: string, password: string, fullName: string) => {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        data: {
+          full_name: fullName,
+        },
+      },
     });
 
     if (error) throw error;
 
-    // Profile creation is now handled by a database trigger (handle_new_user)
-    // This ensures the 100 coins are always credited and username is generated.
+    // Wait a moment for the trigger to create the profile
+    if (data.user) {
+      setTimeout(async () => {
+        const profile = await fetchProfile(data.user!.id);
+        setProfile(profile);
+      }, 500);
+    }
   };
 
   const signIn = async (email: string, password: string) => {
@@ -110,12 +94,4 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       {children}
     </AuthContext.Provider>
   );
-}
-
-export function useAuth() {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
 }

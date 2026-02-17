@@ -2,10 +2,6 @@ import { useState } from 'react';
 import { Search, Filter, Tag, Star, Calendar, Eye, ShoppingCart } from 'lucide-react';
 import { Voucher } from '../types';
 
-interface MarketplaceProps {
-  onNavigate: (page: string) => void;
-}
-
 const allVouchers: Voucher[] = [
   {
     id: '1',
@@ -15,6 +11,7 @@ const allVouchers: Voucher[] = [
     original_value: 100,
     selling_price: 85,
     discount_percentage: 15,
+    voucher_code: 'AMAZ85201',
     expiry_date: '2025-12-31',
     status: 'verified',
     is_verified: true,
@@ -30,6 +27,7 @@ const allVouchers: Voucher[] = [
     original_value: 50,
     selling_price: 40,
     discount_percentage: 20,
+    voucher_code: 'STAR40202',
     expiry_date: '2025-11-15',
     status: 'verified',
     is_verified: true,
@@ -45,6 +43,7 @@ const allVouchers: Voucher[] = [
     original_value: 200,
     selling_price: 150,
     discount_percentage: 25,
+    voucher_code: 'NIKE150203',
     expiry_date: '2025-12-20',
     status: 'verified',
     is_verified: true,
@@ -60,6 +59,7 @@ const allVouchers: Voucher[] = [
     original_value: 75,
     selling_price: 52.5,
     discount_percentage: 30,
+    voucher_code: 'UBER52204',
     expiry_date: '2025-10-20',
     status: 'verified',
     is_verified: true,
@@ -75,6 +75,7 @@ const allVouchers: Voucher[] = [
     original_value: 30,
     selling_price: 24.6,
     discount_percentage: 18,
+    voucher_code: 'SPOT24205',
     expiry_date: '2025-11-30',
     status: 'verified',
     is_verified: true,
@@ -90,6 +91,7 @@ const allVouchers: Voucher[] = [
     original_value: 60,
     selling_price: 46.8,
     discount_percentage: 22,
+    voucher_code: 'NETF46206',
     expiry_date: '2025-12-15',
     status: 'verified',
     is_verified: true,
@@ -105,6 +107,7 @@ const allVouchers: Voucher[] = [
     original_value: 100,
     selling_price: 82,
     discount_percentage: 18,
+    voucher_code: 'TARG82207',
     expiry_date: '2025-11-25',
     status: 'verified',
     is_verified: true,
@@ -120,6 +123,7 @@ const allVouchers: Voucher[] = [
     original_value: 80,
     selling_price: 68,
     discount_percentage: 15,
+    voucher_code: 'WHOL68208',
     expiry_date: '2025-12-10',
     status: 'verified',
     is_verified: true,
@@ -129,7 +133,7 @@ const allVouchers: Voucher[] = [
   },
 ];
 
-export default function Marketplace({ onNavigate }: MarketplaceProps) {
+export default function Marketplace(): JSX.Element {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState('newest');
