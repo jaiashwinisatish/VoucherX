@@ -1,5 +1,6 @@
 import { TrendingUp, Star, Tag, Calendar, Eye, Bot } from 'lucide-react';
 import { Voucher } from '../types';
+import { useCart } from './cartContent';
 
 interface HomeProps {
   onNavigate: (page: string) => void;
@@ -109,6 +110,8 @@ const categories = [
 ];
 
 export default function Home({ onNavigate, onOpenAI }: HomeProps) {
+  const { addToCart } = useCart();
+
   const getDaysUntilExpiry = (expiryDate: string) => {
     const today = new Date();
     const expiry = new Date(expiryDate);
@@ -281,6 +284,12 @@ export default function Home({ onNavigate, onOpenAI }: HomeProps) {
                       <span>{voucher.views} views</span>
                     </div>
                   </div>
+          <button
+            onClick={() => addToCart(voucher)}
+            className="w-full mb-2 bg-slate-100 text-slate-800 py-3 rounded-lg font-semibold hover:bg-slate-200 transition-all border"
+          >
+            Add to Cart
+          </button>
 
                   <button 
                   

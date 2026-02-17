@@ -13,6 +13,7 @@ import Profile from './pages/Profile';
 import { Voucher } from './types';
 import { Bot } from 'lucide-react';
 import ExpiryInsights from "./pages/ExpiryInsights";
+import { CartProvider } from './pages/cartContent';
 
 
 const mockUserVouchers: Voucher[] = [
@@ -164,8 +165,11 @@ function AppContent() {
 function App() {
   return (
     <AuthProvider>
+      <CartProvider>
       <AppContent />
+      </CartProvider>
     </AuthProvider>
+    
   );
 }
 

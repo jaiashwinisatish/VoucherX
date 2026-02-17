@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Search, Filter, Tag, Star, Calendar, Eye, ShoppingCart, AlertCircle } from 'lucide-react';
 import { Voucher } from '../types';
 import { hasInvalidSupabaseConfig, supabase } from '../lib/supabase';
+import { useCart } from './cartContent';
 
 interface MarketplaceProps {
   onNavigate: (page: string) => void;
@@ -136,6 +137,7 @@ const sortVouchers = (source: Voucher[], sortBy: SortOption): Voucher[] => {
 };
 
 export default function Marketplace({ onNavigate }: MarketplaceProps) {
+  const { addToCart } = useCart();
   const [searchInput, setSearchInput] = useState('');
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -217,7 +219,7 @@ export default function Marketplace({ onNavigate }: MarketplaceProps) {
       }
 
       const { data, error } = await query.limit(QUERY_LIMIT);
-      if (error) throw error;
+      if (error) console.error("Marketplace fetch error:", error);
 
       if (requestId !== activeRequestId.current) return;
       setVouchers((data ?? []) as Voucher[]);
@@ -413,6 +415,13 @@ export default function Marketplace({ onNavigate }: MarketplaceProps) {
                       <span>{voucher.views} views</span>
                     </div>
                   </div>
+                 <button
+  onClick={() => addToCart(voucher)}
+  className="w-full bg-slate-100 text-slate-800 py-3 rounded-lg font-semibold hover:bg-slate-200 transition-all flex items-center justify-center space-x-2 border"
+>
+  <ShoppingCart className="h-5 w-5" />
+  <span>Add to Cart</span>
+</button>
 
                   <button className="w-full bg-gradient-to-r from-teal-500 to-blue-600 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all flex items-center justify-center space-x-2">
                     <ShoppingCart className="h-5 w-5" />
