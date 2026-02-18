@@ -1,5 +1,5 @@
 import { User, Star, TrendingUp, Award, Calendar, CheckCircle, Settings } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/useAuth';
 import { motion } from 'framer-motion';
 
 export default function Profile() {

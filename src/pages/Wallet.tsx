@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Wallet as WalletIcon, Star, Calendar, CheckCircle, Clock, Copy, Tag } from 'lucide-react';
+import { Wallet as WalletIcon, Star, CheckCircle, Clock, Copy, Tag } from 'lucide-react';
 import { Voucher } from '../types';
 
 const activeVouchers: Voucher[] = [
@@ -62,6 +62,7 @@ const redeemedVouchers: Voucher[] = [
     original_value: 60,
     selling_price: 46.8,
     discount_percentage: 22,
+    voucher_code: 'NETF46401',
     expiry_date: '2025-12-15',
     status: 'verified',
     is_verified: true,
@@ -77,6 +78,7 @@ const redeemedVouchers: Voucher[] = [
     original_value: 30,
     selling_price: 24.6,
     discount_percentage: 18,
+    voucher_code: 'SPOT24402',
     expiry_date: '2025-11-30',
     status: 'verified',
     is_verified: true,

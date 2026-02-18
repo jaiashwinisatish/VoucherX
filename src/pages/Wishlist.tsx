@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Heart, Plus, Bell, BellOff, X, Trash2, Loader } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/useAuth';
 import { WishlistItem } from '../types';
 import { useCategories } from '../hooks/useCategories';
 

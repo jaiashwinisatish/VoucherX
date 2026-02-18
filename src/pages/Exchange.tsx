@@ -2,10 +2,6 @@ import { useState } from 'react';
 import { Repeat, Sparkles, TrendingUp, ArrowRight, Star, Check } from 'lucide-react';
 import { Voucher } from '../types';
 
-interface ExchangeProps {
-  onNavigate: (page: string) => void;
-}
-
 const myVouchers: Voucher[] = [
   {
     id: 'my1',
@@ -15,6 +11,7 @@ const myVouchers: Voucher[] = [
     original_value: 100,
     selling_price: 85,
     discount_percentage: 15,
+    voucher_code: 'AMAZ85301',
     expiry_date: '2025-12-31',
     status: 'verified',
     is_verified: true,
@@ -29,6 +26,7 @@ const myVouchers: Voucher[] = [
     original_value: 30,
     selling_price: 24.6,
     discount_percentage: 18,
+    voucher_code: 'SPOT24302',
     expiry_date: '2025-11-30',
     status: 'verified',
     is_verified: true,
@@ -43,6 +41,7 @@ const myVouchers: Voucher[] = [
     original_value: 50,
     selling_price: 40,
     discount_percentage: 20,
+    voucher_code: 'STAR40303',
     expiry_date: '2025-11-15',
     status: 'verified',
     is_verified: true,
@@ -60,6 +59,7 @@ const suggestedMatches: (Voucher & { matchScore: number; reason: string })[] = [
     original_value: 60,
     selling_price: 46.8,
     discount_percentage: 22,
+    voucher_code: 'NETF46301',
     expiry_date: '2025-12-15',
     status: 'verified',
     is_verified: true,
@@ -76,6 +76,7 @@ const suggestedMatches: (Voucher & { matchScore: number; reason: string })[] = [
     original_value: 120,
     selling_price: 90,
     discount_percentage: 25,
+    voucher_code: 'NIKE90302',
     expiry_date: '2025-12-20',
     status: 'verified',
     is_verified: true,
@@ -92,6 +93,7 @@ const suggestedMatches: (Voucher & { matchScore: number; reason: string })[] = [
     original_value: 75,
     selling_price: 52.5,
     discount_percentage: 30,
+    voucher_code: 'UBER52303',
     expiry_date: '2025-10-20',
     status: 'verified',
     is_verified: true,
@@ -102,7 +104,7 @@ const suggestedMatches: (Voucher & { matchScore: number; reason: string })[] = [
   },
 ];
 
-export default function Exchange({ onNavigate }: ExchangeProps) {
+export default function Exchange(): JSX.Element {
   const [selectedVoucher, setSelectedVoucher] = useState<string | null>(null);
   const [showMatches, setShowMatches] = useState(false);
 
