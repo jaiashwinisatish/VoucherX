@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Repeat, Mail, Lock, User } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { isRequired, isValidEmail } from '../utils/validation';
+
 
 export default function Auth() {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -12,22 +14,41 @@ export default function Auth() {
   const { signIn, signUp } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
+  e.preventDefault();
+  setError('');
 
-    try {
-      if (isSignUp) {
-        await signUp(email, password, fullName);
-      } else {
-        await signIn(email, password);
-      }
-    } catch (err: any) {
-      setError(err.message || 'An error occurred');
-    } finally {
-      setLoading(false);
+  // 🔐 Basic Client-Side Validation
+
+  if (!isValidEmail(email)) {
+    setError('Please enter a valid email address.');
+    return;
+  }
+
+  if (!isRequired(password) || password.length < 6) {
+    setError('Password must be at least 6 characters long.');
+    return;
+  }
+
+  if (isSignUp && !isRequired(fullName)) {
+    setError('Full name is required.');
+    return;
+  }
+
+  setLoading(true);
+
+  try {
+    if (isSignUp) {
+      await signUp(email, password, fullName);
+    } else {
+      await signIn(email, password);
     }
-  };
+  } catch (err: any) {
+    setError(err.message || 'An error occurred');
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-teal-50 flex items-center justify-center p-4">
@@ -43,7 +64,7 @@ export default function Auth() {
             <p className="text-slate-600">Don't let your vouchers expire. Trade. Earn. Repeat.</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} noValidate className="space-y-4">
             {isSignUp && (
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">
@@ -70,7 +91,7 @@ export default function Auth() {
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
                 <input
-                  type="email"
+                  type="text"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
@@ -92,8 +113,7 @@ export default function Auth() {
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
                   placeholder="Enter your password"
-                  required
-                  minLength={6}
+                  
                 />
               </div>
             </div>
