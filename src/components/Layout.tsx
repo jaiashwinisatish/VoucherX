@@ -177,11 +177,143 @@ export default function Layout({ children, currentPage, onNavigate, onOpenAI }: 
         {children}
       </main>
 
-      <footer className="bg-white/80 backdrop-blur-md border-t border-slate-200 mt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center text-slate-600">
-            <p className="text-lg font-semibold mb-2">Don't let your vouchers expire. Trade. Earn. Repeat.</p>
-            <p className="text-sm">&copy; 2025 VoucherX. All rights reserved.</p>
+      <footer className="mt-16 bg-white/90 text-slate-800 border-t border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 border-b border-slate-200 pb-8">
+            <div>
+              <div className="flex items-center space-x-2 mb-4">
+                <div className="bg-gradient-to-r from-teal-500 to-blue-600 p-2 rounded-xl">
+                  <Repeat className="h-5 w-5 text-white" />
+                </div>
+                <span className="text-xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
+                  VoucherX
+                </span>
+              </div>
+              <p className="text-sm text-slate-600 mb-4">
+                Don't let your vouchers expire. Trade, earn, and repeat with AI-powered insights.
+              </p>
+              <p className="text-xs text-slate-500">
+                Built for savvy shoppers who want to unlock the full value of their vouchers.
+              </p>
+            </div>
+
+            <nav aria-label="Product" className="space-y-3">
+              <h3 className="text-sm font-semibold tracking-wide text-slate-700 uppercase">Product</h3>
+              <div className="flex flex-col space-y-2 text-sm">
+                <button
+                  onClick={() => onNavigate('marketplace')}
+                  className="text-slate-600 hover:text-teal-600 text-left transition-colors"
+                >
+                  Marketplace
+                </button>
+                <button
+                  onClick={() => onNavigate('exchange')}
+                  className="text-slate-600 hover:text-teal-600 text-left transition-colors"
+                >
+                  Exchange
+                </button>
+                <button
+                  onClick={() => onNavigate('wallet')}
+                  className="text-slate-600 hover:text-teal-600 text-left transition-colors"
+                >
+                  Wallet
+                </button>
+                <button
+                  onClick={() => onNavigate('challenges')}
+                  className="text-slate-600 hover:text-teal-600 text-left transition-colors"
+                >
+                  Challenges
+                </button>
+              </div>
+            </nav>
+
+            <nav aria-label="Company" className="space-y-3">
+              <h3 className="text-sm font-semibold tracking-wide text-slate-700 uppercase">Company</h3>
+              <div className="flex flex-col space-y-2 text-sm">
+                <button
+                  onClick={() => onNavigate('home')}
+                  className="text-slate-600 hover:text-teal-600 text-left transition-colors"
+                >
+                  About Us
+                </button>
+                <button
+                  onClick={() => onNavigate('home')}
+                  className="text-slate-600 hover:text-teal-600 text-left transition-colors"
+                >
+                  How It Works
+                </button>
+                <button
+                  type="button"
+                  className="text-slate-400 cursor-default text-left"
+                  aria-disabled="true"
+                >
+                  Careers (coming soon)
+                </button>
+              </div>
+            </nav>
+
+            <nav aria-label="Support" className="space-y-3">
+              <h3 className="text-sm font-semibold tracking-wide text-slate-700 uppercase">Support</h3>
+              <div className="flex flex-col space-y-2 text-sm">
+                <a
+                  href="mailto:support@voucherx.com"
+                  className="text-slate-600 hover:text-teal-600 text-left transition-colors"
+                >
+                  Help &amp; FAQ
+                </a>
+                <a
+                  href="mailto:support@voucherx.com"
+                  className="text-slate-600 hover:text-teal-600 text-left transition-colors"
+                >
+                  Contact Us
+                </a>
+                <button
+                  onClick={() => onNavigate('home')}
+                  className="text-slate-600 hover:text-teal-600 text-left transition-colors"
+                >
+                  Terms &amp; Conditions
+                </button>
+                <button
+                  onClick={() => onNavigate('home')}
+                  className="text-slate-600 hover:text-teal-600 text-left transition-colors"
+                >
+                  Privacy Policy
+                </button>
+              </div>
+            </nav>
+          </div>
+
+          <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-xs text-slate-500">
+              &copy; {new Date().getFullYear()} VoucherX. All rights reserved.
+            </p>
+            <div className="flex items-center space-x-4 text-xs">
+              <span className="text-slate-500">Join the community</span>
+              <a
+                href="https://github.com/jaiashwinisatish/VoucherX"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-slate-600 hover:text-teal-600 transition-colors"
+              >
+                GitHub
+              </a>
+              <a
+                href="https://twitter.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-slate-600 hover:text-teal-600 transition-colors"
+              >
+                Twitter
+              </a>
+              <a
+                href="https://discord.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-slate-600 hover:text-teal-600 transition-colors"
+              >
+                Discord
+              </a>
+            </div>
           </div>
         </div>
       </footer>
