@@ -522,6 +522,48 @@ CREATE INDEX IF NOT EXISTS idx_ratings_rated ON ratings(rated_id);
 CREATE INDEX IF NOT EXISTS idx_profiles_username ON profiles(username);
 ```
 
+## Database Triggers
+
+### Auto-Create User Profiles on Signup
+
+This trigger automatically creates a profile entry when a new user signs up through Supabase Auth.
+
+```sql
+-- Function to handle new user creation
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS trigger
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+  INSERT INTO public.profiles (id, full_name, username, avatar_url, voucher_coins)
+  VALUES (
+    new.id,
+    COALESCE(new.raw_user_meta_data->>'full_name', 'User'),
+    COALESCE(
+      new.raw_user_meta_data->>'username',
+      COALESCE(new.email, 'user_' || substr(new.id::text, 1, 8))
+    ),
+    new.raw_user_meta_data->>'avatar_url',
+    100
+  );
+  RETURN new;
+END;
+$$;
+
+-- Trigger to execute the function
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW
+  EXECUTE FUNCTION public.handle_new_user();
+```
+
+**Purpose**: Prevents foreign key constraint errors when users try to add vouchers.
+
+**When to run**: Before allowing users to add vouchers. See `migrations/001_auto_create_profiles.sql` for the complete migration.
+
 ## How to Use These Queries
 
 ### In Supabase Dashboard:
