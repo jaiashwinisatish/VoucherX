@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Auth from './components/Auth';
@@ -14,6 +15,8 @@ import { Voucher } from './types';
 import { Bot } from 'lucide-react';
 import ExpiryInsights from "./pages/ExpiryInsights";
 import { CartProvider } from './pages/cartContent';
+import ErrorBoundary from "./components/ErrorBoundary";
+
 
 
 const mockUserVouchers: Voucher[] = [
@@ -164,13 +167,15 @@ function AppContent() {
 
 function App() {
   return (
-    <AuthProvider>
-      <CartProvider>
-      <AppContent />
-      </CartProvider>
-    </AuthProvider>
-    
+    <ErrorBoundary>
+      <AuthProvider>
+        <CartProvider>
+          <AppContent />
+        </CartProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }
 
 export default App;
+
