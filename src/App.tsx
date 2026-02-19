@@ -14,6 +14,7 @@ import Profile from './pages/Profile';
 import { Voucher } from './types';
 import { Bot } from 'lucide-react';
 import ExpiryInsights from "./pages/ExpiryInsights";
+import { CartProvider } from './pages/cartContent';
 import ErrorBoundary from "./components/ErrorBoundary";
 
 
@@ -168,11 +169,13 @@ function App() {
   return (
     <ErrorBoundary>
       <AuthProvider>
-        <AppContent />
+        <CartProvider>
+          <AppContent />
+        </CartProvider>
       </AuthProvider>
     </ErrorBoundary>
   );
 }
 
-
 export default App;
+
