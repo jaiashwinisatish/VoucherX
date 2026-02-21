@@ -4,16 +4,12 @@ import { Voucher } from '../types';
 import { hasInvalidSupabaseConfig, supabase } from '../lib/supabase';
 import { useCategories } from '../hooks/useCategories';
 
-interface MarketplaceProps {
-  onNavigate: (page: string) => void;
-}
+
 
 type SortOption = 'newest' | 'discount' | 'expiry' | 'popular' | 'price_low' | 'price_high';
 
 const SEARCH_DEBOUNCE_MS = 350;
 const QUERY_LIMIT = 60;
-
-
 
 const fallbackVouchers: Voucher[] = [
   {
@@ -137,7 +133,7 @@ const sortVouchers = (source: Voucher[], sortBy: SortOption): Voucher[] => {
   });
 };
 
-export default function Marketplace({ onNavigate }: MarketplaceProps) {
+export default function Marketplace() {
   const { categories } = useCategories();
 
   const [searchInput, setSearchInput] = useState('');
@@ -249,104 +245,122 @@ export default function Marketplace({ onNavigate }: MarketplaceProps) {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-slate-200">
-        <h1 className="text-3xl font-bold text-slate-800 mb-2">Marketplace</h1>
-        <p className="text-slate-600">Discover verified vouchers from trusted sellers</p>
+    <div className="space-y-8">
+      <div className="relative overflow-hidden bg-card backdrop-blur-xl rounded-[2rem] p-8 md:p-10 border border-main-border shadow-soft">
+        <div className="relative z-10">
+          <h1 className="text-4xl font-black text-main-text mb-3 tracking-tight">Marketplace</h1>
+          <p className="text-dim font-medium text-lg">Acquire vetted vouchers with verified liquidity</p>
+        </div>
+        <div className="absolute right-0 top-0 w-64 h-64 bg-brand-primary/5 rounded-full blur-3xl -mr-20 -mt-20"></div>
       </div>
 
       {hasInvalidSupabaseConfig && (
-        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start space-x-3">
-          <AlertCircle className="h-5 w-5 text-amber-600 mt-0.5" />
-          <p className="text-amber-800 text-sm">
-            Supabase is not configured, so marketplace search is showing sample data. Add valid Supabase credentials
-            in `.env` to run real database search.
+        <div className="bg-status-warning/5 border border-status-warning/20 rounded-2xl p-5 flex items-start space-x-4">
+          <div className="p-2 bg-status-warning/10 rounded-xl">
+            <AlertCircle className="h-5 w-5 text-status-warning" />
+          </div>
+          <p className="text-status-warning text-sm font-medium">
+            Supabase is not configured. Serving sample data from local protocol cache.
           </p>
         </div>
       )}
 
       {errorMessage && (
-        <div className="bg-red-50 border border-red-200 rounded-xl p-4 flex items-start space-x-3">
-          <AlertCircle className="h-5 w-5 text-red-600 mt-0.5" />
-          <p className="text-red-700 text-sm">{errorMessage}</p>
+        <div className="bg-status-error/5 border border-status-error/20 rounded-2xl p-5 flex items-start space-x-4">
+          <div className="p-2 bg-status-error/10 rounded-xl">
+            <AlertCircle className="h-5 w-5 text-status-error" />
+          </div>
+          <p className="text-status-error text-sm font-medium">{errorMessage}</p>
         </div>
       )}
 
-      <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-slate-200 space-y-4">
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
+      <div className="bg-card backdrop-blur-xl rounded-[2rem] p-8 border border-main-border shadow-soft space-y-6">
+        <div className="flex flex-col lg:flex-row gap-6">
+          <div className="flex-1 relative group">
+            <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-dim group-focus-within:text-brand-primary transition-colors" />
             <input
               type="text"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              placeholder="Search brands or descriptions..."
-              className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+              placeholder="Search assets (e.g. Amazon, Tech...)"
+              className="w-full pl-14 pr-6 py-4 bg-muted-bg border border-main-border text-main-text rounded-2xl focus:ring-4 focus:ring-brand-primary/10 focus:border-brand-primary transition-all font-medium outline-none"
             />
           </div>
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="px-6 py-3 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors flex items-center space-x-2"
+            className={`px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-xs transition-all flex items-center justify-center space-x-3 shadow-md ${showFilters
+              ? 'bg-brand-primary text-white shadow-brand shadow-lg'
+              : 'bg-muted-bg text-main-text border border-main-border hover:bg-card-hover'
+              }`}
           >
-            <Filter className="h-5 w-5" />
-            <span>Filters</span>
+            <Filter className={`h-4 w-4 ${showFilters ? 'animate-pulse' : ''}`} />
+            <span>Advanced Filters</span>
           </button>
         </div>
 
-        <div className="text-sm text-slate-600">
-          {isLoading ? 'Searching vouchers...' : `${vouchers.length} vouchers found`}
+        <div className="flex items-center justify-between text-[11px] font-black uppercase tracking-widest text-dim px-2">
+          <div className="flex items-center space-x-2">
+            <div className={`w-2 h-2 rounded-full ${isLoading ? 'bg-brand-primary animate-ping' : 'bg-status-success'}`}></div>
+            <span>{isLoading ? 'Querying Chain...' : `${vouchers.length} Verified Listings`}</span>
+          </div>
+          {debouncedSearchTerm && (
+            <span>Results for: "{debouncedSearchTerm}"</span>
+          )}
         </div>
 
         {showFilters && (
-          <div className="grid md:grid-cols-2 gap-4 pt-4 border-t border-slate-200">
+          <div className="grid lg:grid-cols-2 gap-8 pt-8 border-t border-main-border animate-in fade-in slide-in-from-top-4 duration-500">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">Category</label>
+              <label className="block text-[10px] font-black text-dim uppercase tracking-widest mb-4">Market Category</label>
               <div className="flex flex-wrap gap-2">
                 {['all', ...categories.map(c => c.name)].map(category => (
-
                   <button
                     key={category}
                     onClick={() => setSelectedCategory(category)}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                      selectedCategory === category
-                        ? 'bg-gradient-to-r from-teal-500 to-blue-600 text-white'
-                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                    }`}
+                    className={`px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all shadow-sm border ${selectedCategory === category
+                      ? 'bg-gradient-brand text-white border-transparent shadow-brand'
+                      : 'bg-card text-dim border-main-border hover:border-brand-primary/30 hover:text-main-text'
+                      }`}
                   >
-                    {category.charAt(0).toUpperCase() + category.slice(1)}
+                    {category}
                   </button>
                 ))}
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">Sort By</label>
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as SortOption)}
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-              >
-                <option value="newest">Newest First</option>
-                <option value="discount">Best Discount</option>
-                <option value="expiry">Expiring Soon</option>
-                <option value="popular">Most Popular</option>
-                <option value="price_low">Price: Low to High</option>
-                <option value="price_high">Price: High to Low</option>
-              </select>
+              <label className="block text-[10px] font-black text-dim uppercase tracking-widest mb-4">Order Metrics</label>
+              <div className="relative">
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as SortOption)}
+                  className="w-full appearance-none px-6 py-4 bg-muted-bg border border-main-border text-main-text rounded-2xl focus:ring-4 focus:ring-brand-primary/10 focus:border-brand-primary transition-all font-bold outline-none cursor-pointer"
+                >
+                  <option value="newest">Latest Listings</option>
+                  <option value="discount">Highest Yield (Discount)</option>
+                  <option value="expiry">Imminent Expiry</option>
+                  <option value="popular">High Velocity (Popular)</option>
+                  <option value="price_low">Value: Low to High</option>
+                  <option value="price_high">Value: High to Low</option>
+                </select>
+                <Filter className="absolute right-6 top-1/2 -translate-y-1/2 h-4 w-4 text-dim pointer-events-none" />
+              </div>
             </div>
           </div>
         )}
       </div>
 
       {isLoading && (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {[...Array(6)].map((_, index) => (
-            <div key={index} className="bg-white/80 rounded-xl border border-slate-200 overflow-hidden animate-pulse">
-              <div className="h-40 bg-slate-200" />
-              <div className="p-6 space-y-3">
-                <div className="h-4 bg-slate-200 rounded w-3/4" />
-                <div className="h-4 bg-slate-200 rounded w-1/2" />
-                <div className="h-10 bg-slate-200 rounded" />
-                <div className="h-10 bg-slate-200 rounded" />
+            <div key={index} className="bg-card rounded-[2rem] border border-main-border overflow-hidden animate-pulse">
+              <div className="h-56 bg-muted-bg" />
+              <div className="p-8 space-y-6">
+                <div className="space-y-2">
+                  <div className="h-6 bg-muted-bg rounded-lg w-3/4" />
+                  <div className="h-4 bg-muted-bg rounded-lg w-1/2" />
+                </div>
+                <div className="h-20 bg-muted-bg rounded-2xl" />
+                <div className="h-12 bg-muted-bg rounded-2xl" />
               </div>
             </div>
           ))}
@@ -354,7 +368,7 @@ export default function Marketplace({ onNavigate }: MarketplaceProps) {
       )}
 
       {!isLoading && vouchers.length > 0 && (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 pb-12">
           {vouchers.map((voucher) => {
             const daysLeft = getDaysUntilExpiry(voucher.expiry_date);
             const isExpired = daysLeft < 0;
@@ -363,70 +377,84 @@ export default function Marketplace({ onNavigate }: MarketplaceProps) {
             return (
               <div
                 key={voucher.id}
-                className="bg-white/80 backdrop-blur-sm rounded-xl border border-slate-200 hover:shadow-xl hover:scale-105 transition-all overflow-hidden group"
+                className="group relative bg-card backdrop-blur-xl rounded-[2rem] border border-main-border hover:shadow-2xl hover:shadow-brand-primary/5 transition-all duration-500 overflow-hidden shadow-soft flex flex-col"
               >
-                <div className="relative h-40 bg-gradient-to-br from-slate-100 to-slate-200 p-6 flex items-center justify-center">
-                  <div className="text-4xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
-                    {voucher.brand_name}
+                <div className="relative h-56 bg-muted-bg/50 p-8 flex items-center justify-center overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-brand opacity-0 group-hover:opacity-5 transition-opacity duration-500"></div>
+                  <div className="text-center z-10 transition-transform duration-500 group-hover:scale-110">
+                    <div className="text-4xl font-black bg-gradient-brand bg-clip-text text-transparent mb-3 tracking-tighter">
+                      {voucher.brand_name}
+                    </div>
+                    <div className="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black tracking-widest uppercase bg-card text-main-text border border-main-border shadow-sm">
+                      {voucher.category}
+                    </div>
                   </div>
 
                   {voucher.is_verified && (
-                    <div className="absolute top-4 right-4 bg-emerald-500 text-white px-3 py-1 rounded-full text-xs font-semibold flex items-center space-x-1">
+                    <div className="absolute top-6 right-6 bg-status-success text-white px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-wider flex items-center space-x-1.5 shadow-lg">
                       <Star className="h-3 w-3 fill-current" />
                       <span>Verified</span>
                     </div>
                   )}
 
                   {isExpired ? (
-                  <div className="absolute top-4 left-4 bg-gray-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
-                    Expired
-                  </div>
-                ) : isExpiringSoon ? (
-                  <div className="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
-                    {daysLeft}d left
-                  </div>
-                ) : null}
-
-                  <div className="absolute bottom-4 left-4 bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-slate-700">
-                    {voucher.category}
-                  </div>
+                    <div className="absolute top-6 left-6 bg-dim text-white px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-wider shadow-lg">
+                      Expired
+                    </div>
+                  ) : isExpiringSoon ? (
+                    <div className="absolute top-6 left-6 bg-status-error text-white px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-wider shadow-lg animate-pulse">
+                      {daysLeft}d left
+                    </div>
+                  ) : null}
                 </div>
 
-                <div className="p-6 space-y-4">
-                  <p className="text-sm text-slate-600 line-clamp-2 min-h-[40px]">{voucher.description}</p>
+                <div className="p-8 space-y-8 flex-1 flex flex-col">
+                  <p className="text-muted-text text-sm font-medium line-clamp-2 min-h-[40px] leading-relaxed">
+                    {voucher.description}
+                  </p>
 
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="text-xs text-slate-500">Original Value</div>
-                      <div className="text-xl font-bold text-slate-800">${voucher.original_value}</div>
+                  <div className="grid grid-cols-2 gap-6">
+                    <div className="space-y-1">
+                      <div className="text-[10px] font-black text-dim uppercase tracking-widest">Market Value</div>
+                      <div className="text-xl font-bold text-dim line-through decoration-status-error/30 decoration-2">
+                        ${voucher.original_value}
+                      </div>
                     </div>
-                    <div className="text-right">
-                      <div className="text-xs text-slate-500">Your Price</div>
-                      <div className="text-2xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
+                    <div className="text-right space-y-1">
+                      <div className="text-[10px] font-black text-brand-primary uppercase tracking-widest">Ask Price</div>
+                      <div className="text-3xl font-black bg-gradient-brand bg-clip-text text-transparent">
                         ${voucher.selling_price}
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between p-3 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-lg">
-                    <span className="text-sm font-medium text-slate-700">You Save</span>
-                    <span className="text-lg font-bold text-emerald-600">{voucher.discount_percentage}% OFF</span>
+                  <div className="relative bg-brand-primary/5 border border-brand-primary/10 rounded-2xl p-4 overflow-hidden group/save">
+                    <div className="absolute inset-0 bg-brand-primary/5 translate-x-full group-hover/save:translate-x-0 transition-transform duration-500"></div>
+                    <div className="relative flex items-center justify-between">
+                      <span className="text-xs font-black text-main-text uppercase tracking-wider italic">Savings Yield</span>
+                      <div className="flex items-center space-x-2 text-status-success">
+                        <span className="text-xl font-black">
+                          {voucher.discount_percentage}%
+                        </span>
+                        <Tag className="h-4 w-4" />
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="flex items-center justify-between text-xs text-slate-500">
-                    <div className="flex items-center space-x-1">
-                      <Calendar className="h-3 w-3" />
+                  <div className="flex items-center justify-between text-[11px] font-bold text-dim">
+                    <div className="flex items-center space-x-2">
+                      <Calendar className="h-4 w-4 text-brand-primary/50" />
                       <span>{new Date(voucher.expiry_date).toLocaleDateString()}</span>
                     </div>
-                    <div className="flex items-center space-x-1">
-                      <Eye className="h-3 w-3" />
-                      <span>{voucher.views} views</span>
+                    <div className="flex items-center space-x-2">
+                      <Eye className="h-4 w-4 text-brand-primary/50" />
+                      <span>{voucher.views}</span>
                     </div>
                   </div>
 
-                  <button className="w-full bg-gradient-to-r from-teal-500 to-blue-600 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all flex items-center justify-center space-x-2">
+                  <button className="w-full mt-auto bg-gradient-brand text-white py-4 rounded-2xl font-black uppercase tracking-widest text-sm hover:shadow-brand hover:-translate-y-1 active:translate-y-0.5 transition-all shadow-lg flex items-center justify-center space-x-3">
                     <ShoppingCart className="h-5 w-5" />
-                    <span>Buy Now</span>
+                    <span>Execute Trade</span>
                   </button>
                 </div>
               </div>
@@ -436,15 +464,20 @@ export default function Marketplace({ onNavigate }: MarketplaceProps) {
       )}
 
       {!isLoading && vouchers.length === 0 && (
-        <div className="text-center py-16 bg-white/80 backdrop-blur-sm rounded-xl border border-slate-200">
-          <Tag className="h-16 w-16 text-slate-300 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-slate-700 mb-2">No vouchers found</h3>
-          <p className="text-slate-600 mb-4">Try adjusting your filters or search term</p>
+        <div className="text-center py-24 bg-card backdrop-blur-xl rounded-[2.5rem] border border-main-border shadow-soft">
+          <div className="w-24 h-24 bg-muted-bg rounded-[2rem] flex items-center justify-center mx-auto mb-8 shadow-inner">
+            <Tag className="h-12 w-12 text-dim opacity-40 rotate-12" />
+          </div>
+          <h3 className="text-2xl font-black text-main-text mb-3 tracking-tight">No Matching Assets</h3>
+          <p className="text-dim font-medium mb-10 max-w-sm mx-auto">Try broadening your search criteria or checking different categories.</p>
           <button
-            onClick={() => onNavigate('home')}
-            className="px-5 py-2.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors"
+            onClick={() => {
+              setSearchInput('');
+              setSelectedCategory('all');
+            }}
+            className="px-8 py-4 rounded-2xl bg-brand-primary text-white font-black uppercase tracking-widest text-xs hover:shadow-brand transition-all shadow-lg"
           >
-            Back to Home
+            Clear All Filters
           </button>
         </div>
       )}

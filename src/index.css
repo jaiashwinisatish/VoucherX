@@ -1,3 +1,165 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  /* Backgrounds */
+  --bg-page: #f8fafc;
+  /* slate-50 */
+  --bg-card: #ffffff;
+  --bg-card-hover: #f1f5f9;
+  /* slate-100 */
+  --bg-nav: rgba(255, 255, 255, 0.8);
+  --bg-footer: rgba(255, 255, 255, 0.9);
+  --bg-muted: #f1f5f9;
+  /* slate-100 */
+
+  /* Text */
+  --text-main: #0f172a;
+  /* slate-900 */
+  --text-muted: #475569;
+  /* slate-600 */
+  --text-dim: #64748b;
+  /* slate-500 */
+  --text-inverse: #ffffff;
+
+  /* Borders */
+  --border-main: #e2e8f0;
+  /* slate-200 */
+  --border-muted: #f1f5f9;
+  /* slate-100 */
+
+  /* Brand */
+  --brand-primary: 20 184 166;
+  /* #14b8a6 - teal-500 */
+  --brand-secondary: 37 99 235;
+  /* #2563eb - blue-600 */
+  --brand-accent: 245 158 11;
+  /* #f59e0b - amber-500 */
+
+  /* Status */
+  --status-success: 16 185 129;
+  /* #10b981 - emerald-500 */
+  --status-error: 239 68 68;
+  /* #ef4444 - red-500 */
+  --status-warning: 245 158 11;
+  /* #f59e0b - amber-500 */
+  --status-info: 59 130 246;
+  /* #3b82f6 - blue-500 */
+
+  /* Gradients */
+  --gradient-page: linear-gradient(to bottom right, #f8fafc, #eff6ff, #f0fdfa);
+  --gradient-brand: linear-gradient(to right, rgb(var(--brand-primary)), rgb(var(--brand-secondary)));
+  --gradient-brand-hover: linear-gradient(to right, #0d9488, #1d4ed8);
+  --gradient-surface: linear-gradient(to bottom right, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+}
+
+[data-theme="dark"] {
+  /* Backgrounds */
+  --bg-page: #020617;
+  /* slate-950 */
+  --bg-card: #0f172a;
+  /* slate-900 */
+  --bg-card-hover: #1e293b;
+  /* slate-800 */
+  --bg-nav: rgba(2, 6, 23, 0.8);
+  --bg-footer: rgba(2, 6, 23, 0.9);
+  --bg-muted: #1e293b;
+  /* slate-800 */
+
+  /* Text */
+  --text-main: #f8fafc;
+  /* slate-50 */
+  --text-muted: #cbd5e1;
+  /* slate-300 */
+  --text-dim: #94a3b8;
+  /* slate-400 */
+  --text-inverse: #0f172a;
+
+  /* Borders */
+  --border-main: #1e293b;
+  /* slate-800 */
+  --border-muted: #334155;
+  /* slate-700 */
+
+  /* Brand */
+  --brand-primary: 45 212 191;
+  /* #2dd4bf - teal-400 */
+  --brand-secondary: 96 165 250;
+  /* #60a5fa - blue-400 */
+  --brand-accent: 251 191 36;
+  /* #fbbf24 - amber-400 */
+
+  /* Status */
+  --status-success: 52 211 153;
+  /* #34d399 - emerald-400 */
+  --status-error: 248 113 113;
+  /* #f87171 - red-400 */
+  --status-warning: 251 191 36;
+  /* #fbbf24 - amber-400 */
+  --status-info: 96 165 250;
+  /* #60a5fa - blue-400 */
+
+  /* Gradients */
+  --gradient-page: linear-gradient(to bottom right, #020617, #0f172a, #020617);
+  --gradient-brand: linear-gradient(to right, rgb(var(--brand-primary)), rgb(var(--brand-secondary)));
+  --gradient-brand-hover: linear-gradient(to right, #14b8a6, #3b82f6);
+  --gradient-surface: linear-gradient(to bottom right, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+}
+
+body {
+  @apply bg-page text-main-text antialiased transition-colors duration-300;
+}
+
+/* Custom shadow for cards to looks soft in dark mode */
+.shadow-soft {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="dark"] .shadow-soft {
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+}
+
+/* React Calendar Theme Overrides */
+.theme-calendar-wrapper .react-calendar {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+}
+
+.theme-calendar-wrapper .react-calendar__navigation button {
+  @apply text-main-text font-bold text-lg rounded-lg hover:bg-card-hover transition-colors;
+}
+
+.theme-calendar-wrapper .react-calendar__month-view__weekdays {
+  @apply text-dim font-bold uppercase text-[10px] tracking-widest mb-4;
+}
+
+.theme-calendar-wrapper .react-calendar__tile {
+  @apply text-main-text font-medium rounded-xl h-12 flex items-center justify-center transition-all hover:bg-card-hover m-1;
+}
+
+.theme-calendar-wrapper .react-calendar__tile--now {
+  @apply bg-brand-primary/10 text-brand-primary border border-brand-primary/20;
+}
+
+.theme-calendar-wrapper .react-calendar__tile--active {
+  @apply bg-brand-primary text-white shadow-lg scale-110 !important;
+}
+
+.theme-calendar-wrapper .tile-critical {
+  @apply bg-status-error text-white font-bold rounded-xl shadow-lg shadow-status-error/30;
+}
+
+.theme-calendar-wrapper .tile-warning {
+  @apply bg-status-warning text-white font-bold rounded-xl;
+}
+
+.theme-calendar-wrapper .tile-info {
+  @apply bg-brand-accent text-white font-bold rounded-xl;
+}
+
+[data-theme="dark"] .react-calendar__month-view__days__day--neighboringMonth {
+  @apply opacity-20;
+}

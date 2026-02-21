@@ -1,8 +1,7 @@
 import { ReactNode, useState } from 'react';
-import {  Bell,Menu, X, Home, ShoppingBag, Repeat, Wallet, Star, Trophy, Heart, User, LogOut, Bot, Calendar } from 'lucide-react';
+import { Menu, X, Home, ShoppingBag, Repeat, Wallet, Star, Trophy, Heart, User, LogOut, Bot, Calendar } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
-
-
+import ThemeToggle from './ThemeToggle';
 
 interface LayoutProps {
   children: ReactNode;
@@ -35,24 +34,24 @@ export default function Layout({ children, currentPage, onNavigate, onOpenAI }: 
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-teal-50">
-      <nav className="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-8">
+    <div className="min-h-screen bg-gradient-page overflow-x-hidden">
+      <nav className="bg-nav backdrop-blur-md border-b border-main-border sticky top-0 z-50 w-full overflow-hidden">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4">
+          <div className="flex justify-between items-center h-16 md:h-20">
+            <div className="flex items-center space-x-2 lg:space-x-4 min-w-0">
               <button
                 onClick={() => onNavigate('home')}
-                className="flex items-center space-x-2 group"
+                className="flex items-center space-x-2 shrink-0 group mr-2"
               >
-                <div className="bg-gradient-to-r from-teal-500 to-blue-600 p-2 rounded-xl group-hover:scale-105 transition-transform">
-                  <Repeat className="h-6 w-6 text-white" />
+                <div className="bg-gradient-brand p-1.5 rounded-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-brand">
+                  <Repeat className="h-4 w-4 text-white" />
                 </div>
-                <span className="text-2xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
+                <span className="text-lg font-black bg-gradient-brand bg-clip-text text-transparent tracking-tighter hidden sm:inline-block whitespace-nowrap">
                   VoucherX
                 </span>
               </button>
 
-              <div className="hidden md:flex space-x-1 lg:space-x-2">
+              <div className="hidden md:flex items-center space-x-0.5 lg:space-x-1 overflow-hidden">
                 {navItems.map(item => {
                   const Icon = item.icon;
                   const isActive = currentPage === item.id;
@@ -60,259 +59,203 @@ export default function Layout({ children, currentPage, onNavigate, onOpenAI }: 
                     <button
                       key={item.id}
                       onClick={() => onNavigate(item.id)}
-                      className={`px-3 py-2 lg:px-4 rounded-lg flex items-center space-x-1.5 lg:space-x-2 transition-all ${isActive
-                        ? 'bg-gradient-to-r from-teal-500 to-blue-600 text-white shadow-md'
-                        : 'text-slate-600 hover:bg-slate-100'
+                      className={`px-2 lg:px-2.5 py-1.5 rounded-lg flex items-center space-x-1.5 transition-all duration-300 shrink-0 ${isActive
+                        ? 'bg-gradient-brand text-white shadow-brand font-bold'
+                        : 'text-muted-text hover:bg-card-hover hover:text-main-text font-medium'
                         }`}
                     >
-                      <Icon className="h-4 w-4" />
-                      <span className="text-sm font-medium whitespace-nowrap">{item.label}</span>
+                      <Icon className="h-3.5 w-3.5" />
+                      <span className="text-[10px] lg:text-[11px] uppercase tracking-wider whitespace-nowrap">{item.label}</span>
                     </button>
                   );
                 })}
               </div>
             </div>
 
-            <div className="flex items-center space-x-4">
-              <div className="hidden md:flex items-center bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-100 rounded-full px-4 py-1.5 shadow-sm space-x-2">
-                <Star className="h-4 w-4 text-amber-500 fill-amber-500" />
-                <span className="text-sm font-bold text-amber-700 whitespace-nowrap">
-                  {profile?.voucher_coins?.toLocaleString() || 0} Coins
-                </span>
+            <div className="flex items-center space-x-2 lg:space-x-3 shrink-0 ml-4">
+              <div className="hidden lg:flex items-center bg-card border border-main-border rounded-lg px-2 py-1 shadow-soft space-x-1.5 group cursor-default">
+                <div className="p-1 bg-brand-accent/20 rounded-md group-hover:rotate-12 transition-transform">
+                  <Star className="h-3 w-3 text-brand-accent fill-brand-accent" />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[7px] font-black text-dim uppercase tracking-widest leading-none mb-0.5">VC</span>
+                  <span className="text-[11px] font-black text-main-text leading-none">
+                    {profile?.voucher_coins?.toLocaleString() || 0}
+                  </span>
+                </div>
               </div>
 
               <button
                 onClick={onOpenAI}
-                className="relative p-2 text-slate-600 hover:bg-purple-50 hover:text-purple-600 rounded-full transition-colors"
+                className="relative p-2 text-muted-text hover:bg-brand-primary/10 hover:text-brand-primary rounded-lg transition-all duration-300 border border-transparent hover:border-brand-primary/20 group"
                 title="AI Assistant"
               >
-                <Bot className="h-5 w-5" />
-                <span className="absolute top-1 right-1 w-2 h-2 bg-purple-500 rounded-full animate-pulse"></span>
+                <Bot className="h-4.5 w-4.5 group-hover:scale-110" />
+                <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-brand-primary rounded-full border border-page"></span>
               </button>
 
-              <div className="hidden md:flex items-center space-x-3">
+              <div className="hidden sm:block">
+                <ThemeToggle />
+              </div>
+
+              <div className="hidden md:flex items-center space-x-1.5 lg:space-x-2">
                 <button
                   onClick={() => onNavigate('profile')}
-                  className="flex items-center space-x-2 hover:bg-slate-100 rounded-full px-3 py-2 transition-colors"
+                  className="flex items-center space-x-1.5 bg-muted-bg/30 hover:bg-card-hover border border-main-border rounded-lg pl-1.5 pr-2.5 py-1.5 transition-all duration-300 group"
                 >
-                  <div className="w-8 h-8 bg-gradient-to-br from-teal-400 to-blue-500 rounded-full flex items-center justify-center">
-                    <User className="h-4 w-4 text-white" />
+                  <div className="w-7 h-7 bg-gradient-brand rounded-md flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
+                    <User className="h-3.5 w-3.5 text-white" />
                   </div>
-                  <span className="text-sm font-medium text-slate-700">{profile?.full_name}</span>
+                  <div className="flex flex-col items-start leading-none gap-0.5">
+                    <span className="text-[7px] font-black text-dim uppercase tracking-widest">Trader</span>
+                    <span className="text-[11px] font-bold text-main-text truncate max-w-[50px]">{profile?.full_name?.split(' ')[0]}</span>
+                  </div>
                 </button>
                 <button
                   onClick={handleSignOut}
-                  className="p-2 text-slate-600 hover:bg-red-50 hover:text-red-600 rounded-full transition-colors"
+                  className="p-2 text-dim hover:bg-status-error/10 hover:text-status-error rounded-lg border border-transparent hover:border-status-error/20 transition-all duration-300"
+                  title="Sign Out"
                 >
-                  <LogOut className="h-5 w-5" />
+                  <LogOut className="h-4.5 w-4.5" />
                 </button>
               </div>
 
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="md:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-lg"
+                className="md:hidden p-2 text-main-text bg-muted-bg/30 border border-main-border rounded-lg hover:bg-card-hover transition-all"
               >
-                {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                {mobileMenuOpen ? <X className="h-4.5 w-4.5" /> : <Menu className="h-4.5 w-4.5" />}
               </button>
             </div>
           </div>
         </div>
 
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-slate-200 bg-white">
-            <div className="px-4 py-4 space-y-2">
-              {navItems.map(item => {
-                const Icon = item.icon;
-                const isActive = currentPage === item.id;
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => {
-                      onNavigate(item.id);
-                      setMobileMenuOpen(false);
-                    }}
-                    className={`w-full px-4 py-3 rounded-lg flex items-center space-x-3 transition-all ${isActive
-                      ? 'bg-gradient-to-r from-teal-500 to-blue-600 text-white'
-                      : 'text-slate-600 hover:bg-slate-100'
-                      }`}
-                  >
-                    <Icon className="h-5 w-5" />
-                    <span className="font-medium">{item.label}</span>
-                  </button>
-                );
-              })}
-              <button
-                onClick={() => {
-                  onNavigate('profile');
-                  setMobileMenuOpen(false);
-                }}
-                className="w-full px-4 py-3 rounded-lg flex items-center space-x-3 text-slate-600 hover:bg-slate-100"
-              >
-                <User className="h-5 w-5" />
-                <span className="font-medium">Profile</span>
-              </button>
-              <button
-                onClick={() => {
-                  onOpenAI();
-                  setMobileMenuOpen(false);
-                }}
-                className="w-full px-4 py-3 rounded-lg flex items-center space-x-3 text-purple-600 hover:bg-purple-50"
-              >
-                <Bot className="h-5 w-5" />
-                <span className="font-medium">AI Assistant</span>
-              </button>
-              <button
-                onClick={handleSignOut}
-                className="w-full px-4 py-3 rounded-lg flex items-center space-x-3 text-red-600 hover:bg-red-50"
-              >
-                <LogOut className="h-5 w-5" />
-                <span className="font-medium">Sign Out</span>
-              </button>
+          <div className="md:hidden border-t border-main-border bg-card animate-in slide-in-from-top duration-300">
+            <div className="px-6 py-8 space-y-3">
+              <div className="flex items-center justify-between mb-8 px-2">
+                <div className="flex items-center space-x-3">
+                  <div className="w-12 h-12 bg-gradient-brand rounded-2xl flex items-center justify-center shadow-brand">
+                    <User className="h-6 w-6 text-white" />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-lg font-black text-main-text">{profile?.full_name}</span>
+                    <span className="text-xs font-bold text-brand-primary">{profile?.voucher_coins?.toLocaleString()} VoucherCoins</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-2">
+                {navItems.map(item => {
+                  const Icon = item.icon;
+                  const isActive = currentPage === item.id;
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => {
+                        onNavigate(item.id);
+                        setMobileMenuOpen(false);
+                      }}
+                      className={`w-full px-5 py-4 rounded-2xl flex items-center space-x-4 transition-all ${isActive
+                        ? 'bg-gradient-brand text-white shadow-brand font-black'
+                        : 'text-muted-text hover:bg-muted-bg font-bold'
+                        }`}
+                    >
+                      <Icon className="h-6 w-6" />
+                      <span className="uppercase tracking-wider text-sm">{item.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="pt-6 mt-6 border-t border-main-border grid grid-cols-2 gap-4">
+                <button
+                  onClick={() => {
+                    onOpenAI();
+                    setMobileMenuOpen(false);
+                  }}
+                  className="px-5 py-4 rounded-2xl flex flex-col items-center justify-center space-y-2 bg-brand-primary/10 text-brand-primary font-black border border-brand-primary/20"
+                >
+                  <Bot className="h-6 w-6" />
+                  <span className="text-[10px] uppercase tracking-widest">AI Suite</span>
+                </button>
+                <button
+                  onClick={handleSignOut}
+                  className="px-5 py-4 rounded-2xl flex flex-col items-center justify-center space-y-2 bg-status-error/10 text-status-error font-black border border-status-error/20"
+                >
+                  <LogOut className="h-6 w-6" />
+                  <span className="text-[10px] uppercase tracking-widest">Sign Out</span>
+                </button>
+              </div>
             </div>
           </div>
         )}
       </nav>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {children}
       </main>
 
-      <footer className="mt-16 bg-white/90 text-slate-800 border-t border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 border-b border-slate-200 pb-8">
-            <div>
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="bg-gradient-to-r from-teal-500 to-blue-600 p-2 rounded-xl">
-                  <Repeat className="h-5 w-5 text-white" />
+      <footer className="mt-20 bg-footer backdrop-blur-xl border-t border-main-border">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-16 border-b border-main-border pb-16">
+            <div className="lg:col-span-2">
+              <div className="flex items-center space-x-3 mb-8">
+                <div className="bg-gradient-brand p-3 rounded-[1.25rem] shadow-brand">
+                  <Repeat className="h-7 w-7 text-white" />
                 </div>
-                <span className="text-xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
+                <span className="text-3xl font-black bg-gradient-brand bg-clip-text text-transparent tracking-tighter">
                   VoucherX
                 </span>
               </div>
-              <p className="text-sm text-slate-600 mb-4">
-                Don't let your vouchers expire. Trade, earn, and repeat with AI-powered insights.
+              <p className="text-muted-text text-lg font-medium mb-8 leading-relaxed max-w-sm">
+                The leading decentralized protocol for voucher liquidity. Trade value, earn rewards, and optimize your assets.
               </p>
-              <p className="text-xs text-slate-500">
-                Built for savvy shoppers who want to unlock the full value of their vouchers.
-              </p>
+              <div className="flex items-center space-x-5">
+                {['Twitter', 'Discord', 'GitHub', 'Medium'].map((social) => (
+                  <button key={social} className="w-12 h-12 bg-card border border-main-border rounded-xl flex items-center justify-center text-dim hover:text-brand-primary hover:border-brand-primary/30 transition-all hover:-translate-y-1 shadow-soft">
+                    <span className="sr-only">{social}</span>
+                    <div className="w-5 h-5 bg-current rounded-sm opacity-20"></div>
+                  </button>
+                ))}
+              </div>
             </div>
 
-            <nav aria-label="Product" className="space-y-3">
-              <h3 className="text-sm font-semibold tracking-wide text-slate-700 uppercase">Product</h3>
-              <div className="flex flex-col space-y-2 text-sm">
-                <button
-                  onClick={() => onNavigate('marketplace')}
-                  className="text-slate-600 hover:text-teal-600 text-left transition-colors"
-                >
-                  Marketplace
-                </button>
-                <button
-                  onClick={() => onNavigate('exchange')}
-                  className="text-slate-600 hover:text-teal-600 text-left transition-colors"
-                >
-                  Exchange
-                </button>
-                <button
-                  onClick={() => onNavigate('wallet')}
-                  className="text-slate-600 hover:text-teal-600 text-left transition-colors"
-                >
-                  Wallet
-                </button>
-                <button
-                  onClick={() => onNavigate('challenges')}
-                  className="text-slate-600 hover:text-teal-600 text-left transition-colors"
-                >
-                  Challenges
-                </button>
+            <div className="space-y-6">
+              <h3 className="text-xs font-black uppercase tracking-[0.2em] text-main-text">Protocol</h3>
+              <div className="flex flex-col space-y-4">
+                {['Marketplace', 'Exchange', 'Vaults', 'Governance'].map(link => (
+                  <button key={link} className="text-dim hover:text-brand-primary font-bold text-sm text-left transition-all hover:translate-x-1">{link}</button>
+                ))}
               </div>
-            </nav>
+            </div>
 
-            <nav aria-label="Company" className="space-y-3">
-              <h3 className="text-sm font-semibold tracking-wide text-slate-700 uppercase">Company</h3>
-              <div className="flex flex-col space-y-2 text-sm">
-                <button
-                  onClick={() => onNavigate('home')}
-                  className="text-slate-600 hover:text-teal-600 text-left transition-colors"
-                >
-                  About Us
-                </button>
-                <button
-                  onClick={() => onNavigate('home')}
-                  className="text-slate-600 hover:text-teal-600 text-left transition-colors"
-                >
-                  How It Works
-                </button>
-                <button
-                  type="button"
-                  className="text-slate-400 cursor-default text-left"
-                  aria-disabled="true"
-                >
-                  Careers (coming soon)
-                </button>
+            <div className="space-y-6">
+              <h3 className="text-xs font-black uppercase tracking-[0.2em] text-main-text">Resources</h3>
+              <div className="flex flex-col space-y-4">
+                {['Whitepaper', 'API Docs', 'Risk Tools', 'Audits'].map(link => (
+                  <button key={link} className="text-dim hover:text-brand-primary font-bold text-sm text-left transition-all hover:translate-x-1">{link}</button>
+                ))}
               </div>
-            </nav>
+            </div>
 
-            <nav aria-label="Support" className="space-y-3">
-              <h3 className="text-sm font-semibold tracking-wide text-slate-700 uppercase">Support</h3>
-              <div className="flex flex-col space-y-2 text-sm">
-                <a
-                  href="mailto:support@voucherx.com"
-                  className="text-slate-600 hover:text-teal-600 text-left transition-colors"
-                >
-                  Help &amp; FAQ
-                </a>
-                <a
-                  href="mailto:support@voucherx.com"
-                  className="text-slate-600 hover:text-teal-600 text-left transition-colors"
-                >
-                  Contact Us
-                </a>
-                <button
-                  onClick={() => onNavigate('home')}
-                  className="text-slate-600 hover:text-teal-600 text-left transition-colors"
-                >
-                  Terms &amp; Conditions
-                </button>
-                <button
-                  onClick={() => onNavigate('home')}
-                  className="text-slate-600 hover:text-teal-600 text-left transition-colors"
-                >
-                  Privacy Policy
-                </button>
+            <div className="space-y-6">
+              <h3 className="text-xs font-black uppercase tracking-[0.2em] text-main-text">Legal</h3>
+              <div className="flex flex-col space-y-4">
+                {['Privacy', 'Terms', 'Cookie Policy', 'Licenses'].map(link => (
+                  <button key={link} className="text-dim hover:text-brand-primary font-bold text-sm text-left transition-all hover:translate-x-1">{link}</button>
+                ))}
               </div>
-            </nav>
+            </div>
           </div>
 
-          <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-xs text-slate-500">
-              &copy; {new Date().getFullYear()} VoucherX. All rights reserved.
+          <div className="pt-10 flex flex-col md:flex-row items-center justify-between gap-6">
+            <p className="text-[11px] font-black text-dim uppercase tracking-widest">
+              &copy; {new Date().getFullYear()} VoucherX Protocol. Non-Custodial & Permissionless.
             </p>
-            <div className="flex items-center space-x-4 text-xs">
-              <span className="text-slate-500">Join the community</span>
-              <a
-                href="https://github.com/jaiashwinisatish/VoucherX"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-slate-600 hover:text-teal-600 transition-colors"
-              >
-                GitHub
-              </a>
-              <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-slate-600 hover:text-teal-600 transition-colors"
-              >
-                Twitter
-              </a>
-              <a
-                href="https://discord.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-slate-600 hover:text-teal-600 transition-colors"
-              >
-                Discord
-              </a>
+            <div className="flex items-center space-x-2">
+              <div className="w-2 h-2 bg-status-success rounded-full animate-pulse"></div>
+              <span className="text-[10px] font-black text-status-success uppercase tracking-widest leading-none">All Systems Operational</span>
             </div>
           </div>
         </div>
