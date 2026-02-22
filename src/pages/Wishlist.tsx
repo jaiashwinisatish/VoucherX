@@ -19,7 +19,7 @@ export default function Wishlist() {
 
   const { categories } = useCategories();
 
-  
+
 
   // Mock matching vouchers (for now, can be dynamic later)
   const matchingVouchers = [
@@ -109,20 +109,20 @@ export default function Wishlist() {
 
   return (
     <div className="space-y-6">
-      <div className="bg-gradient-to-r from-pink-500 to-red-600 rounded-xl p-8 text-white">
-        <div className="flex items-center justify-between">
+      <div className="bg-gradient-to-r from-pink-500 to-red-600 rounded-xl p-4 sm:p-8 text-white">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
           <div className="flex items-center space-x-4">
-            <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-              <Heart className="h-8 w-8" />
+            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white/20 backdrop-blur-sm rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0">
+              <Heart className="h-6 w-6 sm:h-8 sm:w-8" />
             </div>
             <div>
-              <h1 className="text-4xl font-bold">Wishlist</h1>
-              <p className="text-white/90 text-lg">Track brands you want and get notified</p>
+              <h1 className="text-2xl sm:text-4xl font-bold">Wishlist</h1>
+              <p className="text-white/90 text-sm sm:text-lg">Track brands you want and get notified</p>
             </div>
           </div>
           <button
             onClick={() => setShowAddForm(true)}
-            className="px-6 py-3 bg-white/20 backdrop-blur-sm text-white rounded-lg font-semibold hover:bg-white/30 transition-all flex items-center space-x-2"
+            className="w-full sm:w-auto px-6 py-3 bg-white/20 backdrop-blur-sm text-white rounded-lg font-semibold hover:bg-white/30 transition-all flex items-center justify-center space-x-2"
           >
             <Plus className="h-5 w-5" />
             <span>Add Brand</span>
@@ -168,10 +168,10 @@ export default function Wishlist() {
                 >
                   <option value="">Select category</option>
                   {categories.map(cat => (
-  <option key={cat.id} value={cat.name}>
-    {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
-  </option>
-))}
+                    <option key={cat.id} value={cat.name}>
+                      {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
+                    </option>
+                  ))}
 
                 </select>
               </div>
@@ -201,22 +201,22 @@ export default function Wishlist() {
       )}
 
       {matchingVouchers.length > 0 && (
-        <div className="bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl p-6 text-white">
+        <div className="bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl p-4 sm:p-6 text-white">
           <div className="flex items-center space-x-3 mb-4">
-            <Bell className="h-6 w-6" />
-            <h2 className="text-xl font-semibold">Matching Vouchers Available!</h2>
+            <Bell className="h-5 w-5 sm:h-6 sm:w-6" />
+            <h2 className="text-lg sm:text-xl font-semibold">Matching Vouchers Available!</h2>
           </div>
           <div className="space-y-3">
             {matchingVouchers.map((match, index) => (
-              <div key={index} className="bg-white/20 backdrop-blur-sm rounded-lg p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="font-semibold mb-1">{match.brand}</div>
-                    <div className="text-sm text-white/90">
-                      {match.count} voucher{match.count > 1 ? 's' : ''} from ${match.lowestPrice} • {match.discount}% off
+              <div key={index} className="bg-white/20 backdrop-blur-sm rounded-lg p-3 sm:p-4">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="min-w-0">
+                    <div className="font-semibold mb-1 truncate">{match.brand}</div>
+                    <div className="text-xs sm:text-sm text-white/90">
+                      {match.count} voucher{match.count > 1 ? 's' : ''} • from ${match.lowestPrice} • {match.discount}% off
                     </div>
                   </div>
-                  <button className="bg-white text-teal-600 px-4 py-2 rounded-lg font-semibold hover:bg-slate-100 transition-colors">
+                  <button className="shrink-0 bg-white text-teal-600 px-4 py-2 rounded-lg font-semibold hover:bg-slate-100 transition-colors text-sm">
                     View
                   </button>
                 </div>
@@ -256,8 +256,8 @@ export default function Wishlist() {
               <div className="flex items-center justify-between pt-4 border-t border-slate-200">
                 <button
                   className={`flex items-center space-x-2 text-sm font-medium transition-colors ${item.notify
-                      ? 'text-emerald-600 hover:text-emerald-700'
-                      : 'text-slate-600 hover:text-slate-700'
+                    ? 'text-emerald-600 hover:text-emerald-700'
+                    : 'text-slate-600 hover:text-slate-700'
                     }`}
                 >
                   {item.notify ? (
@@ -284,13 +284,13 @@ export default function Wishlist() {
         </div>
 
         {items.length === 0 && (
-          <div className="text-center py-16 bg-white/80 backdrop-blur-sm rounded-xl border border-slate-200">
-            <Heart className="h-16 w-16 text-slate-300 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-slate-700 mb-2">Your wishlist is empty</h3>
-            <p className="text-slate-600 mb-6">Add brands you're interested in to get notified</p>
+          <div className="text-center py-8 sm:py-16 px-4 bg-white/80 backdrop-blur-sm rounded-xl border border-slate-200">
+            <Heart className="h-12 w-12 sm:h-16 sm:w-16 text-slate-300 mx-auto mb-4" />
+            <h3 className="text-lg sm:text-xl font-semibold text-slate-700 mb-2">Your wishlist is empty</h3>
+            <p className="text-sm text-slate-600 mb-6">Add brands you're interested in to get notified</p>
             <button
               onClick={() => setShowAddForm(true)}
-              className="px-6 py-3 bg-gradient-to-r from-pink-500 to-red-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all inline-flex items-center space-x-2"
+              className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-pink-500 to-red-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all inline-flex items-center justify-center space-x-2"
             >
               <Plus className="h-5 w-5" />
               <span>Add Your First Brand</span>
