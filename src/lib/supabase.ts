@@ -7,6 +7,8 @@ if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error('Missing Supabase environment variables');
 }
 
+console.log('Supabase URL:', supabaseUrl);
+console.log('Supabase Anon Key:', supabaseAnonKey);
 const isPlaceholderUrl = supabaseUrl.includes('example.supabase.co');
 const isPlaceholderKey = supabaseAnonKey === 'public-anon-key';
 
