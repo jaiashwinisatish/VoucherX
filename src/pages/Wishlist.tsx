@@ -3,6 +3,7 @@ import { Heart, Plus, Bell, BellOff, X, Trash2, Loader } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 import { WishlistItem } from '../types';
+import { useCategories } from '../hooks/useCategories';
 
 export default function Wishlist() {
   const { user } = useAuth();
@@ -16,7 +17,9 @@ export default function Wishlist() {
   const [category, setCategory] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
 
-  const categories = ['tech', 'food', 'fashion', 'travel', 'entertainment', 'health'];
+  const { categories } = useCategories();
+
+  
 
   // Mock matching vouchers (for now, can be dynamic later)
   const matchingVouchers = [
@@ -165,10 +168,11 @@ export default function Wishlist() {
                 >
                   <option value="">Select category</option>
                   {categories.map(cat => (
-                    <option key={cat} value={cat}>
-                      {cat.charAt(0).toUpperCase() + cat.slice(1)}
-                    </option>
-                  ))}
+  <option key={cat.id} value={cat.name}>
+    {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
+  </option>
+))}
+
                 </select>
               </div>
               <div>

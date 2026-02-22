@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Search, Filter, Tag, Star, Calendar, Eye, ShoppingCart, AlertCircle } from 'lucide-react';
 import { Voucher } from '../types';
 import { hasInvalidSupabaseConfig, supabase } from '../lib/supabase';
+import { useCategories } from '../hooks/useCategories';
 
 interface MarketplaceProps {
   onNavigate: (page: string) => void;
@@ -11,7 +12,8 @@ type SortOption = 'newest' | 'discount' | 'expiry' | 'popular' | 'price_low' | '
 
 const SEARCH_DEBOUNCE_MS = 350;
 const QUERY_LIMIT = 60;
-const categories = ['all', 'food', 'fashion', 'travel', 'entertainment', 'tech', 'health'];
+
+
 
 const fallbackVouchers: Voucher[] = [
   {
@@ -136,6 +138,8 @@ const sortVouchers = (source: Voucher[], sortBy: SortOption): Voucher[] => {
 };
 
 export default function Marketplace({ onNavigate }: MarketplaceProps) {
+  const { categories } = useCategories();
+
   const [searchInput, setSearchInput] = useState('');
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -298,7 +302,8 @@ export default function Marketplace({ onNavigate }: MarketplaceProps) {
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">Category</label>
               <div className="flex flex-wrap gap-2">
-                {categories.map((category) => (
+                {['all', ...categories.map(c => c.name)].map(category => (
+
                   <button
                     key={category}
                     onClick={() => setSelectedCategory(category)}
@@ -352,7 +357,8 @@ export default function Marketplace({ onNavigate }: MarketplaceProps) {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {vouchers.map((voucher) => {
             const daysLeft = getDaysUntilExpiry(voucher.expiry_date);
-            const isExpiringSoon = daysLeft <= 30;
+            const isExpired = daysLeft < 0;
+            const isExpiringSoon = daysLeft <= 30 && daysLeft >= 0;
 
             return (
               <div
@@ -371,11 +377,15 @@ export default function Marketplace({ onNavigate }: MarketplaceProps) {
                     </div>
                   )}
 
-                  {isExpiringSoon && (
-                    <div className="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
-                      {daysLeft}d left
-                    </div>
-                  )}
+                  {isExpired ? (
+                  <div className="absolute top-4 left-4 bg-gray-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                    Expired
+                  </div>
+                ) : isExpiringSoon ? (
+                  <div className="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                    {daysLeft}d left
+                  </div>
+                ) : null}
 
                   <div className="absolute bottom-4 left-4 bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-slate-700">
                     {voucher.category}

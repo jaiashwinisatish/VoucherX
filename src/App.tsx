@@ -15,6 +15,8 @@ import Community from './pages/Community';
 import type { Voucher } from './types';
 import { Bot } from 'lucide-react';
 import ExpiryInsights from "./pages/ExpiryInsights";
+import ErrorBoundary from "./components/ErrorBoundary";
+
 
 
 const mockUserVouchers: Voucher[] = [
@@ -184,10 +186,13 @@ function AppContent() {
 
 function App() {
   return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }
+
 
 export default App;
