@@ -102,7 +102,8 @@ const suggestedMatches: (Voucher & { matchScore: number; reason: string })[] = [
   },
 ];
 
-export default function Exchange({ onNavigate: _onNavigate }: ExchangeProps) {
+export default function Exchange({ onNavigate }: ExchangeProps) {
+  void onNavigate;
   const [selectedVoucher, setSelectedVoucher] = useState<string | null>(null);
   const [showMatches, setShowMatches] = useState(false);
 
@@ -162,7 +163,7 @@ export default function Exchange({ onNavigate: _onNavigate }: ExchangeProps) {
                 <div
                   key={voucher.id}
                   onClick={() => setSelectedVoucher(voucher.id)}
-                  className={`p-6 rounded-xl border-2 cursor-pointer transition-all ${
+                  className={`p-6 rounded-xl border-2 cursor-pointer transition-shadow duration-200 ${
                     selectedVoucher === voucher.id
                       ? 'border-teal-500 bg-teal-50 shadow-lg scale-105'
                       : 'border-slate-200 hover:border-slate-300 hover:shadow-md'
@@ -229,7 +230,7 @@ export default function Exchange({ onNavigate: _onNavigate }: ExchangeProps) {
               {suggestedMatches.map(match => (
                 <div
                   key={match.id}
-                  className="bg-white border border-slate-200 rounded-xl p-6 hover:shadow-lg transition-all"
+                  className="bg-white border border-slate-200 rounded-xl p-6 cursor-pointer hover:shadow-lg transition-shadow duration-200"
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex-1">
