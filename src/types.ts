@@ -16,6 +16,7 @@ export interface Voucher {
     id: string;
     seller_id: string;
     brand_name: string;
+    brand_logo_url?: string;
     category: string;
     original_value: number;
     selling_price: number;

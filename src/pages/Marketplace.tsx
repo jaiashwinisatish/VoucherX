@@ -3,6 +3,7 @@ import { Search, Filter, Tag, Star, Calendar, Eye, ShoppingCart, AlertCircle } f
 import { Voucher } from '../types';
 import { hasInvalidSupabaseConfig, supabase } from '../lib/supabase';
 import { useCategories } from '../hooks/useCategories';
+import BrandLogo from '../components/BrandLogo';
 
 interface MarketplaceProps {
   onNavigate: (page: string) => void;
@@ -366,8 +367,15 @@ export default function Marketplace({ onNavigate }: MarketplaceProps) {
                 className="bg-white/80 backdrop-blur-sm rounded-xl border border-slate-200 hover:shadow-xl hover:scale-105 transition-all overflow-hidden group"
               >
                 <div className="relative h-40 bg-gradient-to-br from-slate-100 to-slate-200 p-6 flex items-center justify-center">
-                  <div className="text-4xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
-                    {voucher.brand_name}
+                  <div className="flex flex-col items-center gap-3 text-center">
+                    <BrandLogo
+                      brandName={voucher.brand_name}
+                      brandLogoUrl={voucher.brand_logo_url}
+                      className="h-14 w-14 sm:h-16 sm:w-16 rounded-xl"
+                    />
+                    <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent leading-tight">
+                      {voucher.brand_name}
+                    </div>
                   </div>
 
                   {voucher.is_verified && (
