@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Wallet as WalletIcon, Star, Calendar, CheckCircle, Clock, Copy, Tag } from 'lucide-react';
+import { Wallet as WalletIcon, Star, CheckCircle, Clock, Copy, Tag } from 'lucide-react';
 import { Voucher } from '../types';
 
 const activeVouchers: Voucher[] = [
@@ -180,9 +180,9 @@ export default function Wallet() {
             return (
               <div
                 key={voucher.id}
-                className={`bg-white border-2 rounded-xl p-6 transition-all ${
+                className={`bg-white border-2 rounded-xl p-6 cursor-pointer transition-shadow duration-200 ${
                   isExpiringSoon && !isRedeemed
-                    ? 'border-red-300 bg-red-50'
+                    ? 'border-red-300 bg-red-50 hover:shadow-lg'
                     : 'border-slate-200 hover:shadow-lg'
                 }`}
               >

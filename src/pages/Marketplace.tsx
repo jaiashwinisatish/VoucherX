@@ -363,7 +363,7 @@ export default function Marketplace({ onNavigate }: MarketplaceProps) {
             return (
               <div
                 key={voucher.id}
-                className="bg-white/80 backdrop-blur-sm rounded-xl border border-slate-200 hover:shadow-xl hover:scale-105 transition-all overflow-hidden group"
+                className="bg-white/80 backdrop-blur-sm rounded-xl border border-slate-200 cursor-pointer hover:shadow-lg transition-shadow duration-200 overflow-hidden group"
               >
                 <div className="relative h-40 bg-gradient-to-br from-slate-100 to-slate-200 p-6 flex items-center justify-center">
                   <div className="text-4xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">

@@ -57,7 +57,7 @@ export default function AIAssistant({ isOpen, onClose, userVouchers, marketplace
     let assistantResponse = '';
 
     switch (action) {
-      case 'analyze':
+      case 'analyze': {
         userMessage = 'Analyze my vouchers';
         const analysis = analyzeVouchers(userVouchers);
         assistantResponse = `📊 **Voucher Portfolio Analysis**
@@ -71,8 +71,9 @@ export default function AIAssistant({ isOpen, onClose, userVouchers, marketplace
 **Recommendations:**
 ${analysis.recommendations.map(r => `• ${r}`).join('\n')}`;
         break;
+      }
 
-      case 'expiry':
+      case 'expiry': {
         userMessage = 'Check voucher expiry status';
         const expiryStatus = checkExpiryStatus(userVouchers);
         assistantResponse = `⏰ **Expiry Status Report**
@@ -94,8 +95,9 @@ ${expiryStatus.expired.length > 0
 ${expiryStatus.safe.slice(0, 3).map(v => `• ${v.brand_name} - $${v.original_value}`).join('\n')}
 ${expiryStatus.safe.length > 3 ? `... and ${expiryStatus.safe.length - 3} more` : ''}`;
         break;
+      }
 
-      case 'optimize':
+      case 'optimize': {
         userMessage = 'Optimize my voucher portfolio';
         const optimization = optimizeVoucherPortfolio(userVouchers);
         assistantResponse = `🎯 **Portfolio Optimization Advice**
@@ -112,8 +114,9 @@ ${optimization.tradeVouchers.length > 3 ? `... and ${optimization.tradeVouchers.
 ${optimization.sellVouchers.slice(0, 3).map(v => `• ${v.brand_name} - ${optimization.reasons[v.id]}`).join('\n')}
 ${optimization.sellVouchers.length > 3 ? `... and ${optimization.sellVouchers.length - 3} more` : ''}`;
         break;
+      }
 
-      case 'calculate':
+      case 'calculate': {
         userMessage = 'Calculate discount for multiple vouchers';
         const sampleAmount = 500;
         const calculation = calculateMultiVoucherDiscount(sampleAmount, userVouchers.slice(0, 3), {
@@ -136,8 +139,9 @@ ${calculation.warnings.length > 0 ? `**Notes:**\n${calculation.warnings.map(w =>
 
 *You can stack up to 3 vouchers with a maximum 50% total discount.*`;
         break;
+      }
 
-      case 'recommend':
+      case 'recommend': {
         userMessage = 'Give me smart recommendations';
         const recommendations = generateSmartRecommendations(userVouchers, marketplaceVouchers);
         assistantResponse = `💡 **Smart Recommendations**
@@ -151,6 +155,7 @@ ${recommendations.length > 0
 • Trade vouchers with 60+ days validity for better matches
 • Check the challenges page to earn VoucherCoins for free vouchers`;
         break;
+      }
 
       default:
         return;

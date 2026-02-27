@@ -212,10 +212,11 @@ export default function Home({ onNavigate, onOpenAI }: HomeProps) {
   bg-white/80 dark:bg-blue-100/60
   backdrop-blur-xl
   rounded-2xl p-6
+  cursor-pointer
   text-center group
-  transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]
+  transition-shadow duration-200
   hover:-translate-y-3 hover:scale-[1.05]
-  hover:shadow-[0_30px_70px_-20px_rgba(16,185,129,0.35)]
+  hover:shadow-lg
 "
               >
                 <div className="relative h-48 bg-gradient-to-br from-slate-100 to-slate-200 p-6 flex items-center justify-center">
