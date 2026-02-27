@@ -9,6 +9,7 @@ VoucherX is a modern web application that enables users to trade, buy, and sell 
 ![React](https://img.shields.io/badge/React-18.3.1-61DAFB?logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.5.3-3178C6?logo=typescript)
 ![Supabase](https://img.shields.io/badge/Supabase-2.57.4-3ECF8E?logo=supabase)
+[![Contributors](https://img.shields.io/github/contributors/mandeep6207/VoucherX)](https://github.com/mandeep6207/VoucherX/graphs/contributors)
 
 ## 🌟 Features
 
@@ -237,6 +238,14 @@ Contributions are welcome! Please follow these steps:
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
+
+## 👥 Contributors
+
+This project is built and maintained by the community.
+
+- **GitHub Contributors List**: [View all contributors](https://github.com/mandeep6207/VoucherX/graphs/contributors)
+
+Thank you to everyone who contributes to improving VoucherX.
 
 ## 📝 Environment Variables
 
