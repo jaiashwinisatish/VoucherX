@@ -98,6 +98,7 @@ function AppContent() {
   const { user, loading } = useAuth();
   const [currentPage, setCurrentPage] = useState('home');
   const [isAIOpen, setIsAIOpen] = useState(false);
+  const toggleAIAssistant = () => setIsAIOpen((prev) => !prev);
 
   if (loading) {
     return (
@@ -117,7 +118,7 @@ function AppContent() {
   const renderPage = () => {
     switch (currentPage) {
       case 'home':
-        return <Home onNavigate={setCurrentPage} onOpenAI={() => setIsAIOpen(true)} />;
+        return <Home onNavigate={setCurrentPage} onOpenAI={toggleAIAssistant} />;
       case 'marketplace':
         return <Marketplace onNavigate={setCurrentPage} />;
       case 'exchange':
@@ -134,13 +135,18 @@ function AppContent() {
         return <ExpiryInsights />;
 
       default:
-        return <Home onNavigate={setCurrentPage} onOpenAI={() => setIsAIOpen(true)} />;
+        return <Home onNavigate={setCurrentPage} onOpenAI={toggleAIAssistant} />;
     }
   };
 
   return (
     <>
-      <Layout currentPage={currentPage} onNavigate={setCurrentPage} onOpenAI={() => setIsAIOpen(true)}>
+      <Layout
+        currentPage={currentPage}
+        onNavigate={setCurrentPage}
+        onOpenAI={toggleAIAssistant}
+        isAIEnabled={isAIOpen}
+      >
         {renderPage()}
       </Layout>
 
@@ -153,9 +159,10 @@ function AppContent() {
 
       {!isAIOpen && (
         <button
-          onClick={() => setIsAIOpen(true)}
+          onClick={toggleAIAssistant}
           className="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-r from-purple-500 to-blue-600 text-white rounded-full shadow-2xl hover:scale-110 transition-all flex items-center justify-center z-40"
           title="Open AI Assistant"
+          aria-label="Open AI Assistant"
         >
           <Bot className="h-7 w-7" />
         </button>

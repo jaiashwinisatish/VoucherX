@@ -9,9 +9,10 @@ interface LayoutProps {
   currentPage: string;
   onNavigate: (page: string) => void;
   onOpenAI: () => void;
+  isAIEnabled: boolean;
 }
 
-export default function Layout({ children, currentPage, onNavigate, onOpenAI }: LayoutProps) {
+export default function Layout({ children, currentPage, onNavigate, onOpenAI, isAIEnabled }: LayoutProps) {
   const { profile, signOut } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -86,7 +87,9 @@ export default function Layout({ children, currentPage, onNavigate, onOpenAI }: 
               <button
                 onClick={onOpenAI}
                 className="relative p-2 text-slate-600 hover:bg-purple-50 hover:text-purple-600 rounded-full transition-colors"
-                title="AI Assistant"
+                title={isAIEnabled ? 'Close AI Assistant' : 'Open AI Assistant'}
+                aria-label={isAIEnabled ? 'Close AI Assistant' : 'Open AI Assistant'}
+                aria-pressed={isAIEnabled}
               >
                 <Bot className="h-5 w-5" />
                 <span className="absolute top-1 right-1 w-2 h-2 bg-purple-500 rounded-full animate-pulse"></span>
