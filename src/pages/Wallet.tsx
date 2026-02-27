@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Wallet as WalletIcon, Star, Calendar, CheckCircle, Clock, Copy, Tag } from 'lucide-react';
+import { Wallet as WalletIcon, Star, CheckCircle, Clock, Copy, Tag } from 'lucide-react';
 import { Voucher } from '../types';
 
 const activeVouchers: Voucher[] = [
