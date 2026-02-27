@@ -1,5 +1,5 @@
 import { ReactNode, useState } from 'react';
-import { Menu, X, Home, ShoppingBag, Repeat, Wallet, Star, Trophy, Heart, User, LogOut, Bot, Calendar } from 'lucide-react';
+import { Menu, X, Home, ShoppingBag, Repeat, Wallet, Star, Trophy, Heart, User, LogOut, Bot, Calendar, Info } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 
@@ -17,6 +17,7 @@ export default function Layout({ children, currentPage, onNavigate, onOpenAI }: 
 
   const navItems = [
     { id: 'home', label: 'Home', icon: Home },
+    { id: 'how-it-works', label: 'How It Works', icon: Info },
     { id: 'marketplace', label: 'Marketplace', icon: ShoppingBag },
     { id: 'exchange', label: 'Exchange', icon: Repeat },
     { id: 'wallet', label: 'My Wallet', icon: Wallet },
@@ -260,7 +261,7 @@ export default function Layout({ children, currentPage, onNavigate, onOpenAI }: 
                   About Us
                 </button>
                 <button
-                  onClick={() => onNavigate('home')}
+                  onClick={() => onNavigate('how-it-works')}
                   className="text-slate-600 hover:text-teal-600 text-left transition-colors"
                 >
                   How It Works
