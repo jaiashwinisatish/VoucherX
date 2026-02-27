@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Wallet as WalletIcon, Star, Calendar, CheckCircle, Clock, Copy, Tag } from 'lucide-react';
+import { Wallet as WalletIcon, Star, CheckCircle, Clock, Copy, Tag } from 'lucide-react';
 import { Voucher } from '../types';
+import BrandLogo from '../components/BrandLogo';
 
 const activeVouchers: Voucher[] = [
   {
@@ -187,7 +188,13 @@ export default function Wallet() {
                 }`}
               >
                 <div className="flex items-start justify-between mb-4">
-                  <div className="flex-1">
+                  <div className="flex-1 flex items-start gap-3 sm:gap-4">
+                    <BrandLogo
+                      brandName={voucher.brand_name}
+                      brandLogoUrl={voucher.brand_logo_url}
+                      className="h-12 w-12 sm:h-14 sm:w-14 rounded-xl"
+                    />
+                    <div className="flex-1">
                     <div className="flex items-center flex-wrap gap-3 mb-2">
                       <h3 className="text-2xl font-bold text-slate-800">{voucher.brand_name}</h3>
                       {voucher.is_verified && (
@@ -207,6 +214,7 @@ export default function Wallet() {
                       {voucher.category}
                     </div>
                     <p className="text-sm text-slate-600 mb-4">{voucher.description}</p>
+                    </div>
                   </div>
                 </div>
 
