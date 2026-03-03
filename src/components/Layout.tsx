@@ -1,6 +1,7 @@
 import { ReactNode, useState } from 'react';
-import {  Bell,Menu, X, Home, ShoppingBag, Repeat, Wallet, Star, Trophy, Heart, User, LogOut, Bot, Calendar } from 'lucide-react';
+import { Menu, X, Home, ShoppingBag, Repeat, Wallet, Star, Trophy, Heart, User, LogOut, Bot, Calendar } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import NotificationBell from './NotificationBell';
 
 
 
@@ -80,6 +81,8 @@ export default function Layout({ children, currentPage, onNavigate, onOpenAI }: 
                   {profile?.voucher_coins?.toLocaleString() || 0} Coins
                 </span>
               </div>
+
+              <NotificationBell onNavigate={onNavigate} />
 
               <button
                 onClick={onOpenAI}
