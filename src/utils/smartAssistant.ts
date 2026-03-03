@@ -1,3 +1,10 @@
+/**
+ * Smart Assistant Utilities
+ *
+ * These functions use rule-based heuristics (if/else logic, thresholds, and
+ * deterministic filters) to generate voucher insights. They do NOT use any
+ * AI, machine-learning, or language-model APIs.
+ */
 import { Voucher } from '../types';
 
 export interface VoucherAnalysis {
