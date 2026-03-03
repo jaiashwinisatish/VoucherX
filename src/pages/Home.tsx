@@ -167,6 +167,7 @@ export default function Home({ onNavigate, onOpenAI }: HomeProps) {
   bg-white/70 dark:bg-blue-100/60
   backdrop-blur-xl
   rounded-2xl p-6
+  cursor-pointer
   text-center group
   transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]
   hover:-translate-y-3 hover:scale-[1.05]
@@ -212,6 +213,7 @@ export default function Home({ onNavigate, onOpenAI }: HomeProps) {
   bg-white/80 dark:bg-blue-100/60
   backdrop-blur-xl
   rounded-2xl p-6
+  cursor-pointer
   text-center group
   transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]
   hover:-translate-y-3 hover:scale-[1.05]

@@ -122,7 +122,7 @@ export default function Challenges() {
       </div>
 
       <div className="grid md:grid-cols-3 gap-6">
-        <div className="bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl p-6 text-white transform transition-all duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-2xl hover:shadow-amber-500/30">
+        <div className="bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl p-6 text-white cursor-pointer transform transition-all duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-2xl hover:shadow-amber-500/30">
           <div className="flex items-center justify-between mb-2">
             <span className="text-amber-100">VoucherCoins</span>
             <Star className="h-5 w-5 text-amber-100 fill-current" />
@@ -130,7 +130,7 @@ export default function Challenges() {
           <div className="text-4xl font-bold mb-1">{totalCoins}</div>
           <div className="text-amber-100 text-sm">+{coinsThisWeek} this week</div>
         </div>
-        <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white transform transition-all duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/30">
+        <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white cursor-pointer transform transition-all duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/30">
           <div className="flex items-center justify-between mb-2">
             <span className="text-blue-100">Active Challenges</span>
             <Target className="h-5 w-5 text-blue-100" />
@@ -138,7 +138,7 @@ export default function Challenges() {
           <div className="text-4xl font-bold mb-1">{activeChallenges.length}</div>
           <div className="text-blue-100 text-sm">Keep going!</div>
         </div>
-        <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl p-6 text-white transform transition-all duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-2xl hover:shadow-emerald-500/30">
+        <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl p-6 text-white cursor-pointer transform transition-all duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-2xl hover:shadow-emerald-500/30">
           <div className="flex items-center justify-between mb-2">
             <span className="text-emerald-100">Completed</span>
             <Trophy className="h-5 w-5 text-emerald-100" />
@@ -159,7 +159,7 @@ export default function Challenges() {
             return (
               <div
                 key={challenge.id}
-                className="bg-gradient-to-br from-white via-yellow-50 to-amber-100 backdrop-blur-sm rounded-xl border border-amber-200 p-6 transition-all duration-300 group hover:scale-105 hover:-translate-y-2 hover:shadow-2xl hover:shadow-yellow-400/30 hover:border-yellow-400 hover:bg-yellow-50"
+                className="bg-gradient-to-br from-white via-yellow-50 to-amber-100 backdrop-blur-sm rounded-xl border border-amber-200 p-6 cursor-pointer transition-all duration-300 group hover:scale-105 hover:-translate-y-2 hover:shadow-2xl hover:shadow-yellow-400/30 hover:border-yellow-400 hover:bg-yellow-50"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex items-start space-x-4 flex-1">
@@ -214,7 +214,7 @@ export default function Challenges() {
             return (
               <div
                 key={challenge.id}
-                className="bg-gradient-to-br from-emerald-50 via-emerald-100 to-emerald-200 border-2 border-emerald-200 rounded-xl p-6 transition-all duration-300 group hover:scale-105 hover:-translate-y-2 hover:shadow-lg hover:shadow-emerald-500/20 hover:bg-emerald-100"
+                className="bg-gradient-to-br from-emerald-50 via-emerald-100 to-emerald-200 border-2 border-emerald-200 rounded-xl p-6 cursor-pointer transition-all duration-300 group hover:scale-105 hover:-translate-y-2 hover:shadow-lg hover:shadow-emerald-500/20 hover:bg-emerald-100"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex items-start space-x-4 flex-1">
