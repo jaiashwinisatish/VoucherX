@@ -1,0 +1,82 @@
+name: "🚀 New Project / Idea"
+description: Propose a new project, module, or significant idea for VoucherX
+title: "[Project]: "
+labels: ["project-proposal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have a big idea for VoucherX? We'd love to hear it! Please describe your proposal in detail below.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Project Summary
+      description: Provide a brief overview of the project or idea.
+      placeholder: Summarize your proposal in a few sentences...
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: Why is this project needed? What problem does it solve?
+      placeholder: Explain the motivation behind this proposal...
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope & Goals
+      description: What are the high-level goals and scope of this project?
+      placeholder: |
+        - Goal 1: ...
+        - Goal 2: ...
+        - Out of scope: ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: implementation
+    attributes:
+      label: Implementation Plan
+      description: Outline how you would approach building this. Include technologies, components, or steps involved.
+      placeholder: |
+        1. Step one...
+        2. Step two...
+        3. Step three...
+    validations:
+      required: false
+
+  - type: dropdown
+    id: complexity
+    attributes:
+      label: Estimated Complexity
+      description: How complex do you think this project is?
+      options:
+        - Small (a few hours)
+        - Medium (a few days)
+        - Large (a week or more)
+        - Very Large (multi-week effort)
+    validations:
+      required: false
+
+  - type: textarea
+    id: resources
+    attributes:
+      label: Resources & References
+      description: Link any relevant resources, documentation, or examples.
+      placeholder: Add links or references here...
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other details, mockups, or considerations.
+      placeholder: Any extra information...
+    validations:
+      required: false
