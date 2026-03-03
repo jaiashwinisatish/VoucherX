@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Auth from './components/Auth';
 import Layout from './components/Layout';
 import AIAssistant from './components/AIAssistant';
+import LandingPage from './pages/LandingPage';
 import Home from './pages/Home';
 import Marketplace from './pages/Marketplace';
 import Exchange from './pages/Exchange';
@@ -98,6 +99,7 @@ function AppContent() {
   const { user, loading } = useAuth();
   const [currentPage, setCurrentPage] = useState('home');
   const [isAIOpen, setIsAIOpen] = useState(false);
+  const [showAuth, setShowAuth] = useState(false);
 
   if (loading) {
     return (
@@ -111,6 +113,9 @@ function AppContent() {
   }
 
   if (!user) {
+    if (!showAuth) {
+      return <LandingPage onGetStarted={() => setShowAuth(true)} />;
+    }
     return <Auth />;
   }
 
