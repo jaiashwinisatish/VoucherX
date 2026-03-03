@@ -229,7 +229,7 @@ export default function Exchange({ onNavigate }: ExchangeProps) {
               {suggestedMatches.map(match => (
                 <div
                   key={match.id}
-                  className="bg-white border border-slate-200 rounded-xl p-6 hover:shadow-lg transition-all"
+                  className="bg-white border border-slate-200 rounded-xl p-6 cursor-pointer hover:shadow-xl hover:scale-[1.02] hover:-translate-y-1 transition-all duration-300"
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex-1">

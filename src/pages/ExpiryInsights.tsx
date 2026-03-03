@@ -74,19 +74,19 @@ export default function ExpiryInsights() {
         <>
           {/* 🔥 Summary Cards */}
           <div className="grid md:grid-cols-3 gap-4">
-            <div className="bg-white p-4 rounded-xl shadow-md">
+            <div className="bg-white p-4 rounded-xl shadow-md cursor-pointer hover:shadow-lg hover:scale-[1.03] hover:-translate-y-1 transition-all duration-300">
               <p className="text-sm text-gray-500">Total Vouchers</p>
               <p className="text-xl font-bold">{vouchers.length}</p>
             </div>
 
-            <div className="bg-white p-4 rounded-xl shadow-md">
+            <div className="bg-white p-4 rounded-xl shadow-md cursor-pointer hover:shadow-lg hover:scale-[1.03] hover:-translate-y-1 transition-all duration-300">
               <p className="text-sm text-gray-500">Expiring This Month</p>
               <p className="text-xl font-bold">
                 {expiringThisMonth}
               </p>
             </div>
 
-            <div className="bg-white p-4 rounded-xl shadow-md">
+            <div className="bg-white p-4 rounded-xl shadow-md cursor-pointer hover:shadow-lg hover:scale-[1.03] hover:-translate-y-1 transition-all duration-300">
               <p className="text-sm text-gray-500">Total Expiry Value</p>
               <p className="text-xl font-bold">
                 ₹{totalExpiryValue}
