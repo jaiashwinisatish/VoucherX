@@ -14,6 +14,7 @@ import Profile from './pages/Profile';
 import { Voucher } from './types';
 import { Bot } from 'lucide-react';
 import ExpiryInsights from "./pages/ExpiryInsights";
+import About from "./pages/About";
 import ErrorBoundary from "./components/ErrorBoundary";
 
 
@@ -132,6 +133,8 @@ function AppContent() {
         return <Profile />;
       case 'expiry-insights':
         return <ExpiryInsights />;
+      case 'about':
+        return <About onNavigate={setCurrentPage} />;
 
       default:
         return <Home onNavigate={setCurrentPage} onOpenAI={() => setIsAIOpen(true)} />;

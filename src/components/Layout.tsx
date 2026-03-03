@@ -231,13 +231,13 @@ export default function Layout({ children, currentPage, onNavigate, onOpenAI }: 
               <h3 className="text-sm font-semibold tracking-wide text-slate-700 uppercase">Company</h3>
               <div className="flex flex-col space-y-2 text-sm">
                 <button
-                  onClick={() => onNavigate('home')}
+                  onClick={() => onNavigate('about')}
                   className="text-slate-600 hover:text-teal-600 text-left transition-colors"
                 >
                   About Us
                 </button>
                 <button
-                  onClick={() => onNavigate('home')}
+                  onClick={() => onNavigate('about')}
                   className="text-slate-600 hover:text-teal-600 text-left transition-colors"
                 >
                   How It Works
