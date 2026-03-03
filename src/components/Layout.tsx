@@ -237,7 +237,7 @@ export default function Layout({ children, currentPage, onNavigate, onOpenAI }: 
                   About Us
                 </button>
                 <button
-                  onClick={() => onNavigate('home')}
+                  onClick={() => onNavigate('how-it-works')}
                   className="text-slate-600 hover:text-teal-600 text-left transition-colors"
                 >
                   How It Works
