@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
+import BrandLogo from "../components/BrandLogo";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
@@ -126,9 +127,12 @@ export default function ExpiryInsights() {
                       key={v.id}
                       className="bg-gray-50 border p-4 rounded-lg shadow-sm mb-3"
                     >
-                      <p className="font-semibold">
-                        {v.brand_name}
-                      </p>
+                      <div className="flex items-center space-x-3 mb-1">
+                        <BrandLogo brandName={v.brand_name} size="sm" />
+                        <p className="font-semibold">
+                          {v.brand_name}
+                        </p>
+                      </div>
                       <p className="text-sm text-gray-600">
                         Value: ₹{v.original_value}
                       </p>

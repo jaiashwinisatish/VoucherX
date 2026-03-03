@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Repeat, Sparkles, TrendingUp, ArrowRight, Star, Check } from 'lucide-react';
 import { Voucher } from '../types';
+import BrandLogo from '../components/BrandLogo';
 
 interface ExchangeProps {
   onNavigate: (page: string) => void;
@@ -169,9 +170,12 @@ export default function Exchange({ onNavigate }: ExchangeProps) {
                   }`}
                 >
                   <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <h3 className="text-xl font-semibold text-slate-800">{voucher.brand_name}</h3>
-                      <p className="text-sm text-slate-600">{voucher.category}</p>
+                    <div className="flex items-center space-x-3">
+                      <BrandLogo brandName={voucher.brand_name} size="md" />
+                      <div>
+                        <h3 className="text-xl font-semibold text-slate-800">{voucher.brand_name}</h3>
+                        <p className="text-sm text-slate-600">{voucher.category}</p>
+                      </div>
                     </div>
                     {voucher.is_verified && (
                       <div className="bg-emerald-500 text-white px-2 py-1 rounded-full text-xs font-semibold flex items-center space-x-1">
@@ -234,6 +238,7 @@ export default function Exchange({ onNavigate }: ExchangeProps) {
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex-1">
                       <div className="flex items-center space-x-3 mb-2">
+                        <BrandLogo brandName={match.brand_name} size="md" />
                         <h3 className="text-2xl font-semibold text-slate-800">{match.brand_name}</h3>
                         <div className="bg-gradient-to-r from-amber-500 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-semibold flex items-center space-x-1">
                           <TrendingUp className="h-3 w-3" />
