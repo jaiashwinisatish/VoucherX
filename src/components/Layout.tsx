@@ -1,5 +1,5 @@
 import { ReactNode, useState } from 'react';
-import {  Bell,Menu, X, Home, ShoppingBag, Repeat, Wallet, Star, Trophy, Heart, User, LogOut, Bot, Calendar } from 'lucide-react';
+import {  Bell,Menu, X, Home, ShoppingBag, Repeat, Wallet, Star, Trophy, Heart, User, LogOut, Bot, Calendar, Mail } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 
@@ -23,7 +23,7 @@ export default function Layout({ children, currentPage, onNavigate, onOpenAI }: 
     { id: 'challenges', label: 'Challenges', icon: Trophy },
     { id: 'wishlist', label: 'Wishlist', icon: Heart },
     { id: 'expiry-insights', label: 'Expiry Insights', icon: Calendar },
-
+    { id: 'contact', label: 'Contact', icon: Mail },
   ];
 
   const handleSignOut = async () => {
@@ -261,12 +261,12 @@ export default function Layout({ children, currentPage, onNavigate, onOpenAI }: 
                 >
                   Help &amp; FAQ
                 </a>
-                <a
-                  href="mailto:support@voucherx.com"
+                <button
+                  onClick={() => onNavigate('contact')}
                   className="text-slate-600 hover:text-teal-600 text-left transition-colors"
                 >
                   Contact Us
-                </a>
+                </button>
                 <button
                   onClick={() => onNavigate('home')}
                   className="text-slate-600 hover:text-teal-600 text-left transition-colors"
