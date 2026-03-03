@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Heart, Plus, Bell, BellOff, X, Trash2, Loader } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import BrandLogo from '../components/BrandLogo';
 import { useAuth } from '../contexts/AuthContext';
 import { WishlistItem } from '../types';
 import { useCategories } from '../hooks/useCategories';
@@ -237,6 +238,7 @@ export default function Wishlist() {
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">
                   <div className="flex items-center space-x-2 mb-3">
+                    <BrandLogo brandName={item.brand_name} size="sm" />
                     <h3 className="text-xl font-semibold text-slate-800">{item.brand_name}</h3>
                     <Heart className="h-5 w-5 text-pink-600 fill-pink-600" />
                   </div>
