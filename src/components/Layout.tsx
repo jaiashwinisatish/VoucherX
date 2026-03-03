@@ -1,5 +1,5 @@
 import { ReactNode, useState } from 'react';
-import {  Bell,Menu, X, Home, ShoppingBag, Repeat, Wallet, Star, Trophy, Heart, User, LogOut, Bot, Calendar } from 'lucide-react';
+import {  Bell,Menu, X, Home, ShoppingBag, Repeat, Wallet, Star, Trophy, Heart, User, LogOut, Bot, Calendar, Info } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 
@@ -23,6 +23,7 @@ export default function Layout({ children, currentPage, onNavigate, onOpenAI }: 
     { id: 'challenges', label: 'Challenges', icon: Trophy },
     { id: 'wishlist', label: 'Wishlist', icon: Heart },
     { id: 'expiry-insights', label: 'Expiry Insights', icon: Calendar },
+    { id: 'about', label: 'About', icon: Info },
 
   ];
 
@@ -231,13 +232,13 @@ export default function Layout({ children, currentPage, onNavigate, onOpenAI }: 
               <h3 className="text-sm font-semibold tracking-wide text-slate-700 uppercase">Company</h3>
               <div className="flex flex-col space-y-2 text-sm">
                 <button
-                  onClick={() => onNavigate('home')}
+                  onClick={() => onNavigate('about')}
                   className="text-slate-600 hover:text-teal-600 text-left transition-colors"
                 >
                   About Us
                 </button>
                 <button
-                  onClick={() => onNavigate('home')}
+                  onClick={() => onNavigate('about')}
                   className="text-slate-600 hover:text-teal-600 text-left transition-colors"
                 >
                   How It Works

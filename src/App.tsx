@@ -11,6 +11,7 @@ import Wallet from './pages/Wallet';
 import Challenges from './pages/Challenges';
 import Wishlist from './pages/Wishlist';
 import Profile from './pages/Profile';
+import About from './pages/About';
 import { Voucher } from './types';
 import { Bot } from 'lucide-react';
 import ExpiryInsights from "./pages/ExpiryInsights";
@@ -130,6 +131,8 @@ function AppContent() {
         return <Wishlist />;
       case 'profile':
         return <Profile />;
+      case 'about':
+        return <About />;
       case 'expiry-insights':
         return <ExpiryInsights />;
 
