@@ -121,7 +121,7 @@ export default function Exchange({ onNavigate }: ExchangeProps) {
           </div>
           <div>
             <h1 className="text-4xl font-bold">Smart Exchange</h1>
-            <p className="text-white/90 text-lg">AI-powered voucher matching for the best trades</p>
+            <p className="text-white/90 text-lg">Smart voucher matching for the best trades</p>
           </div>
         </div>
       </div>
@@ -138,7 +138,7 @@ export default function Exchange({ onNavigate }: ExchangeProps) {
               </li>
               <li className="flex items-start space-x-2">
                 <Check className="h-5 w-5 text-teal-600 flex-shrink-0 mt-0.5" />
-                <span>Our AI finds the best matches based on value, brand popularity, and expiry</span>
+                <span>Our smart matching finds the best trades based on value, brand popularity, and expiry</span>
               </li>
               <li className="flex items-start space-x-2">
                 <Check className="h-5 w-5 text-teal-600 flex-shrink-0 mt-0.5" />
@@ -213,7 +213,7 @@ export default function Exchange({ onNavigate }: ExchangeProps) {
         <div className="space-y-4">
           <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-slate-200">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold text-slate-800">AI-Matched Vouchers</h2>
+              <h2 className="text-xl font-semibold text-slate-800">Smart-Matched Vouchers</h2>
               <button
                 onClick={() => setShowMatches(false)}
                 className="text-sm text-teal-600 hover:text-teal-700 font-medium"
