@@ -1,5 +1,5 @@
 import { ReactNode, useState } from 'react';
-import {  Bell,Menu, X, Home, ShoppingBag, Repeat, Wallet, Star, Trophy, Heart, User, LogOut, Bot, Calendar } from 'lucide-react';
+import { Menu, X, Home, ShoppingBag, Repeat, Wallet, Star, Trophy, Heart, User, LogOut, Bot, Calendar, Github, Twitter, MessageCircle } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 
@@ -177,10 +177,11 @@ export default function Layout({ children, currentPage, onNavigate, onOpenAI }: 
         {children}
       </main>
 
-      <footer className="mt-16 bg-white/90 text-slate-800 border-t border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 border-b border-slate-200 pb-8">
-            <div>
+      <footer className="mt-12 sm:mt-16 bg-gradient-to-b from-white to-slate-50 border-t border-slate-200 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 lg:py-16">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+            {/* Brand Section */}
+            <div className="col-span-2 lg:col-span-1">
               <div className="flex items-center space-x-2 mb-4">
                 <div className="bg-gradient-to-r from-teal-500 to-blue-600 p-2 rounded-xl">
                   <Repeat className="h-5 w-5 text-white" />
@@ -189,130 +190,159 @@ export default function Layout({ children, currentPage, onNavigate, onOpenAI }: 
                   VoucherX
                 </span>
               </div>
-              <p className="text-sm text-slate-600 mb-4">
+              <p className="text-sm text-slate-600 leading-relaxed mb-5 max-w-sm">
                 Don't let your vouchers expire. Trade, earn, and repeat with AI-powered insights.
               </p>
-              <p className="text-xs text-slate-500">
-                Built for savvy shoppers who want to unlock the full value of their vouchers.
-              </p>
+              <div className="flex items-center gap-2">
+                <a
+                  href="https://github.com/jaiashwinisatish/VoucherX"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-lg bg-slate-100 text-slate-500 hover:bg-teal-50 hover:text-teal-600 transition-colors"
+                  aria-label="GitHub"
+                >
+                  <Github className="h-4 w-4" />
+                </a>
+                <a
+                  href="https://twitter.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-lg bg-slate-100 text-slate-500 hover:bg-teal-50 hover:text-teal-600 transition-colors"
+                  aria-label="Twitter"
+                >
+                  <Twitter className="h-4 w-4" />
+                </a>
+                <a
+                  href="https://discord.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-lg bg-slate-100 text-slate-500 hover:bg-teal-50 hover:text-teal-600 transition-colors"
+                  aria-label="Discord"
+                >
+                  <MessageCircle className="h-4 w-4" />
+                </a>
+              </div>
             </div>
 
-            <nav aria-label="Product" className="space-y-3">
+            {/* Product Links */}
+            <nav aria-label="Product" className="space-y-4">
               <h3 className="text-sm font-semibold tracking-wide text-slate-700 uppercase">Product</h3>
-              <div className="flex flex-col space-y-2 text-sm">
-                <button
-                  onClick={() => onNavigate('marketplace')}
-                  className="text-slate-600 hover:text-teal-600 text-left transition-colors"
-                >
-                  Marketplace
-                </button>
-                <button
-                  onClick={() => onNavigate('exchange')}
-                  className="text-slate-600 hover:text-teal-600 text-left transition-colors"
-                >
-                  Exchange
-                </button>
-                <button
-                  onClick={() => onNavigate('wallet')}
-                  className="text-slate-600 hover:text-teal-600 text-left transition-colors"
-                >
-                  Wallet
-                </button>
-                <button
-                  onClick={() => onNavigate('challenges')}
-                  className="text-slate-600 hover:text-teal-600 text-left transition-colors"
-                >
-                  Challenges
-                </button>
-              </div>
+              <ul className="space-y-2.5 text-sm list-none p-0 m-0">
+                <li>
+                  <button
+                    onClick={() => onNavigate('marketplace')}
+                    className="text-slate-600 hover:text-teal-600 text-left transition-colors duration-200"
+                  >
+                    Marketplace
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => onNavigate('exchange')}
+                    className="text-slate-600 hover:text-teal-600 text-left transition-colors duration-200"
+                  >
+                    Exchange
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => onNavigate('wallet')}
+                    className="text-slate-600 hover:text-teal-600 text-left transition-colors duration-200"
+                  >
+                    Wallet
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => onNavigate('challenges')}
+                    className="text-slate-600 hover:text-teal-600 text-left transition-colors duration-200"
+                  >
+                    Challenges
+                  </button>
+                </li>
+              </ul>
             </nav>
 
-            <nav aria-label="Company" className="space-y-3">
+            {/* Company Links */}
+            <nav aria-label="Company" className="space-y-4">
               <h3 className="text-sm font-semibold tracking-wide text-slate-700 uppercase">Company</h3>
-              <div className="flex flex-col space-y-2 text-sm">
-                <button
-                  onClick={() => onNavigate('home')}
-                  className="text-slate-600 hover:text-teal-600 text-left transition-colors"
-                >
-                  About Us
-                </button>
-                <button
-                  onClick={() => onNavigate('home')}
-                  className="text-slate-600 hover:text-teal-600 text-left transition-colors"
-                >
-                  How It Works
-                </button>
-                <button
-                  type="button"
-                  className="text-slate-400 cursor-default text-left"
-                  aria-disabled="true"
-                >
-                  Careers (coming soon)
-                </button>
-              </div>
+              <ul className="space-y-2.5 text-sm list-none p-0 m-0">
+                <li>
+                  <button
+                    onClick={() => onNavigate('home')}
+                    className="text-slate-600 hover:text-teal-600 text-left transition-colors duration-200"
+                  >
+                    About Us
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => onNavigate('home')}
+                    className="text-slate-600 hover:text-teal-600 text-left transition-colors duration-200"
+                  >
+                    How It Works
+                  </button>
+                </li>
+                <li>
+                  <span
+                    className="text-slate-400 cursor-default"
+                    aria-disabled="true"
+                  >
+                    Careers (coming soon)
+                  </span>
+                </li>
+              </ul>
             </nav>
 
-            <nav aria-label="Support" className="space-y-3">
+            {/* Support Links */}
+            <nav aria-label="Support" className="space-y-4">
               <h3 className="text-sm font-semibold tracking-wide text-slate-700 uppercase">Support</h3>
-              <div className="flex flex-col space-y-2 text-sm">
-                <a
-                  href="mailto:support@voucherx.com"
-                  className="text-slate-600 hover:text-teal-600 text-left transition-colors"
-                >
-                  Help &amp; FAQ
-                </a>
-                <a
-                  href="mailto:support@voucherx.com"
-                  className="text-slate-600 hover:text-teal-600 text-left transition-colors"
-                >
-                  Contact Us
-                </a>
-                <button
-                  onClick={() => onNavigate('home')}
-                  className="text-slate-600 hover:text-teal-600 text-left transition-colors"
-                >
-                  Terms &amp; Conditions
-                </button>
-                <button
-                  onClick={() => onNavigate('home')}
-                  className="text-slate-600 hover:text-teal-600 text-left transition-colors"
-                >
-                  Privacy Policy
-                </button>
-              </div>
+              <ul className="space-y-2.5 text-sm list-none p-0 m-0">
+                <li>
+                  <a
+                    href="mailto:support@voucherx.com"
+                    className="text-slate-600 hover:text-teal-600 transition-colors duration-200"
+                  >
+                    Help &amp; FAQ
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="mailto:support@voucherx.com"
+                    className="text-slate-600 hover:text-teal-600 transition-colors duration-200"
+                  >
+                    Contact Us
+                  </a>
+                </li>
+                <li>
+                  <button
+                    onClick={() => onNavigate('home')}
+                    className="text-slate-600 hover:text-teal-600 text-left transition-colors duration-200"
+                  >
+                    Terms &amp; Conditions
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => onNavigate('home')}
+                    className="text-slate-600 hover:text-teal-600 text-left transition-colors duration-200"
+                  >
+                    Privacy Policy
+                  </button>
+                </li>
+              </ul>
             </nav>
           </div>
 
-          <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-xs text-slate-500">
-              &copy; {new Date().getFullYear()} VoucherX. All rights reserved.
-            </p>
-            <div className="flex items-center space-x-4 text-xs">
-              <span className="text-slate-500">Join the community</span>
-              <a
-                href="https://github.com/jaiashwinisatish/VoucherX"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-slate-600 hover:text-teal-600 transition-colors"
-              >
-                GitHub
-              </a>
-              <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-slate-600 hover:text-teal-600 transition-colors"
-              >
-                Twitter
-              </a>
-              <a
-                href="https://discord.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-slate-600 hover:text-teal-600 transition-colors"
-              >
-                Discord
-              </a>
+          {/* Bottom Bar */}
+          <div className="border-t border-slate-200 mt-10 lg:mt-12 pt-6 sm:pt-8">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <p className="text-xs text-slate-500 text-center sm:text-left">
+                &copy; {new Date().getFullYear()} VoucherX. All rights reserved.
+              </p>
+              <p className="text-xs text-slate-400 text-center sm:text-right">
+                Built with ❤️ for savvy shoppers
+              </p>
             </div>
           </div>
         </div>
