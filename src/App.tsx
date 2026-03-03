@@ -11,6 +11,7 @@ import Wallet from './pages/Wallet';
 import Challenges from './pages/Challenges';
 import Wishlist from './pages/Wishlist';
 import Profile from './pages/Profile';
+import LandingPage from './pages/LandingPage';
 import { Voucher } from './types';
 import { Bot } from 'lucide-react';
 import ExpiryInsights from "./pages/ExpiryInsights";
@@ -98,6 +99,7 @@ function AppContent() {
   const { user, loading } = useAuth();
   const [currentPage, setCurrentPage] = useState('home');
   const [isAIOpen, setIsAIOpen] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
 
   if (loading) {
     return (
@@ -111,7 +113,10 @@ function AppContent() {
   }
 
   if (!user) {
-    return <Auth />;
+    if (showLogin) {
+      return <Auth />;
+    }
+    return <LandingPage onGetStarted={() => setShowLogin(true)} />;
   }
 
   const renderPage = () => {
