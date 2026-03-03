@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from 'react';
-import { Bot, Send, X, TrendingUp, AlertCircle, Sparkles, DollarSign, Lightbulb } from 'lucide-react';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { Bot, Send, X, TrendingUp, AlertCircle, Sparkles, DollarSign, Lightbulb, Minimize2, Maximize2 } from 'lucide-react';
 import { Voucher } from '../types';
 import {
   analyzeVouchers,
@@ -34,7 +34,9 @@ export default function AIAssistant({ isOpen, onClose, userVouchers, marketplace
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -43,6 +45,30 @@ export default function AIAssistant({ isOpen, onClose, userVouchers, marketplace
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Close panel on Escape key
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    },
+    [onClose]
+  );
+
+  useEffect(() => {
+    if (isOpen) {
+      document.addEventListener('keydown', handleKeyDown);
+      return () => document.removeEventListener('keydown', handleKeyDown);
+    }
+  }, [isOpen, handleKeyDown]);
+
+  // Reset minimized state when panel is reopened
+  useEffect(() => {
+    if (isOpen) {
+      setIsMinimized(false);
+    }
+  }, [isOpen]);
 
   const quickActions = [
     { label: 'Analyze My Vouchers', icon: TrendingUp, action: 'analyze' },
@@ -231,7 +257,20 @@ ${recommendations.length > 0
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-end p-4 md:p-6">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md h-[600px] flex flex-col border-2 border-slate-200">
+      {/* Backdrop overlay - click to close */}
+      <div
+        className="absolute inset-0 bg-black/20 backdrop-blur-[2px] transition-opacity"
+        onClick={onClose}
+        aria-label="Close AI Assistant"
+      />
+
+      {/* AI Assistant Panel */}
+      <div
+        ref={panelRef}
+        className={`relative bg-white rounded-2xl shadow-2xl w-full max-w-md flex flex-col border-2 border-slate-200 transition-all duration-300 ${
+          isMinimized ? 'h-[68px]' : 'h-[600px] max-h-[85vh]'
+        }`}
+      >
         <div className="bg-gradient-to-r from-purple-500 to-blue-600 p-4 rounded-t-2xl flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
@@ -239,17 +278,32 @@ ${recommendations.length > 0
             </div>
             <div>
               <h3 className="text-white font-semibold">VoucherX AI Assistant</h3>
-              <p className="text-white/80 text-xs">Always here to help</p>
+              {!isMinimized && <p className="text-white/80 text-xs">Always here to help</p>}
             </div>
           </div>
-          <button
-            onClick={onClose}
-            className="text-white hover:bg-white/20 p-2 rounded-lg transition-colors"
-          >
-            <X className="h-5 w-5" />
-          </button>
+          <div className="flex items-center space-x-1">
+            {/* Minimize / Maximize toggle */}
+            <button
+              onClick={() => setIsMinimized(!isMinimized)}
+              className="text-white hover:bg-white/20 p-2 rounded-lg transition-colors"
+              title={isMinimized ? 'Expand assistant' : 'Minimize assistant'}
+              aria-label={isMinimized ? 'Expand assistant' : 'Minimize assistant'}
+            >
+              {isMinimized ? <Maximize2 className="h-4 w-4" /> : <Minimize2 className="h-4 w-4" />}
+            </button>
+            {/* Close button */}
+            <button
+              onClick={onClose}
+              className="text-white hover:bg-red-500/80 p-2 rounded-lg transition-colors"
+              title="Close assistant (Esc)"
+              aria-label="Close AI Assistant"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
         </div>
 
+        {!isMinimized && (
         <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50">
           {messages.map(message => (
             <div
@@ -284,7 +338,7 @@ ${recommendations.length > 0
           <div ref={messagesEndRef} />
         </div>
 
-        <div className="p-4 bg-white border-t border-slate-200">
+        <div className="p-4 bg-white border-t border-slate-200 rounded-b-2xl">
           <div className="flex flex-wrap gap-2 mb-3">
             {quickActions.map((action, index) => {
               const Icon = action.icon;
@@ -319,6 +373,7 @@ ${recommendations.length > 0
             </button>
           </div>
         </div>
+        )}
       </div>
     </div>
   );
