@@ -3,7 +3,7 @@ import { Repeat, Mail, Lock, User } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function Auth() {
-  const [isSignUp, setIsSignUp] = useState(false);
+  const [view, setView] = useState<'signin' | 'signup'>('signin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
@@ -17,7 +17,7 @@ export default function Auth() {
     setLoading(true);
 
     try {
-      if (isSignUp) {
+      if (view === 'signup') {
         await signUp(email, password, fullName);
       } else {
         await signIn(email, password);
@@ -27,6 +27,13 @@ export default function Auth() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const toggleView = () => {
+    setView(view === 'signin' ? 'signup' : 'signin');
+    setError('');
+    // Optional: Clear form fields when switching views if desired
+    // setPassword('');
   };
 
   return (
@@ -44,7 +51,7 @@ export default function Auth() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {isSignUp && (
+            {view === 'signup' && (
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">
                   Full Name
@@ -109,23 +116,20 @@ export default function Auth() {
               disabled={loading}
               className="w-full bg-gradient-to-r from-teal-500 to-blue-600 text-white py-3 rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             >
-              {loading ? 'Processing...' : isSignUp ? 'Create Account' : 'Sign In'}
+              {loading ? 'Processing...' : view === 'signup' ? 'Create Account' : 'Sign In'}
             </button>
           </form>
 
           <div className="mt-6 text-center">
             <button
-              onClick={() => {
-                setIsSignUp(!isSignUp);
-                setError('');
-              }}
+              onClick={toggleView}
               className="text-sm text-teal-600 hover:text-teal-700 font-medium"
             >
-              {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
+              {view === 'signup' ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
             </button>
           </div>
 
-          {isSignUp && (
+          {view === 'signup' && (
             <div className="mt-6 p-4 bg-teal-50 rounded-lg">
               <p className="text-sm text-teal-800 font-medium">
                 Get 100 VoucherCoins when you sign up!
