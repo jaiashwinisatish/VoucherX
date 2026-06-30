@@ -1,5 +1,5 @@
 
-import { TrendingUp, Star, Tag, Calendar, Eye, Bot } from 'lucide-react';
+import { TrendingUp, Star, Tag, Calendar, Eye, Bot, ShieldCheck, Sparkles, Target } from 'lucide-react';
 import { Voucher } from '../types';
 
 interface HomeProps {
@@ -336,6 +336,68 @@ export default function Home({ onNavigate, onOpenAI }: HomeProps) {
           >
             Start Trading
           </button>
+        </div>
+      </section>
+
+      <section className="bg-white/80 backdrop-blur-sm border border-slate-200 rounded-2xl p-6 md:p-10">
+        <div className="max-w-3xl">
+          <p className="text-sm font-semibold tracking-wide uppercase text-teal-600 mb-2">About VoucherX</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight mb-4">
+            Smarter voucher trading for everyone
+          </h2>
+          <p className="text-base md:text-lg text-slate-600 leading-relaxed">
+            VoucherX helps people unlock value from unused vouchers with a trusted, intelligent, and secure marketplace.
+          </p>
+        </div>
+
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-5">
+          <article className="bg-slate-50 rounded-xl p-5 border border-slate-200">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-lg bg-teal-100 text-teal-600 flex items-center justify-center">
+                <Target className="h-5 w-5" />
+              </div>
+              <h3 className="text-lg font-semibold text-slate-900">Mission</h3>
+            </div>
+            <p className="text-slate-600 leading-relaxed">
+              Reduce voucher waste by making it easy to buy, sell, and exchange offers before they expire.
+            </p>
+          </article>
+
+          <article className="bg-slate-50 rounded-xl p-5 border border-slate-200">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center">
+                <Sparkles className="h-5 w-5" />
+              </div>
+              <h3 className="text-lg font-semibold text-slate-900">AI-Powered Features</h3>
+            </div>
+            <p className="text-slate-600 leading-relaxed">
+              Intelligent recommendations, expiry insights, and personalized deal discovery help users act at the right time.
+            </p>
+          </article>
+
+          <article className="bg-slate-50 rounded-xl p-5 border border-slate-200">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                <ShieldCheck className="h-5 w-5" />
+              </div>
+              <h3 className="text-lg font-semibold text-slate-900">Security</h3>
+            </div>
+            <p className="text-slate-600 leading-relaxed">
+              Verified listings, protected authentication, and careful data handling keep transactions safer and more reliable.
+            </p>
+          </article>
+
+          <article className="bg-slate-50 rounded-xl p-5 border border-slate-200">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center">
+                <TrendingUp className="h-5 w-5" />
+              </div>
+              <h3 className="text-lg font-semibold text-slate-900">Vision</h3>
+            </div>
+            <p className="text-slate-600 leading-relaxed">
+              Build the most trusted global platform where every voucher finds value and no opportunity goes unused.
+            </p>
+          </article>
         </div>
       </section>
     </div>
