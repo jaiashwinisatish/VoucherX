@@ -20,7 +20,7 @@ export interface Voucher {
     original_value: number;
     selling_price: number;
     discount_percentage: number;
-    voucher_code: string;
+    voucher_code?: string;
     expiry_date: string;
     status: 'pending_verification' | 'verified' | 'active' | 'sold' | 'expired';
     is_verified: boolean;
