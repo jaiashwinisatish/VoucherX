@@ -35,6 +35,7 @@ export default function AIAssistant({ isOpen, onClose, userVouchers, marketplace
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -43,6 +44,22 @@ export default function AIAssistant({ isOpen, onClose, userVouchers, marketplace
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleEscape);
+    inputRef.current?.focus();
+
+    return () => {
+      window.removeEventListener('keydown', handleEscape);
+    };
+  }, [isOpen, onClose]);
 
   const quickActions = [
     { label: 'Analyze My Vouchers', icon: TrendingUp, action: 'analyze' },
@@ -57,7 +74,7 @@ export default function AIAssistant({ isOpen, onClose, userVouchers, marketplace
     let assistantResponse = '';
 
     switch (action) {
-      case 'analyze':
+      case 'analyze': {
         userMessage = 'Analyze my vouchers';
         const analysis = analyzeVouchers(userVouchers);
         assistantResponse = `📊 **Voucher Portfolio Analysis**
@@ -71,8 +88,9 @@ export default function AIAssistant({ isOpen, onClose, userVouchers, marketplace
 **Recommendations:**
 ${analysis.recommendations.map(r => `• ${r}`).join('\n')}`;
         break;
+      }
 
-      case 'expiry':
+      case 'expiry': {
         userMessage = 'Check voucher expiry status';
         const expiryStatus = checkExpiryStatus(userVouchers);
         assistantResponse = `⏰ **Expiry Status Report**
@@ -94,8 +112,9 @@ ${expiryStatus.expired.length > 0
 ${expiryStatus.safe.slice(0, 3).map(v => `• ${v.brand_name} - $${v.original_value}`).join('\n')}
 ${expiryStatus.safe.length > 3 ? `... and ${expiryStatus.safe.length - 3} more` : ''}`;
         break;
+      }
 
-      case 'optimize':
+      case 'optimize': {
         userMessage = 'Optimize my voucher portfolio';
         const optimization = optimizeVoucherPortfolio(userVouchers);
         assistantResponse = `🎯 **Portfolio Optimization Advice**
@@ -112,8 +131,9 @@ ${optimization.tradeVouchers.length > 3 ? `... and ${optimization.tradeVouchers.
 ${optimization.sellVouchers.slice(0, 3).map(v => `• ${v.brand_name} - ${optimization.reasons[v.id]}`).join('\n')}
 ${optimization.sellVouchers.length > 3 ? `... and ${optimization.sellVouchers.length - 3} more` : ''}`;
         break;
+      }
 
-      case 'calculate':
+      case 'calculate': {
         userMessage = 'Calculate discount for multiple vouchers';
         const sampleAmount = 500;
         const calculation = calculateMultiVoucherDiscount(sampleAmount, userVouchers.slice(0, 3), {
@@ -136,8 +156,9 @@ ${calculation.warnings.length > 0 ? `**Notes:**\n${calculation.warnings.map(w =>
 
 *You can stack up to 3 vouchers with a maximum 50% total discount.*`;
         break;
+      }
 
-      case 'recommend':
+      case 'recommend': {
         userMessage = 'Give me smart recommendations';
         const recommendations = generateSmartRecommendations(userVouchers, marketplaceVouchers);
         assistantResponse = `💡 **Smart Recommendations**
@@ -151,6 +172,7 @@ ${recommendations.length > 0
 • Trade vouchers with 60+ days validity for better matches
 • Check the challenges page to earn VoucherCoins for free vouchers`;
         break;
+  }
 
       default:
         return;
@@ -227,24 +249,44 @@ ${recommendations.length > 0
     }, 1000);
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-end p-4 md:p-6">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md h-[600px] flex flex-col border-2 border-slate-200">
+    <div
+      className={`fixed inset-0 z-50 flex items-end justify-end p-4 md:p-6 transition-opacity duration-300 ${
+        isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+      }`}
+      aria-hidden={!isOpen}
+    >
+      <button
+        type="button"
+        onClick={onClose}
+        className="absolute inset-0"
+        aria-label="Close AI Assistant"
+        tabIndex={isOpen ? 0 : -1}
+      />
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="ai-assistant-title"
+        className={`relative bg-white rounded-2xl shadow-2xl w-full max-w-md h-[600px] flex flex-col border-2 border-slate-200 transition-all duration-300 ${
+          isOpen ? 'translate-y-0 scale-100' : 'translate-y-4 scale-95'
+        }`}
+      >
         <div className="bg-gradient-to-r from-purple-500 to-blue-600 p-4 rounded-t-2xl flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
               <Bot className="h-6 w-6 text-white" />
             </div>
             <div>
-              <h3 className="text-white font-semibold">VoucherX AI Assistant</h3>
+              <h3 id="ai-assistant-title" className="text-white font-semibold">VoucherX AI Assistant</h3>
               <p className="text-white/80 text-xs">Always here to help</p>
             </div>
           </div>
           <button
+            type="button"
             onClick={onClose}
-            className="text-white hover:bg-white/20 p-2 rounded-lg transition-colors"
+            className="text-white hover:bg-white/20 p-2 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+            aria-label="Close AI Assistant"
+            title="Close AI Assistant"
           >
             <X className="h-5 w-5" />
           </button>
@@ -303,17 +345,20 @@ ${recommendations.length > 0
 
           <div className="flex space-x-2">
             <input
+              ref={inputRef}
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+              onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
               placeholder="Ask me anything..."
               className="flex-1 px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
             />
             <button
+              type="button"
               onClick={handleSendMessage}
               disabled={!inputValue.trim()}
               className="px-4 py-3 bg-gradient-to-r from-purple-500 to-blue-600 text-white rounded-xl hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              aria-label="Send message"
             >
               <Send className="h-5 w-5" />
             </button>
