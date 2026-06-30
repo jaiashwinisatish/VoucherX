@@ -102,7 +102,7 @@ const suggestedMatches: (Voucher & { matchScore: number; reason: string })[] = [
   },
 ];
 
-export default function Exchange({ onNavigate }: ExchangeProps) {
+export default function Exchange({ onNavigate: _onNavigate }: ExchangeProps) {
   const [selectedVoucher, setSelectedVoucher] = useState<string | null>(null);
   const [showMatches, setShowMatches] = useState(false);
 
