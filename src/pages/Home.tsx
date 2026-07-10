@@ -1,5 +1,20 @@
 
-import { TrendingUp, Star, Tag, Calendar, Eye, Bot } from 'lucide-react';
+import {
+  TrendingUp,
+  Star,
+  Tag,
+  Calendar,
+  Eye,
+  Bot,
+  Shield,
+  Sparkles,
+  Search,
+  Upload,
+  Handshake,
+  Zap,
+  Globe,
+  Lock,
+} from 'lucide-react';
 import { Voucher } from '../types';
 
 interface HomeProps {
@@ -152,6 +167,136 @@ export default function Home({ onNavigate, onOpenAI }: HomeProps) {
           </div>
         </div>
         <div className="absolute right-0 top-0 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
+      </section>
+
+      {/* About VoucherX Section */}
+      <section className="bg-white/80 backdrop-blur-sm rounded-2xl border border-slate-200 p-8 sm:p-10">
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center px-4 py-2 bg-teal-50 rounded-full text-sm font-medium text-teal-700 mb-4">
+            <Sparkles className="h-4 w-4 mr-2" />
+            About VoucherX
+          </div>
+          <h2 className="text-3xl font-bold text-slate-900 mb-3">
+            Your Smart Voucher Marketplace
+          </h2>
+          <p className="text-slate-600 text-lg max-w-2xl mx-auto leading-relaxed">
+            VoucherX is a community-driven platform where you can trade, buy, and sell unused vouchers and gift cards.
+            Stop letting your vouchers expire — turn them into real value or grab amazing deals from others.
+          </p>
+        </div>
+
+        {/* How It Works */}
+        <div className="mb-10">
+          <h3 className="text-xl font-semibold text-slate-800 text-center mb-6">
+            How It Works
+          </h3>
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              {
+                step: '1',
+                icon: Upload,
+                title: 'List Your Vouchers',
+                description:
+                  'Upload vouchers you won\'t use. Set your price and let the marketplace do the rest.',
+                gradient: 'from-teal-500 to-emerald-600',
+              },
+              {
+                step: '2',
+                icon: Search,
+                title: 'Find Great Deals',
+                description:
+                  'Browse verified vouchers across 50+ brands. Our AI recommends the best matches for you.',
+                gradient: 'from-blue-500 to-indigo-600',
+              },
+              {
+                step: '3',
+                icon: Handshake,
+                title: 'Trade & Save',
+                description:
+                  'Complete trades securely. Exchange vouchers directly or buy at discounted prices.',
+                gradient: 'from-purple-500 to-pink-600',
+              },
+            ].map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <div
+                  key={index}
+                  className="relative bg-gradient-to-br from-slate-50 to-white rounded-xl p-6 border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all text-center group"
+                >
+                  <div className="absolute -top-3 -left-3 w-8 h-8 bg-gradient-to-r from-teal-500 to-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-md">
+                    {item.step}
+                  </div>
+                  <div
+                    className={`inline-flex items-center justify-center w-14 h-14 bg-gradient-to-r ${item.gradient} rounded-xl mb-4 group-hover:scale-110 transition-transform`}
+                  >
+                    <Icon className="h-7 w-7 text-white" />
+                  </div>
+                  <h4 className="text-lg font-semibold text-slate-800 mb-2">{item.title}</h4>
+                  <p className="text-slate-600 text-sm leading-relaxed">{item.description}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Key Features */}
+        <div>
+          <h3 className="text-xl font-semibold text-slate-800 text-center mb-6">
+            Why Choose VoucherX?
+          </h3>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              {
+                icon: Shield,
+                title: 'Verified Vouchers',
+                description: 'Every listing is verified for authenticity before it goes live.',
+                color: 'text-emerald-600',
+                bg: 'bg-emerald-50',
+              },
+              {
+                icon: Zap,
+                title: 'AI-Powered Matching',
+                description: 'Smart recommendations find the best deals and trades for you.',
+                color: 'text-blue-600',
+                bg: 'bg-blue-50',
+              },
+              {
+                icon: Globe,
+                title: '50+ Brands',
+                description: 'Tech, food, fashion, entertainment, travel, and more categories.',
+                color: 'text-purple-600',
+                bg: 'bg-purple-50',
+              },
+              {
+                icon: Lock,
+                title: 'Secure Trading',
+                description: 'Built with security best practices to keep your transactions safe.',
+                color: 'text-amber-600',
+                bg: 'bg-amber-50',
+              },
+            ].map((feature, index) => {
+              const Icon = feature.icon;
+              return (
+                <div
+                  key={index}
+                  className="flex items-start space-x-3 p-4 rounded-xl hover:bg-slate-50 transition-colors"
+                >
+                  <div
+                    className={`flex-shrink-0 w-10 h-10 ${feature.bg} rounded-lg flex items-center justify-center`}
+                  >
+                    <Icon className={`h-5 w-5 ${feature.color}`} />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-slate-800 text-sm">{feature.title}</h4>
+                    <p className="text-slate-500 text-xs leading-relaxed mt-1">
+                      {feature.description}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </section>
 
       <section>
