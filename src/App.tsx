@@ -101,10 +101,10 @@ function AppContent() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-teal-50 flex items-center justify-center">
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-teal-50">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-teal-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-slate-600 font-medium">Loading VoucherX...</p>
+          <div className="w-16 h-16 mx-auto mb-4 border-4 border-teal-500 rounded-full border-t-transparent animate-spin"></div>
+          <p className="font-medium text-slate-600">Loading VoucherX...</p>
         </div>
       </div>
     );
@@ -154,7 +154,7 @@ function AppContent() {
       {!isAIOpen && (
         <button
           onClick={() => setIsAIOpen(true)}
-          className="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-r from-purple-500 to-blue-600 text-white rounded-full shadow-2xl hover:scale-110 transition-all flex items-center justify-center z-40"
+          className="fixed z-40 flex items-center justify-center text-white transition-all rounded-full shadow-2xl bottom-6 right-6 w-14 h-14 bg-gradient-to-r from-purple-500 to-blue-600 hover:scale-110"
           title="Open AI Assistant"
         >
           <Bot className="h-7 w-7" />
