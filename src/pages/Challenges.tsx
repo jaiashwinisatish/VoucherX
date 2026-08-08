@@ -94,13 +94,13 @@ export default function Challenges() {
   const getChallengeColor = (type: string) => {
     switch (type) {
       case 'weekly':
-        return 'from-blue-500 to-blue-600';
+        return 'bg-brand-primary';
       case 'daily':
-        return 'from-amber-500 to-amber-600';
+        return 'bg-brand-accent';
       case 'monthly':
-        return 'from-purple-500 to-purple-600';
+        return 'bg-status-success';
       default:
-        return 'from-teal-500 to-teal-600';
+        return 'bg-brand-primary';
     }
   };
 
@@ -109,9 +109,9 @@ export default function Challenges() {
 
   return (
     <div className="space-y-6">
-      <div className="bg-gradient-to-r from-amber-500 to-orange-600 rounded-xl p-8 text-white transform transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-2xl hover:shadow-orange-500/30">
-        <div className="flex items-center space-x-4 mb-6">
-          <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+      <div className="bg-gradient-brand rounded-2xl p-8 text-white shadow-lg">
+        <div className="flex items-center space-x-4">
+          <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/30">
             <Trophy className="h-8 w-8" />
           </div>
           <div>
@@ -122,35 +122,46 @@ export default function Challenges() {
       </div>
 
       <div className="grid md:grid-cols-3 gap-6">
-        <div className="bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl p-6 text-white transform transition-all duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-2xl hover:shadow-amber-500/30">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-amber-100">VoucherCoins</span>
-            <Star className="h-5 w-5 text-amber-100 fill-current" />
+        <div className="bg-card backdrop-blur-sm rounded-xl p-6 border border-main-border shadow-soft group hover:scale-[1.03] transition-all">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-sm font-bold text-muted-text uppercase tracking-widest">VoucherCoins</span>
+            <div className="p-2 bg-brand-accent/20 rounded-lg group-hover:scale-110 transition-transform">
+              <Star className="h-6 w-6 text-brand-accent fill-brand-accent" />
+            </div>
           </div>
-          <div className="text-4xl font-bold mb-1">{totalCoins}</div>
-          <div className="text-amber-100 text-sm">+{coinsThisWeek} this week</div>
+          <div className="text-4xl font-bold text-main-text mb-1">{totalCoins}</div>
+          <div className="text-status-success text-sm font-bold">+{coinsThisWeek} this week</div>
         </div>
-        <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white transform transition-all duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/30">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-blue-100">Active Challenges</span>
-            <Target className="h-5 w-5 text-blue-100" />
+
+        <div className="bg-card backdrop-blur-sm rounded-xl p-6 border border-main-border shadow-soft group hover:scale-[1.03] transition-all">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-sm font-bold text-muted-text uppercase tracking-widest">Active Challenges</span>
+            <div className="p-2 bg-brand-primary/20 rounded-lg group-hover:scale-110 transition-transform">
+              <Target className="h-6 w-6 text-brand-primary" />
+            </div>
           </div>
-          <div className="text-4xl font-bold mb-1">{activeChallenges.length}</div>
-          <div className="text-blue-100 text-sm">Keep going!</div>
+          <div className="text-4xl font-bold text-main-text mb-1">{activeChallenges.length}</div>
+          <div className="text-brand-primary text-sm font-bold">Keep going!</div>
         </div>
-        <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl p-6 text-white transform transition-all duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-2xl hover:shadow-emerald-500/30">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-emerald-100">Completed</span>
-            <Trophy className="h-5 w-5 text-emerald-100" />
+
+        <div className="bg-card backdrop-blur-sm rounded-xl p-6 border border-main-border shadow-soft group hover:scale-[1.03] transition-all">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-sm font-bold text-muted-text uppercase tracking-widest">Completed</span>
+            <div className="p-2 bg-status-success/20 rounded-lg group-hover:scale-110 transition-transform">
+              <Trophy className="h-6 w-6 text-status-success" />
+            </div>
           </div>
-          <div className="text-4xl font-bold mb-1">{completedChallenges.length}</div>
-          <div className="text-emerald-100 text-sm">All time</div>
+          <div className="text-4xl font-bold text-main-text mb-1">{completedChallenges.length}</div>
+          <div className="text-status-success text-sm font-bold">All time progress</div>
         </div>
       </div>
 
-      <div>
-        <h2 className="text-2xl font-bold text-slate-800 mb-4">Active Challenges</h2>
-        <div className="space-y-4">
+      <div className="space-y-6">
+        <h2 className="text-2xl font-bold text-main-text flex items-center space-x-2">
+          <Zap className="h-6 w-6 text-brand-accent fill-brand-accent" />
+          <span>Active Challenges</span>
+        </h2>
+        <div className="grid lg:grid-cols-2 gap-6">
           {activeChallenges.map(challenge => {
             const Icon = getChallengeIcon(challenge.type);
             const colorClass = getChallengeColor(challenge.type);
@@ -159,32 +170,32 @@ export default function Challenges() {
             return (
               <div
                 key={challenge.id}
-                className="bg-gradient-to-br from-white via-yellow-50 to-amber-100 backdrop-blur-sm rounded-xl border border-amber-200 p-6 transition-all duration-300 group hover:scale-105 hover:-translate-y-2 hover:shadow-2xl hover:shadow-yellow-400/30 hover:border-yellow-400 hover:bg-yellow-50"
+                className="bg-card backdrop-blur-sm rounded-xl border border-main-border p-6 shadow-soft hover:shadow-xl transition-all group"
               >
                 <div className="flex items-start justify-between">
-                  <div className="flex items-start space-x-4 flex-1">
-                    <div className={`w-14 h-14 bg-gradient-to-r ${colorClass} rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12 group-hover:shadow-lg group-hover:bg-gradient-to-r group-hover:from-yellow-400 group-hover:to-orange-400`}>
-                      <Icon className="h-7 w-7 text-white" />
+                  <div className="flex items-start space-x-6 flex-1">
+                    <div className={`w-14 h-14 ${colorClass} rounded-2xl flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6 shadow-lg text-white`}>
+                      <Icon className="h-7 w-7" />
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center flex-wrap gap-3 mb-2">
-                        <h3 className="text-xl font-semibold text-slate-800">{challenge.title}</h3>
-                        <div className="bg-slate-200 text-slate-700 px-3 py-1 rounded-full text-xs font-medium capitalize">
+                        <h3 className="text-xl font-bold text-main-text">{challenge.title}</h3>
+                        <div className="bg-muted-bg text-muted-text border border-main-border px-3 py-1 rounded-full text-xs font-bold capitalize">
                           {challenge.type}
                         </div>
                       </div>
-                      <p className="text-slate-600 mb-4">{challenge.description}</p>
+                      <p className="text-muted-text text-sm font-medium mb-4">{challenge.description}</p>
 
                       <div className="mb-3">
-                        <div className="flex items-center justify-between text-sm mb-2">
-                          <span className="text-slate-600">Progress</span>
-                          <span className="font-semibold text-slate-800">
+                        <div className="flex items-center justify-between text-xs font-bold mb-2">
+                          <span className="text-dim uppercase tracking-wider">Progress</span>
+                          <span className="text-main-text">
                             {challenge.progress} / {challenge.total}
                           </span>
                         </div>
-                        <div className="w-full bg-slate-200 rounded-full h-3 overflow-hidden">
+                        <div className="w-full bg-muted-bg rounded-full h-3 p-1 border border-main-border overflow-hidden">
                           <div
-                            className={`h-full bg-gradient-to-r ${colorClass} transition-all duration-500`}
+                            className={`h-full ${colorClass} rounded-full transition-all duration-700 ease-out shadow-sm`}
                             style={{ width: `${Math.min(progressPercentage, 100)}%` }}
                           ></div>
                         </div>
@@ -192,7 +203,7 @@ export default function Challenges() {
                     </div>
                   </div>
                   <div className="ml-4">
-                    <div className="bg-gradient-to-r from-pink-500 via-orange-400 to-yellow-400 text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center space-x-1 shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:bg-gradient-to-r group-hover:from-yellow-400 group-hover:to-pink-400">
+                    <div className="bg-gradient-brand text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center space-x-2 shadow-md group-hover:scale-110 transition-transform">
                       <Gift className="h-4 w-4" />
                       <span>{challenge.reward}</span>
                     </div>
@@ -204,9 +215,12 @@ export default function Challenges() {
         </div>
       </div>
 
-      <div>
-        <h2 className="text-2xl font-bold text-slate-800 mb-4">Completed Challenges</h2>
-        <div className="space-y-4">
+      <div className="space-y-6">
+        <h2 className="text-2xl font-bold text-main-text flex items-center space-x-2">
+          <Award className="h-6 w-6 text-status-success" />
+          <span>Completed Challenges</span>
+        </h2>
+        <div className="grid lg:grid-cols-2 gap-6">
           {completedChallenges.map(challenge => {
             const Icon = getChallengeIcon(challenge.type);
             const colorClass = getChallengeColor(challenge.type);
@@ -214,27 +228,27 @@ export default function Challenges() {
             return (
               <div
                 key={challenge.id}
-                className="bg-gradient-to-br from-emerald-50 via-emerald-100 to-emerald-200 border-2 border-emerald-200 rounded-xl p-6 transition-all duration-300 group hover:scale-105 hover:-translate-y-2 hover:shadow-lg hover:shadow-emerald-500/20 hover:bg-emerald-100"
+                className="bg-card backdrop-blur-sm border border-status-success/20 rounded-xl p-6 shadow-soft opacity-80 group hover:opacity-100 transition-all"
               >
                 <div className="flex items-start justify-between">
-                  <div className="flex items-start space-x-4 flex-1">
-                    <div className={`w-14 h-14 bg-gradient-to-r ${colorClass} rounded-xl flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-8 group-hover:shadow-lg group-hover:bg-gradient-to-r group-hover:from-emerald-400 group-hover:to-blue-400`}>
-                      <Icon className="h-7 w-7 text-white" />
+                  <div className="flex items-start space-x-6 flex-1">
+                    <div className={`w-14 h-14 ${colorClass} rounded-2xl flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110 text-white shadow-lg`}>
+                      <Icon className="h-7 w-7" />
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center flex-wrap gap-3 mb-2">
-                        <h3 className="text-xl font-semibold text-slate-800">{challenge.title}</h3>
-                        <div className="bg-emerald-500 text-white px-3 py-1 rounded-full text-xs font-semibold flex items-center space-x-1">
+                        <h3 className="text-xl font-bold text-main-text">{challenge.title}</h3>
+                        <div className="bg-status-success/20 text-status-success px-3 py-1 rounded-full text-xs font-bold flex items-center space-x-1 border border-status-success/20">
                           <Trophy className="h-3 w-3 fill-current" />
-                          <span>Completed</span>
+                          <span>Redeemed</span>
                         </div>
                       </div>
-                      <p className="text-slate-600">{challenge.description}</p>
+                      <p className="text-dim text-sm font-medium">{challenge.description}</p>
                     </div>
                   </div>
                   <div className="ml-4">
-                    <div className="bg-gradient-to-r from-pink-500 via-orange-400 to-yellow-400 text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center space-x-1 shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:bg-gradient-to-r group-hover:from-yellow-400 group-hover:to-pink-400">
-                      <Gift className="h-4 w-4" />
+                    <div className="bg-brand-primary/10 text-brand-primary px-4 py-2 rounded-xl text-sm font-bold flex items-center space-x-2 border border-brand-primary/20">
+                      <Star className="h-4 w-4" />
                       <span>+{challenge.reward}</span>
                     </div>
                   </div>
@@ -245,29 +259,35 @@ export default function Challenges() {
         </div>
       </div>
 
-      <div className="bg-gradient-to-r from-purple-500 to-blue-600 rounded-xl p-8 text-white transform transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-2xl hover:shadow-purple-500/30">
-        <div className="flex items-start space-x-4">
-          <Trophy className="h-12 w-12 flex-shrink-0" />
+      <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-8 text-white shadow-xl">
+        <div className="flex items-start space-x-6">
+          <div className="p-4 bg-white/20 backdrop-blur-md rounded-2xl border border-white/30 hidden md:block">
+            <Trophy className="h-10 w-10" />
+          </div>
           <div>
-            <h3 className="text-2xl font-bold mb-3">How to Use VoucherCoins</h3>
-            <ul className="space-y-2 text-white/90">
-              <li className="flex items-start space-x-2">
-                <span className="text-xl">🎁</span>
-                <span>Unlock premium features and early access to auctions</span>
-              </li>
-              <li className="flex items-start space-x-2">
-                <span className="text-xl">💎</span>
-                <span>Get fee-free trades when you have 500+ coins</span>
-              </li>
-              <li className="flex items-start space-x-2">
-                <span className="text-xl">🎟️</span>
-                <span>Redeem for real vouchers from partner brands</span>
-              </li>
-              <li className="flex items-start space-x-2">
-                <span className="text-xl">🏆</span>
-                <span>Compete on the leaderboard for monthly prizes</span>
-              </li>
-            </ul>
+            <h3 className="text-3xl font-bold mb-6">How to Use VoucherCoins</h3>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/20 hover:bg-white/20 transition-all">
+                <div className="text-2xl mb-2">🎁</div>
+                <h4 className="font-bold mb-1">Premium Perks</h4>
+                <p className="text-sm text-white/80">Unlock exclusive features and early access to hot auctions.</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/20 hover:bg-white/20 transition-all">
+                <div className="text-2xl mb-2">💎</div>
+                <h4 className="font-bold mb-1">Free Trades</h4>
+                <p className="text-sm text-white/80">Zero transaction fees once you hit the 500 coin milestone.</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/20 hover:bg-white/20 transition-all">
+                <div className="text-2xl mb-2">🎟️</div>
+                <h4 className="font-bold mb-1">Real Rewards</h4>
+                <p className="text-sm text-white/80">Redeem coins for branded vouchers from our top partners.</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/20 hover:bg-white/20 transition-all">
+                <div className="text-2xl mb-2">🏆</div>
+                <h4 className="font-bold mb-1">GLory</h4>
+                <p className="text-sm text-white/80">Dominate the monthly leaderboards for grand prize pools.</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

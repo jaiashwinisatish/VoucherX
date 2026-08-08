@@ -20,6 +20,8 @@ const myVouchers: Voucher[] = [
     is_verified: true,
     views: 245,
     created_at: '2025-10-01',
+    voucher_code: 'AMZ-XXXX-1234',
+    description: 'Valid for all categories',
   },
   {
     id: 'my2',
@@ -34,6 +36,8 @@ const myVouchers: Voucher[] = [
     is_verified: true,
     views: 98,
     created_at: '2025-10-07',
+    voucher_code: 'SPOT-XXXX-5678',
+    description: '3-month premium subscription',
   },
   {
     id: 'my3',
@@ -48,6 +52,8 @@ const myVouchers: Voucher[] = [
     is_verified: true,
     views: 189,
     created_at: '2025-10-03',
+    voucher_code: 'SBUX-XXXX-9012',
+    description: 'Redeemable at any location',
   },
 ];
 
@@ -65,6 +71,8 @@ const suggestedMatches: (Voucher & { matchScore: number; reason: string })[] = [
     is_verified: true,
     views: 223,
     created_at: '2025-10-08',
+    voucher_code: 'NFLX-XXXX-1111',
+    description: '6-month premium subscription',
     matchScore: 95,
     reason: 'Perfect match for entertainment lovers!',
   },
@@ -81,6 +89,8 @@ const suggestedMatches: (Voucher & { matchScore: number; reason: string })[] = [
     is_verified: true,
     views: 312,
     created_at: '2025-10-05',
+    voucher_code: 'NIKE-XXXX-2222',
+    description: 'Valid for online and in-store purchases',
     matchScore: 88,
     reason: 'Great value and high demand brand',
   },
@@ -96,7 +106,9 @@ const suggestedMatches: (Voucher & { matchScore: number; reason: string })[] = [
     status: 'verified',
     is_verified: true,
     views: 156,
-    created_at: '2025-10-06',
+    created_at: '2026-01-06',
+    voucher_code: 'UBER-XXXX-3333',
+    description: 'Valid for all Uber rides',
     matchScore: 82,
     reason: 'Similar value, expiring soon - act fast!',
   },
@@ -114,9 +126,9 @@ export default function Exchange({ onNavigate }: ExchangeProps) {
 
   return (
     <div className="space-y-6">
-      <div className="bg-gradient-to-r from-teal-500 to-blue-600 rounded-xl p-8 text-white">
-        <div className="flex items-center space-x-4 mb-4">
-          <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+      <div className="bg-gradient-brand rounded-2xl p-8 text-white shadow-lg">
+        <div className="flex items-center space-x-4 mb-2">
+          <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/30">
             <Repeat className="h-8 w-8" />
           </div>
           <div>
@@ -126,26 +138,26 @@ export default function Exchange({ onNavigate }: ExchangeProps) {
         </div>
       </div>
 
-      <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-slate-200">
+      <div className="bg-card backdrop-blur-sm rounded-xl p-6 border border-main-border shadow-soft">
         <div className="flex items-start space-x-4">
-          <Sparkles className="h-8 w-8 text-teal-600 flex-shrink-0 mt-1" />
+          <Sparkles className="h-8 w-8 text-brand-primary flex-shrink-0 mt-1" />
           <div>
-            <h3 className="text-lg font-semibold text-slate-800 mb-2">How Smart Exchange Works</h3>
-            <ul className="space-y-2 text-slate-600">
+            <h3 className="text-lg font-bold text-main-text mb-2">How Smart Exchange Works</h3>
+            <ul className="space-y-2 text-muted-text">
               <li className="flex items-start space-x-2">
-                <Check className="h-5 w-5 text-teal-600 flex-shrink-0 mt-0.5" />
+                <Check className="h-5 w-5 text-status-success flex-shrink-0 mt-0.5" />
                 <span>Select a voucher you want to trade</span>
               </li>
               <li className="flex items-start space-x-2">
-                <Check className="h-5 w-5 text-teal-600 flex-shrink-0 mt-0.5" />
+                <Check className="h-5 w-5 text-status-success flex-shrink-0 mt-0.5" />
                 <span>Our AI finds the best matches based on value, brand popularity, and expiry</span>
               </li>
               <li className="flex items-start space-x-2">
-                <Check className="h-5 w-5 text-teal-600 flex-shrink-0 mt-0.5" />
+                <Check className="h-5 w-5 text-status-success flex-shrink-0 mt-0.5" />
                 <span>Send trade requests to other users</span>
               </li>
               <li className="flex items-start space-x-2">
-                <Check className="h-5 w-5 text-teal-600 flex-shrink-0 mt-0.5" />
+                <Check className="h-5 w-5 text-status-success flex-shrink-0 mt-0.5" />
                 <span>Complete the trade securely once accepted</span>
               </li>
             </ul>
@@ -155,26 +167,25 @@ export default function Exchange({ onNavigate }: ExchangeProps) {
 
       {!showMatches ? (
         <div className="space-y-4">
-          <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-slate-200">
-            <h2 className="text-xl font-semibold text-slate-800 mb-4">Select a Voucher to Trade</h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="bg-card backdrop-blur-sm rounded-xl p-6 border border-main-border shadow-soft">
+            <h2 className="text-xl font-bold text-main-text mb-4">Select a Voucher to Trade</h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {myVouchers.map(voucher => (
                 <div
                   key={voucher.id}
                   onClick={() => setSelectedVoucher(voucher.id)}
-                  className={`p-6 rounded-xl border-2 cursor-pointer transition-all ${
-                    selectedVoucher === voucher.id
-                      ? 'border-teal-500 bg-teal-50 shadow-lg scale-105'
-                      : 'border-slate-200 hover:border-slate-300 hover:shadow-md'
-                  }`}
+                  className={`relative p-6 rounded-xl border-2 cursor-pointer transition-all ${selectedVoucher === voucher.id
+                    ? 'border-brand-primary bg-brand-primary/5 shadow-lg scale-105'
+                    : 'border-main-border hover:border-brand-primary/30 hover:shadow-md bg-muted-bg/30'
+                    }`}
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div>
-                      <h3 className="text-xl font-semibold text-slate-800">{voucher.brand_name}</h3>
-                      <p className="text-sm text-slate-600">{voucher.category}</p>
+                      <h3 className="text-xl font-bold text-main-text">{voucher.brand_name}</h3>
+                      <p className="text-sm text-dim">{voucher.category}</p>
                     </div>
                     {voucher.is_verified && (
-                      <div className="bg-emerald-500 text-white px-2 py-1 rounded-full text-xs font-semibold flex items-center space-x-1">
+                      <div className="bg-status-success text-white px-2 py-1 rounded-full text-xs font-semibold flex items-center space-x-1 shadow-sm">
                         <Star className="h-3 w-3 fill-current" />
                         <span>Verified</span>
                       </div>
@@ -182,16 +193,16 @@ export default function Exchange({ onNavigate }: ExchangeProps) {
                   </div>
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-slate-600">Value</span>
-                      <span className="text-lg font-bold text-slate-800">${voucher.original_value}</span>
+                      <span className="text-sm text-muted-text">Value</span>
+                      <span className="text-lg font-bold text-main-text">${voucher.original_value}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-slate-600">Discount</span>
-                      <span className="text-lg font-bold text-emerald-600">{voucher.discount_percentage}%</span>
+                      <span className="text-sm text-muted-text">Discount</span>
+                      <span className="text-lg font-bold text-status-success">{voucher.discount_percentage}%</span>
                     </div>
                   </div>
                   {selectedVoucher === voucher.id && (
-                    <div className="mt-4 text-center text-sm font-semibold text-teal-600">
+                    <div className="mt-4 text-center text-sm font-bold text-brand-primary">
                       ✓ Selected for Trade
                     </div>
                   )}
@@ -203,7 +214,7 @@ export default function Exchange({ onNavigate }: ExchangeProps) {
           <button
             onClick={handleFindMatches}
             disabled={!selectedVoucher}
-            className="w-full bg-gradient-to-r from-teal-500 to-blue-600 text-white py-4 rounded-xl font-semibold hover:shadow-xl hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center space-x-2"
+            className="w-full bg-gradient-brand text-white py-4 rounded-xl font-bold hover:shadow-xl hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center space-x-2 shadow-lg"
           >
             <Sparkles className="h-5 w-5" />
             <span>Find Smart Matches</span>
@@ -211,17 +222,17 @@ export default function Exchange({ onNavigate }: ExchangeProps) {
         </div>
       ) : (
         <div className="space-y-4">
-          <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-slate-200">
+          <div className="bg-card backdrop-blur-sm rounded-xl p-6 border border-main-border shadow-soft">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold text-slate-800">AI-Matched Vouchers</h2>
+              <h2 className="text-xl font-bold text-main-text">AI-Matched Vouchers</h2>
               <button
                 onClick={() => setShowMatches(false)}
-                className="text-sm text-teal-600 hover:text-teal-700 font-medium"
+                className="text-sm text-brand-primary hover:underline font-bold"
               >
                 ← Change Voucher
               </button>
             </div>
-            <p className="text-slate-600 mb-6">
+            <p className="text-muted-text mb-6">
               Based on your {myVouchers.find(v => v.id === selectedVoucher)?.brand_name} voucher, here are the best matches
             </p>
 
@@ -229,35 +240,35 @@ export default function Exchange({ onNavigate }: ExchangeProps) {
               {suggestedMatches.map(match => (
                 <div
                   key={match.id}
-                  className="bg-white border border-slate-200 rounded-xl p-6 hover:shadow-lg transition-all"
+                  className="bg-card border border-main-border rounded-xl p-6 hover:shadow-lg transition-all group shadow-soft"
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex-1">
                       <div className="flex items-center space-x-3 mb-2">
-                        <h3 className="text-2xl font-semibold text-slate-800">{match.brand_name}</h3>
-                        <div className="bg-gradient-to-r from-amber-500 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-semibold flex items-center space-x-1">
+                        <h3 className="text-2xl font-bold text-main-text">{match.brand_name}</h3>
+                        <div className="bg-gradient-brand text-white px-3 py-1 rounded-full text-xs font-bold flex items-center space-x-1 shadow-sm">
                           <TrendingUp className="h-3 w-3" />
                           <span>{match.matchScore}% Match</span>
                         </div>
                       </div>
-                      <p className="text-sm text-slate-600 mb-4">{match.reason}</p>
-                      <div className="grid grid-cols-3 gap-4">
+                      <p className="text-sm text-muted-text mb-4 italic">"{match.reason}"</p>
+                      <div className="grid grid-cols-3 gap-6">
                         <div>
-                          <span className="text-xs text-slate-500">Original Value</span>
-                          <div className="text-lg font-bold text-slate-800">${match.original_value}</div>
+                          <span className="text-xs text-dim block mb-1">Original Value</span>
+                          <div className="text-lg font-bold text-main-text">${match.original_value}</div>
                         </div>
                         <div>
-                          <span className="text-xs text-slate-500">Current Price</span>
-                          <div className="text-lg font-bold text-teal-600">${match.selling_price}</div>
+                          <span className="text-xs text-dim block mb-1">Current Price</span>
+                          <div className="text-lg font-bold text-brand-primary">${match.selling_price}</div>
                         </div>
                         <div>
-                          <span className="text-xs text-slate-500">Discount</span>
-                          <div className="text-lg font-bold text-emerald-600">{match.discount_percentage}%</div>
+                          <span className="text-xs text-dim block mb-1">Discount</span>
+                          <div className="text-lg font-bold text-status-success">{match.discount_percentage}%</div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <button className="w-full bg-gradient-to-r from-teal-500 to-blue-600 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all flex items-center justify-center space-x-2">
+                  <button className="w-full bg-gradient-brand text-white py-3 rounded-lg font-bold hover:shadow-lg transition-all flex items-center justify-center space-x-2 shadow-md">
                     <span>Send Trade Request</span>
                     <ArrowRight className="h-4 w-4" />
                   </button>
@@ -268,32 +279,32 @@ export default function Exchange({ onNavigate }: ExchangeProps) {
         </div>
       )}
 
-      <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-slate-200">
-        <h2 className="text-xl font-semibold text-slate-800 mb-4">Recent Trade Activity</h2>
+      <div className="bg-card backdrop-blur-sm rounded-xl p-6 border border-main-border shadow-soft">
+        <h2 className="text-xl font-bold text-main-text mb-4">Recent Trade Activity</h2>
         <div className="space-y-3">
-          <div className="flex items-center justify-between p-4 bg-emerald-50 rounded-lg border border-emerald-200">
+          <div className="flex items-center justify-between p-4 bg-status-success/10 rounded-lg border border-status-success/20">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center">
+              <div className="w-10 h-10 bg-status-success rounded-full flex items-center justify-center shadow-sm">
                 <Repeat className="h-5 w-5 text-white" />
               </div>
               <div>
-                <div className="font-semibold text-slate-800">Netflix ⇄ Target</div>
-                <div className="text-sm text-slate-600">Completed 2 days ago</div>
+                <div className="font-bold text-main-text">Netflix ⇄ Target</div>
+                <div className="text-sm text-dim">Completed 2 days ago</div>
               </div>
             </div>
-            <div className="text-emerald-600 font-semibold">Completed</div>
+            <div className="text-status-success font-bold text-sm bg-status-success/10 px-3 py-1 rounded-full">Completed</div>
           </div>
-          <div className="flex items-center justify-between p-4 bg-amber-50 rounded-lg border border-amber-200">
+          <div className="flex items-center justify-between p-4 bg-status-warning/10 rounded-lg border border-status-warning/20">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-amber-500 rounded-full flex items-center justify-center">
+              <div className="w-10 h-10 bg-status-warning rounded-full flex items-center justify-center shadow-sm">
                 <Repeat className="h-5 w-5 text-white" />
               </div>
               <div>
-                <div className="font-semibold text-slate-800">Spotify ⇄ Uber</div>
-                <div className="text-sm text-slate-600">Pending response</div>
+                <div className="font-bold text-main-text">Spotify ⇄ Uber</div>
+                <div className="text-sm text-dim">Pending response</div>
               </div>
             </div>
-            <div className="text-amber-600 font-semibold">Pending</div>
+            <div className="text-status-warning font-bold text-sm bg-status-warning/10 px-3 py-1 rounded-full">Pending</div>
           </div>
         </div>
       </div>

@@ -32,37 +32,35 @@ export default function Auth() {
   const toggleView = () => {
     setView(view === 'signin' ? 'signup' : 'signin');
     setError('');
-    // Optional: Clear form fields when switching views if desired
-    // setPassword('');
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-teal-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-page flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl p-8 border border-slate-200">
+        <div className="bg-card backdrop-blur-md rounded-2xl shadow-xl p-8 border border-main-border">
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-teal-500 to-blue-600 rounded-2xl mb-4">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-brand rounded-2xl mb-4 shadow-lg">
               <Repeat className="h-8 w-8 text-white" />
             </div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent mb-2">
+            <h1 className="text-3xl font-bold bg-gradient-brand bg-clip-text text-transparent mb-2">
               VoucherX
             </h1>
-            <p className="text-slate-600">Don't let your vouchers expire. Trade. Earn. Repeat.</p>
+            <p className="text-muted-text">Don't let your vouchers expire. Trade. Earn. Repeat.</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {view === 'signup' && (
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className="block text-sm font-medium text-main-text mb-2">
                   Full Name
                 </label>
                 <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-dim" />
                   <input
                     type="text"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
+                    className="w-full pl-10 pr-4 py-3 bg-muted-bg border border-main-border text-main-text rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent transition-all"
                     placeholder="Enter your full name"
                     required
                   />
@@ -71,16 +69,16 @@ export default function Auth() {
             )}
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-main-text mb-2">
                 Email
               </label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-dim" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
+                  className="w-full pl-10 pr-4 py-3 bg-muted-bg border border-main-border text-main-text rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent transition-all"
                   placeholder="Enter your email"
                   required
                 />
@@ -88,16 +86,16 @@ export default function Auth() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-main-text mb-2">
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-dim" />
                 <input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
+                  className="w-full pl-10 pr-4 py-3 bg-muted-bg border border-main-border text-main-text rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent transition-all"
                   placeholder="Enter your password"
                   required
                   minLength={6}
@@ -106,7 +104,7 @@ export default function Auth() {
             </div>
 
             {error && (
-              <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm">
+              <div className="bg-status-error/10 text-status-error p-3 rounded-lg text-sm border border-status-error/20">
                 {error}
               </div>
             )}
@@ -114,7 +112,7 @@ export default function Auth() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-teal-500 to-blue-600 text-white py-3 rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+              className="w-full bg-gradient-brand text-white py-3 rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 shadow-md"
             >
               {loading ? 'Processing...' : view === 'signup' ? 'Create Account' : 'Sign In'}
             </button>
@@ -123,15 +121,15 @@ export default function Auth() {
           <div className="mt-6 text-center">
             <button
               onClick={toggleView}
-              className="text-sm text-teal-600 hover:text-teal-700 font-medium"
+              className="text-sm text-brand-primary hover:text-brand-primary/80 font-medium transition-colors"
             >
               {view === 'signup' ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
             </button>
           </div>
 
           {view === 'signup' && (
-            <div className="mt-6 p-4 bg-teal-50 rounded-lg">
-              <p className="text-sm text-teal-800 font-medium">
+            <div className="mt-6 p-4 bg-brand-primary/10 border border-brand-primary/20 rounded-lg">
+              <p className="text-sm text-brand-primary font-bold">
                 Get 100 VoucherCoins when you sign up!
               </p>
             </div>

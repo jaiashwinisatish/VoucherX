@@ -63,10 +63,10 @@ export default function AIAssistant({ isOpen, onClose, userVouchers, marketplace
         assistantResponse = `📊 **Voucher Portfolio Analysis**
 
 **Overview:**
-- Total Value: $${analysis.totalValue.toFixed(2)}
-- Total Savings: $${analysis.totalSavings.toFixed(2)}
-- Average Discount: ${analysis.averageDiscount}%
-- Expiring Soon: ${analysis.expiringCount} voucher${analysis.expiringCount !== 1 ? 's' : ''}
+• Total Value: $${analysis.totalValue.toFixed(2)}
+• Total Savings: $${analysis.totalSavings.toFixed(2)}
+• Average Discount: ${analysis.averageDiscount}%
+• Expiring Soon: ${analysis.expiringCount} voucher${analysis.expiringCount !== 1 ? 's' : ''}
 
 **Recommendations:**
 ${analysis.recommendations.map(r => `• ${r}`).join('\n')}`;
@@ -79,16 +79,16 @@ ${analysis.recommendations.map(r => `• ${r}`).join('\n')}`;
 
 **Expiring Within 30 Days (${expiryStatus.expiringSoon.length}):**
 ${expiryStatus.expiringSoon.length > 0
-  ? expiryStatus.expiringSoon.map(v => {
-      const days = Math.ceil((new Date(v.expiry_date).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
-      return `• ${v.brand_name} - $${v.original_value} (${days} days left) ⚠️`;
-    }).join('\n')
-  : '✅ No vouchers expiring soon!'}
+            ? expiryStatus.expiringSoon.map(v => {
+              const days = Math.ceil((new Date(v.expiry_date).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+              return `• ${v.brand_name} - $${v.original_value} (${days} days left) ⚠️`;
+            }).join('\n')
+            : '✅ No vouchers expiring soon!'}
 
 **Already Expired (${expiryStatus.expired.length}):**
 ${expiryStatus.expired.length > 0
-  ? expiryStatus.expired.map(v => `• ${v.brand_name} - $${v.original_value}`).join('\n')
-  : '✅ No expired vouchers!'}
+            ? expiryStatus.expired.map(v => `• ${v.brand_name} - $${v.original_value}`).join('\n')
+            : '✅ No expired vouchers!'}
 
 **Safe Vouchers (${expiryStatus.safe.length}):**
 ${expiryStatus.safe.slice(0, 3).map(v => `• ${v.brand_name} - $${v.original_value}`).join('\n')}
@@ -143,8 +143,8 @@ ${calculation.warnings.length > 0 ? `**Notes:**\n${calculation.warnings.map(w =>
         assistantResponse = `💡 **Smart Recommendations**
 
 ${recommendations.length > 0
-  ? recommendations.map(r => `• ${r}`).join('\n\n')
-  : '✨ You\'re all set! Keep checking the marketplace for new deals.'}
+            ? recommendations.map(r => `• ${r}`).join('\n\n')
+            : '✨ You\'re all set! Keep checking the marketplace for new deals.'}
 
 **Pro Tips:**
 • Enable notifications on your wishlist to catch great deals
@@ -230,53 +230,56 @@ ${recommendations.length > 0
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-end p-4 md:p-6">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md h-[600px] flex flex-col border-2 border-slate-200">
-        <div className="bg-gradient-to-r from-purple-500 to-blue-600 p-4 rounded-t-2xl flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-              <Bot className="h-6 w-6 text-white" />
+    <div className="fixed inset-0 z-50 flex items-end justify-end p-4 md:p-6 bg-black/40 backdrop-blur-md animate-in fade-in duration-300">
+      <div className="bg-card backdrop-blur-2xl rounded-[2rem] shadow-2xl w-full max-w-md h-[600px] flex flex-col border border-main-border overflow-hidden animate-in slide-in-from-bottom-8 duration-500">
+        <div className="bg-gradient-brand p-6 flex items-center justify-between shadow-brand relative overflow-hidden shrink-0">
+          <div className="absolute inset-0 bg-white/5 translate-y-1/2 rounded-full blur-2xl"></div>
+          <div className="flex items-center space-x-4 relative z-10">
+            <div className="w-11 h-11 bg-white/20 backdrop-blur-xl rounded-xl flex items-center justify-center border border-white/30 shadow-inner group transition-transform duration-500 hover:rotate-12">
+              <Bot className="h-6 w-6 text-white group-hover:scale-110 transition-transform" />
             </div>
             <div>
-              <h3 className="text-white font-semibold">VoucherX AI Assistant</h3>
-              <p className="text-white/80 text-xs">Always here to help</p>
+              <h3 className="text-lg font-black text-white leading-tight tracking-tight">AI Suite</h3>
+              <div className="flex items-center space-x-2">
+                <div className="w-1.5 h-1.5 bg-status-success rounded-full animate-pulse"></div>
+                <span className="text-white/80 text-[8px] uppercase font-black tracking-[0.2em]">Active</span>
+              </div>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="text-white hover:bg-white/20 p-2 rounded-lg transition-colors"
+            className="text-white bg-white/10 hover:bg-white/20 p-2.5 rounded-xl transition-all group relative z-10"
           >
-            <X className="h-5 w-5" />
+            <X className="h-5 w-5 group-hover:rotate-90 transition-transform" />
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50">
+        <div className="flex-1 overflow-y-auto p-6 space-y-5 bg-muted-bg/10 custom-scrollbar">
           {messages.map(message => (
             <div
               key={message.id}
-              className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+              className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-2 duration-300`}
             >
               <div
-                className={`max-w-[80%] rounded-2xl px-4 py-3 ${
-                  message.type === 'user'
-                    ? 'bg-gradient-to-r from-purple-500 to-blue-600 text-white'
-                    : 'bg-white text-slate-800 border border-slate-200'
-                }`}
+                className={`max-w-[85%] rounded-[1.5rem] px-5 py-3 shadow-soft relative ${message.type === 'user'
+                  ? 'bg-gradient-brand text-white rounded-tr-none'
+                  : 'bg-card text-main-text border border-main-border rounded-tl-none'
+                  }`}
               >
-                <p className="text-sm whitespace-pre-line">{message.content}</p>
-                <p className={`text-xs mt-1 ${message.type === 'user' ? 'text-white/70' : 'text-slate-400'}`}>
+                <div className="text-sm whitespace-pre-line leading-relaxed font-medium">{message.content}</div>
+                <div className={`text-[8px] mt-2 flex justify-end font-black uppercase tracking-widest ${message.type === 'user' ? 'text-white/50' : 'text-dim'}`}>
                   {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                </p>
+                </div>
               </div>
             </div>
           ))}
           {isTyping && (
             <div className="flex justify-start">
-              <div className="bg-white text-slate-800 border border-slate-200 rounded-2xl px-4 py-3">
-                <div className="flex space-x-2">
-                  <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                  <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                  <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+              <div className="bg-card text-main-text border border-main-border rounded-[1.5rem] rounded-tl-none px-5 py-3 shadow-soft">
+                <div className="flex space-x-1.5">
+                  <div className="w-1.5 h-1.5 bg-brand-primary rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                  <div className="w-1.5 h-1.5 bg-brand-primary rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                  <div className="w-1.5 h-1.5 bg-brand-primary rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
                 </div>
               </div>
             </div>
@@ -284,38 +287,38 @@ ${recommendations.length > 0
           <div ref={messagesEndRef} />
         </div>
 
-        <div className="p-4 bg-white border-t border-slate-200">
-          <div className="flex flex-wrap gap-2 mb-3">
+        <div className="p-6 bg-card border-t border-main-border shrink-0">
+          <div className="flex flex-wrap gap-1.5 mb-5">
             {quickActions.map((action, index) => {
               const Icon = action.icon;
               return (
                 <button
                   key={index}
                   onClick={() => handleQuickAction(action.action)}
-                  className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-medium transition-colors flex items-center space-x-1"
+                  className="px-3 py-1.5 bg-muted-bg/50 hover:bg-brand-primary/10 text-main-text border border-main-border hover:border-brand-primary/30 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all shadow-sm flex items-center space-x-1.5 group active:scale-95 whitespace-nowrap"
                 >
-                  <Icon className="h-3 w-3" />
+                  <Icon className="h-3 w-3 text-brand-primary group-hover:scale-110 transition-transform" />
                   <span>{action.label}</span>
                 </button>
               );
             })}
           </div>
 
-          <div className="flex space-x-2">
+          <div className="flex space-x-2.5">
             <input
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-              placeholder="Ask me anything..."
-              className="flex-1 px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              placeholder="Query system..."
+              className="flex-1 px-5 py-3.5 bg-muted-bg/50 border border-main-border text-main-text rounded-1.5xl focus:ring-4 focus:ring-brand-primary/10 focus:border-brand-primary transition-all text-sm font-bold outline-none placeholder:text-dim"
             />
             <button
               onClick={handleSendMessage}
               disabled={!inputValue.trim()}
-              className="px-4 py-3 bg-gradient-to-r from-purple-500 to-blue-600 text-white rounded-xl hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-5 py-3.5 bg-gradient-brand text-white rounded-1.5xl hover:shadow-brand hover:-translate-y-0.5 active:translate-y-0.5 transition-all disabled:opacity-40 disabled:grayscale disabled:cursor-not-allowed group shadow-lg"
             >
-              <Send className="h-5 w-5" />
+              <Send className="h-4 w-4 group-hover:rotate-12 transition-transform" />
             </button>
           </div>
         </div>

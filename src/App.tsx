@@ -32,6 +32,8 @@ const mockUserVouchers: Voucher[] = [
     is_verified: true,
     views: 245,
     created_at: '2025-10-01',
+    voucher_code: 'AMZ-XXXX-1111',
+    description: 'Valid for all items',
   },
   {
     id: 'my2',
@@ -46,6 +48,8 @@ const mockUserVouchers: Voucher[] = [
     is_verified: true,
     views: 189,
     created_at: '2025-10-03',
+    voucher_code: 'SBUX-XXXX-2222',
+    description: 'Valid at all outlets',
   },
   {
     id: 'my3',
@@ -60,6 +64,8 @@ const mockUserVouchers: Voucher[] = [
     is_verified: true,
     views: 156,
     created_at: '2025-10-05',
+    voucher_code: 'NIKE-XXXX-3333',
+    description: 'Valid on online store',
   },
 ];
 
@@ -77,6 +83,8 @@ const mockMarketplaceVouchers: Voucher[] = [
     is_verified: true,
     views: 345,
     created_at: '2025-10-01',
+    voucher_code: 'APL-XXXX-4444',
+    description: 'Valid for all products',
   },
   {
     id: '2',
@@ -91,6 +99,8 @@ const mockMarketplaceVouchers: Voucher[] = [
     is_verified: true,
     views: 289,
     created_at: '2025-10-02',
+    voucher_code: 'NFLX-XXXX-5555',
+    description: 'Premium subscription',
   },
 ];
 
@@ -101,10 +111,10 @@ function AppContent() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-teal-50 flex items-center justify-center">
+      <div className="min-h-screen bg-page flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-teal-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-slate-600 font-medium">Loading VoucherX...</p>
+          <div className="w-16 h-16 border-4 border-brand-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-muted-text font-bold">Initializing VoucherX...</p>
         </div>
       </div>
     );
@@ -119,7 +129,7 @@ function AppContent() {
       case 'home':
         return <Home onNavigate={setCurrentPage} onOpenAI={() => setIsAIOpen(true)} />;
       case 'marketplace':
-        return <Marketplace onNavigate={setCurrentPage} />;
+        return <Marketplace />;
       case 'exchange':
         return <Exchange onNavigate={setCurrentPage} />;
       case 'wallet':
@@ -154,10 +164,13 @@ function AppContent() {
       {!isAIOpen && (
         <button
           onClick={() => setIsAIOpen(true)}
-          className="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-r from-purple-500 to-blue-600 text-white rounded-full shadow-2xl hover:scale-110 transition-all flex items-center justify-center z-40"
+          className="fixed bottom-6 right-6 w-16 h-16 bg-gradient-brand text-white rounded-full shadow-brand hover:scale-110 hover:rotate-6 transition-all flex items-center justify-center z-40 border-2 border-white/20"
           title="Open AI Assistant"
         >
-          <Bot className="h-7 w-7" />
+          <Bot className="h-8 w-8" />
+          <div className="absolute -top-1 -right-1 w-5 h-5 bg-status-error rounded-full border-2 border-white flex items-center justify-center">
+            <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
+          </div>
         </button>
       )}
     </>
