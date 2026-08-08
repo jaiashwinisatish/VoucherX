@@ -1,6 +1,7 @@
 
 import { TrendingUp, Star, Tag, Calendar, Eye, Bot } from 'lucide-react';
 import { Voucher } from '../types';
+import BrandLogo from '../components/BrandLogo';
 
 interface HomeProps {
   onNavigate: (page: string) => void;
@@ -219,8 +220,9 @@ export default function Home({ onNavigate, onOpenAI }: HomeProps) {
 "
               >
                 <div className="relative h-48 bg-gradient-to-br from-slate-100 to-slate-200 p-6 flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="text-5xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent mb-2">
+                  <div className="text-center flex flex-col items-center">
+                    <BrandLogo brandName={voucher.brand_name} size="lg" className="mb-3" />
+                    <div className="text-3xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent mb-2">
                       {voucher.brand_name}
                     </div>
                     <div className="inline-block bg-white/80 backdrop-blur-sm px-4 py-1 rounded-full text-sm font-medium text-slate-700">

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Search, Filter, Tag, Star, Calendar, Eye, ShoppingCart, AlertCircle } from 'lucide-react';
 import { Voucher } from '../types';
+import BrandLogo from '../components/BrandLogo';
 import { hasInvalidSupabaseConfig, supabase } from '../lib/supabase';
 import { useCategories } from '../hooks/useCategories';
 
@@ -366,8 +367,11 @@ export default function Marketplace({ onNavigate }: MarketplaceProps) {
                 className="bg-white/80 backdrop-blur-sm rounded-xl border border-slate-200 hover:shadow-xl hover:scale-105 transition-all overflow-hidden group"
               >
                 <div className="relative h-40 bg-gradient-to-br from-slate-100 to-slate-200 p-6 flex items-center justify-center">
-                  <div className="text-4xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
-                    {voucher.brand_name}
+                  <div className="flex flex-col items-center">
+                    <BrandLogo brandName={voucher.brand_name} size="lg" className="mb-2" />
+                    <div className="text-2xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
+                      {voucher.brand_name}
+                    </div>
                   </div>
 
                   {voucher.is_verified && (
