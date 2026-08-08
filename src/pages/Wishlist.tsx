@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 import { WishlistItem } from '../types';
 import { useCategories } from '../hooks/useCategories';
+import { rateLimiter, RateLimitError } from '../utils/rateLimiter';
 
 export default function Wishlist() {
   const { user } = useAuth();
@@ -55,6 +56,7 @@ export default function Wishlist() {
 
     setSubmitting(true);
     try {
+      rateLimiter.checkLimit('formSubmit');
       const newItem = {
         user_id: user.id,
         brand_name: brandName,
@@ -77,8 +79,12 @@ export default function Wishlist() {
       setMaxPrice('');
       setShowAddForm(false);
     } catch (error) {
-      console.error('Error adding to wishlist:', error);
-      alert('Failed to add item. Please try again.');
+      if (error instanceof RateLimitError) {
+        alert(error.message);
+      } else {
+        console.error('Error adding to wishlist:', error);
+        alert('Failed to add item. Please try again.');
+      }
     } finally {
       setSubmitting(false);
     }
@@ -86,6 +92,7 @@ export default function Wishlist() {
 
   const handleDelete = async (id: string) => {
     try {
+      rateLimiter.checkLimit('apiWrite');
       const { error } = await supabase
         .from('wishlists')
         .delete()
@@ -94,8 +101,12 @@ export default function Wishlist() {
       if (error) throw error;
       setItems(items.filter(item => item.id !== id));
     } catch (error) {
-      console.error('Error deleting item:', error);
-      alert('Failed to delete item.');
+      if (error instanceof RateLimitError) {
+        alert(error.message);
+      } else {
+        console.error('Error deleting item:', error);
+        alert('Failed to delete item.');
+      }
     }
   };
 

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Repeat, Mail, Lock, User } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { rateLimiter, RateLimitError } from '../utils/rateLimiter';
 
 export default function Auth() {
   const [view, setView] = useState<'signin' | 'signup'>('signin');
@@ -17,13 +18,23 @@ export default function Auth() {
     setLoading(true);
 
     try {
+      // Rate limit auth attempts (5 per 60s per email)
+      rateLimiter.checkLimit('auth', email);
+
       if (view === 'signup') {
         await signUp(email, password, fullName);
       } else {
         await signIn(email, password);
       }
+
+      // Reset rate limit on successful auth
+      rateLimiter.reset('auth', email);
     } catch (err: any) {
-      setError(err.message || 'An error occurred');
+      if (err instanceof RateLimitError) {
+        setError(`Too many login attempts. Please try again in ${err.retryAfterSeconds} seconds.`);
+      } else {
+        setError(err.message || 'An error occurred');
+      }
     } finally {
       setLoading(false);
     }
