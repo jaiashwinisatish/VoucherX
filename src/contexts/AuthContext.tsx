@@ -7,9 +7,10 @@ interface AuthContextType {
   user: SupabaseUser | null;
   profile: User | null;
   loading: boolean;
-  signUp: (email: string, password: string, fullName: string) => Promise<void>;
+  signUp: (email: string, password: string, fullName: string, username?: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
+  resetPassword: (email: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -114,7 +115,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const signUp = async (email: string, password: string, fullName: string) => {
+  const signUp = async (email: string, password: string, fullName: string, username?: string) => {
     if (hasInvalidSupabaseConfig) {
       throw new Error(INVALID_SUPABASE_CONFIG_MESSAGE);
     }
@@ -126,6 +127,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         options: {
           data: {
             full_name: fullName,
+            username: username || undefined,
           },
         },
       });
@@ -139,6 +141,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     // Profile creation is handled by a database trigger (handle_new_user).
+    // If username is provided via metadata, the trigger uses it;
+    // otherwise it auto-generates one from the email.
   };
 
   const signIn = async (email: string, password: string) => {
@@ -178,8 +182,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const resetPassword = async (email: string) => {
+    if (hasInvalidSupabaseConfig) {
+      throw new Error(INVALID_SUPABASE_CONFIG_MESSAGE);
+    }
+
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+
+    if (error) throw error;
+  };
+
   return (
-    <AuthContext.Provider value={{ user, profile, loading, signUp, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, profile, loading, signUp, signIn, signOut, resetPassword }}>
       {children}
     </AuthContext.Provider>
   );
