@@ -3,6 +3,7 @@ import { Search, Filter, Tag, Star, Calendar, Eye, ShoppingCart, AlertCircle } f
 import { Voucher } from '../types';
 import { hasInvalidSupabaseConfig, supabase } from '../lib/supabase';
 import { useCategories } from '../hooks/useCategories';
+import CheckoutModal from '../components/CheckoutModal';
 
 interface MarketplaceProps {
   onNavigate: (page: string) => void;
@@ -148,6 +149,8 @@ export default function Marketplace({ onNavigate }: MarketplaceProps) {
   const [vouchers, setVouchers] = useState<Voucher[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [checkoutVoucher, setCheckoutVoucher] = useState<Voucher | null>(null);
+  const [purchasedIds, setPurchasedIds] = useState<Set<string>>(new Set());
   const activeRequestId = useRef(0);
 
   useEffect(() => {
@@ -424,9 +427,13 @@ export default function Marketplace({ onNavigate }: MarketplaceProps) {
                     </div>
                   </div>
 
-                  <button className="w-full bg-gradient-to-r from-teal-500 to-blue-600 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all flex items-center justify-center space-x-2">
+                  <button
+                    onClick={() => !isExpired && setCheckoutVoucher(voucher)}
+                    disabled={isExpired}
+                    className="w-full bg-gradient-to-r from-teal-500 to-blue-600 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
                     <ShoppingCart className="h-5 w-5" />
-                    <span>Buy Now</span>
+                    <span>{purchasedIds.has(voucher.id) ? 'Purchased' : 'Buy Now'}</span>
                   </button>
                 </div>
               </div>
@@ -447,6 +454,19 @@ export default function Marketplace({ onNavigate }: MarketplaceProps) {
             Back to Home
           </button>
         </div>
+      )}
+
+      {/* Checkout Modal */}
+      {checkoutVoucher && (
+        <CheckoutModal
+          voucher={checkoutVoucher}
+          isOpen={true}
+          onClose={() => setCheckoutVoucher(null)}
+          onPaymentComplete={(voucherId) => {
+            setPurchasedIds(prev => new Set(prev).add(voucherId));
+            setCheckoutVoucher(null);
+          }}
+        />
       )}
     </div>
   );
