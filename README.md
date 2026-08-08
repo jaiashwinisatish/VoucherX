@@ -10,6 +10,26 @@ VoucherX is a modern web application that enables users to trade, buy, and sell 
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.5.3-3178C6?logo=typescript)
 ![Supabase](https://img.shields.io/badge/Supabase-2.57.4-3ECF8E?logo=supabase)
 
+## 📋 Table of Contents
+
+- [Features](#-features)
+- [Quick Start](#-quick-start)
+- [Project Structure](#-project-structure)
+- [Database Schema](#️-database-schema)
+- [Tech Stack](#-tech-stack)
+- [Key Features Explained](#-key-features-explained)
+- [Security Features](#-security-features)
+- [Available Scripts](#-available-scripts)
+- [Deployment](#-deployment)
+- [Contributing](#-contributing)
+- [Environment Variables](#-environment-variables)
+- [Troubleshooting](#-troubleshooting)
+- [Documentation](#-documentation)
+- [Roadmap](#-roadmap)
+- [Contributors](#-contributors)
+- [License](#-license)
+- [Support](#-support)
+
 ## 🌟 Features
 
 ### Core Features
@@ -281,13 +301,23 @@ For detailed documentation on specific features:
 - [ ] Auction system for rare vouchers
 - [ ] Referral program
 
-## 📄 License
+## � Contributors
+
+Thanks to all the amazing people who have contributed to VoucherX! 🎉
+
+<a href="https://github.com/jaiashwinisatish/VoucherX/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=jaiashwinisatish/VoucherX" alt="VoucherX Contributors" />
+</a>
+
+Want to see your face here? Check out our [Contributing Guide](#-contributing) and submit a PR!
+
+## �📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 👥 Authors
+## � Author
 
-- Your Name - [GitHub](https://github.com/yourusername)
+- **jaiashwinisatish** - Project Owner - [GitHub](https://github.com/jaiashwinisatish)
 
 ## 🙏 Acknowledgments
 
