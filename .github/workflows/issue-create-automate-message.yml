@@ -1,0 +1,38 @@
+name: Issue Opened - Welcome Message
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  issues: write
+
+jobs:
+  welcome-message:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post welcome comment on new issue
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issueAuthor = context.payload.issue.user.login;
+            const issueNumber = context.payload.issue.number;
+
+            const message = `👋 Hi @${issueAuthor}, thanks for opening this issue!
+
+            We appreciate you taking the time to report this. A maintainer will review it shortly.
+
+            In the meantime, please make sure:
+            - ✅ You've provided a clear description of the issue
+            - ✅ Steps to reproduce are included (if applicable)
+            - ✅ You've checked for [existing issues](https://github.com/${context.repo.owner}/${context.repo.repo}/issues) to avoid duplicates
+
+            Thanks for contributing to **VoucherX**! 🎉`;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              body: message
+            });

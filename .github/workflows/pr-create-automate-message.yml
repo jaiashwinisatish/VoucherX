@@ -1,0 +1,39 @@
+name: PR Opened - Welcome Message
+
+on:
+  pull_request_target:
+    types: [opened]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  welcome-message:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post welcome comment on new PR
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const prAuthor = context.payload.pull_request.user.login;
+            const prNumber = context.payload.pull_request.number;
+
+            const message = `👋 Hi @${prAuthor}, thanks for submitting this pull request!
+
+            We appreciate your contribution to **VoucherX**. A maintainer will review your changes shortly.
+
+            Please make sure:
+            - ✅ Your code follows the project's coding guidelines
+            - ✅ You've tested your changes locally
+            - ✅ The PR description clearly explains what was changed and why
+            - ✅ Any related issues are linked (e.g., \`Closes #issue_number\`)
+
+            Thanks for helping make VoucherX better! 🚀`;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: message
+            });
