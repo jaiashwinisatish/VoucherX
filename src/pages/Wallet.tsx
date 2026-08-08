@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Wallet as WalletIcon, Star, Calendar, CheckCircle, Clock, Copy, Tag } from 'lucide-react';
+import { Wallet as WalletIcon, Star, Calendar, CheckCircle, Clock, Copy, Tag, Plus } from 'lucide-react';
 import { Voucher } from '../types';
+import AddVoucherModal from '../components/AddVoucherModal';
 
 const activeVouchers: Voucher[] = [
   {
@@ -89,6 +90,7 @@ const redeemedVouchers: Voucher[] = [
 export default function Wallet() {
   const [activeTab, setActiveTab] = useState<'active' | 'redeemed'>('active');
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
+  const [showAddModal, setShowAddModal] = useState(false);
 
   const getDaysUntilExpiry = (expiryDate: string) => {
     const today = new Date();
@@ -112,14 +114,23 @@ export default function Wallet() {
   return (
     <div className="space-y-6">
       <div className="bg-gradient-to-r from-teal-500 to-blue-600 rounded-xl p-8 text-white">
-        <div className="flex items-center space-x-4 mb-6">
-          <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-            <WalletIcon className="h-8 w-8" />
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center space-x-4">
+            <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+              <WalletIcon className="h-8 w-8" />
+            </div>
+            <div>
+              <h1 className="text-4xl font-bold">My Wallet</h1>
+              <p className="text-white/90 text-lg">Manage your vouchers and track your savings</p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-4xl font-bold">My Wallet</h1>
-            <p className="text-white/90 text-lg">Manage your vouchers and track your savings</p>
-          </div>
+          <button
+            onClick={() => setShowAddModal(true)}
+            className="flex items-center space-x-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm px-6 py-3 rounded-lg font-semibold transition-all"
+          >
+            <Plus className="h-5 w-5" />
+            <span>Add Voucher</span>
+          </button>
         </div>
       </div>
 
@@ -151,21 +162,19 @@ export default function Wallet() {
         <div className="flex border-b border-slate-200">
           <button
             onClick={() => setActiveTab('active')}
-            className={`flex-1 px-6 py-4 font-semibold transition-all ${
-              activeTab === 'active'
-                ? 'bg-gradient-to-r from-teal-500 to-blue-600 text-white'
-                : 'text-slate-600 hover:bg-slate-50'
-            }`}
+            className={`flex-1 px-6 py-4 font-semibold transition-all ${activeTab === 'active'
+              ? 'bg-gradient-to-r from-teal-500 to-blue-600 text-white'
+              : 'text-slate-600 hover:bg-slate-50'
+              }`}
           >
             Active ({activeVouchers.length})
           </button>
           <button
             onClick={() => setActiveTab('redeemed')}
-            className={`flex-1 px-6 py-4 font-semibold transition-all ${
-              activeTab === 'redeemed'
-                ? 'bg-gradient-to-r from-teal-500 to-blue-600 text-white'
-                : 'text-slate-600 hover:bg-slate-50'
-            }`}
+            className={`flex-1 px-6 py-4 font-semibold transition-all ${activeTab === 'redeemed'
+              ? 'bg-gradient-to-r from-teal-500 to-blue-600 text-white'
+              : 'text-slate-600 hover:bg-slate-50'
+              }`}
           >
             Redeemed ({redeemedVouchers.length})
           </button>
@@ -180,11 +189,10 @@ export default function Wallet() {
             return (
               <div
                 key={voucher.id}
-                className={`bg-white border-2 rounded-xl p-6 transition-all ${
-                  isExpiringSoon && !isRedeemed
-                    ? 'border-red-300 bg-red-50'
-                    : 'border-slate-200 hover:shadow-lg'
-                }`}
+                className={`bg-white border-2 rounded-xl p-6 transition-all ${isExpiringSoon && !isRedeemed
+                  ? 'border-red-300 bg-red-50'
+                  : 'border-slate-200 hover:shadow-lg'
+                  }`}
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
@@ -290,6 +298,15 @@ export default function Wallet() {
           )}
         </div>
       </div>
+
+      <AddVoucherModal
+        isOpen={showAddModal}
+        onClose={() => setShowAddModal(false)}
+        onSuccess={() => {
+          // Optionally refresh vouchers list here
+          console.log('Voucher added successfully!');
+        }}
+      />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Search, Filter, Tag, Star, Calendar, Eye, ShoppingCart, AlertCircle } from 'lucide-react';
+import { Search, Filter, Tag, Star, Calendar, Eye, ShoppingCart, Plus, AlertCircle } from 'lucide-react';
 import { Voucher } from '../types';
+import AddVoucherModal from '../components/AddVoucherModal';
 import { hasInvalidSupabaseConfig, supabase } from '../lib/supabase';
 import { useCategories } from '../hooks/useCategories';
 
@@ -112,14 +113,44 @@ const fallbackVouchers: Voucher[] = [
     created_at: '2026-01-08',
     description: '6-month streaming subscription',
   },
+  {
+    id: '7',
+    seller_id: 'user7',
+    brand_name: 'Target',
+    category: 'fashion',
+    original_value: 100,
+    selling_price: 82,
+    discount_percentage: 18,
+    expiry_date: '2025-11-25',
+    status: 'verified',
+    is_verified: true,
+    views: 167,
+    created_at: '2025-10-09',
+    description: 'Valid for all Target stores',
+  },
+  {
+    id: '8',
+    seller_id: 'user8',
+    brand_name: 'Whole Foods',
+    category: 'food',
+    original_value: 80,
+    selling_price: 68,
+    discount_percentage: 15,
+    expiry_date: '2025-12-10',
+    status: 'verified',
+    is_verified: true,
+    views: 142,
+    created_at: '2025-10-10',
+    description: 'Organic groceries and more',
+  },
 ];
 
-const sanitizeSearchTerm = (input: string): string => {
-  return input.trim().replace(/[,%()]/g, ' ').replace(/\s+/g, ' ');
-};
+function sanitizeSearchTerm(term: string): string {
+  return term.trim().replace(/[%_\\]/g, '\\$&');
+}
 
-const sortVouchers = (source: Voucher[], sortBy: SortOption): Voucher[] => {
-  return [...source].sort((a, b) => {
+function sortVouchers(vouchers: Voucher[], sortBy: SortOption): Voucher[] {
+  return [...vouchers].sort((a, b) => {
     switch (sortBy) {
       case 'discount':
         return b.discount_percentage - a.discount_percentage;
@@ -135,7 +166,7 @@ const sortVouchers = (source: Voucher[], sortBy: SortOption): Voucher[] => {
         return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
     }
   });
-};
+}
 
 export default function Marketplace({ onNavigate }: MarketplaceProps) {
   const { categories } = useCategories();
@@ -145,6 +176,7 @@ export default function Marketplace({ onNavigate }: MarketplaceProps) {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState<SortOption>('newest');
   const [showFilters, setShowFilters] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
   const [vouchers, setVouchers] = useState<Voucher[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -251,8 +283,19 @@ export default function Marketplace({ onNavigate }: MarketplaceProps) {
   return (
     <div className="space-y-6">
       <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-slate-200">
-        <h1 className="text-3xl font-bold text-slate-800 mb-2">Marketplace</h1>
-        <p className="text-slate-600">Discover verified vouchers from trusted sellers</p>
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h1 className="text-3xl font-bold text-slate-800 mb-2">Marketplace</h1>
+            <p className="text-slate-600">Discover verified vouchers from trusted sellers</p>
+          </div>
+          <button
+            onClick={() => setShowAddModal(true)}
+            className="flex items-center space-x-2 bg-gradient-to-r from-teal-500 to-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all"
+          >
+            <Plus className="h-5 w-5" />
+            <span>Add Voucher</span>
+          </button>
+        </div>
       </div>
 
       {hasInvalidSupabaseConfig && (
@@ -307,11 +350,10 @@ export default function Marketplace({ onNavigate }: MarketplaceProps) {
                   <button
                     key={category}
                     onClick={() => setSelectedCategory(category)}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                      selectedCategory === category
-                        ? 'bg-gradient-to-r from-teal-500 to-blue-600 text-white'
-                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                    }`}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${selectedCategory === category
+                      ? 'bg-gradient-to-r from-teal-500 to-blue-600 text-white'
+                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                      }`}
                   >
                     {category.charAt(0).toUpperCase() + category.slice(1)}
                   </button>
@@ -378,14 +420,14 @@ export default function Marketplace({ onNavigate }: MarketplaceProps) {
                   )}
 
                   {isExpired ? (
-                  <div className="absolute top-4 left-4 bg-gray-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
-                    Expired
-                  </div>
-                ) : isExpiringSoon ? (
-                  <div className="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
-                    {daysLeft}d left
-                  </div>
-                ) : null}
+                    <div className="absolute top-4 left-4 bg-gray-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                      Expired
+                    </div>
+                  ) : isExpiringSoon ? (
+                    <div className="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                      {daysLeft}d left
+                    </div>
+                  ) : null}
 
                   <div className="absolute bottom-4 left-4 bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-slate-700">
                     {voucher.category}
@@ -448,6 +490,15 @@ export default function Marketplace({ onNavigate }: MarketplaceProps) {
           </button>
         </div>
       )}
+
+      <AddVoucherModal
+        isOpen={showAddModal}
+        onClose={() => setShowAddModal(false)}
+        onSuccess={() => {
+          // Optionally refresh marketplace here
+          console.log('Voucher added successfully!');
+        }}
+      />
     </div>
   );
 }
