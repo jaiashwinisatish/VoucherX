@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Bot, Send, X, TrendingUp, AlertCircle, Sparkles, DollarSign, Lightbulb } from 'lucide-react';
+import { Sparkles, Send, X, TrendingUp, AlertCircle, DollarSign, Lightbulb } from 'lucide-react';
 import { Voucher } from '../types';
 import {
   analyzeVouchers,
@@ -7,7 +7,7 @@ import {
   calculateMultiVoucherDiscount,
   generateSmartRecommendations,
   optimizeVoucherPortfolio,
-} from '../utils/aiAssistant';
+} from '../utils/smartAssistant';
 
 interface Message {
   id: string;
@@ -16,19 +16,19 @@ interface Message {
   timestamp: Date;
 }
 
-interface AIAssistantProps {
+interface SmartAssistantProps {
   isOpen: boolean;
   onClose: () => void;
   userVouchers: Voucher[];
   marketplaceVouchers: Voucher[];
 }
 
-export default function AIAssistant({ isOpen, onClose, userVouchers, marketplaceVouchers }: AIAssistantProps) {
+export default function SmartAssistant({ isOpen, onClose, userVouchers, marketplaceVouchers }: SmartAssistantProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
       type: 'assistant',
-      content: "Hi! I'm your VoucherX AI Assistant. I can help you analyze your vouchers, track expiries, calculate discounts, and provide smart recommendations. What would you like to know?",
+      content: "Hi! I'm your VoucherX Smart Assistant. I use rule-based logic to help you analyze vouchers, track expiries, calculate discounts, and get recommendations. No AI here — just straightforward, reliable insights. How can I help?",
       timestamp: new Date(),
     },
   ]);
@@ -211,9 +211,9 @@ ${recommendations.length > 0
         const optimization = optimizeVoucherPortfolio(userVouchers);
         response = `I recommend keeping ${optimization.keepVouchers.length} voucher${optimization.keepVouchers.length !== 1 ? 's' : ''} for personal use, trading ${optimization.tradeVouchers.length}, and selling ${optimization.sellVouchers.length} quickly. Use the "Optimize Portfolio" action for detailed reasons!`;
       } else if (lowerInput.includes('help') || lowerInput.includes('what can')) {
-        response = 'I can help you with:\n• Analyzing your voucher portfolio\n• Checking expiry dates and alerts\n• Calculating multi-voucher discounts\n• Optimizing your portfolio (keep/trade/sell)\n• Providing smart recommendations\n\nTry using the quick action buttons or ask me anything about your vouchers!';
+        response = 'I can help you with:\n• Analyzing your voucher portfolio\n• Checking expiry dates and alerts\n• Calculating multi-voucher discounts\n• Optimizing your portfolio (keep/trade/sell)\n• Providing smart recommendations\n\nI use rule-based logic (not AI) to give you reliable results. Try the quick action buttons or ask me anything about your vouchers!';
       } else {
-        response = `I understand you're asking about "${inputValue}". I can analyze your vouchers, check expiries, calculate discounts, and provide recommendations. Try using the quick action buttons below, or ask me specifically about analyzing, expiry checking, or recommendations!`;
+        response = `I understand you're asking about "${inputValue}". I use rule-based analysis (not AI) to help with voucher insights, expiry alerts, discount calculations, and recommendations. Try the quick action buttons below, or ask me specifically about analyzing, expiry checking, or recommendations!`;
       }
 
       const assistantMsg: Message = {
@@ -235,11 +235,11 @@ ${recommendations.length > 0
         <div className="bg-gradient-to-r from-purple-500 to-blue-600 p-4 rounded-t-2xl flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-              <Bot className="h-6 w-6 text-white" />
+              <Sparkles className="h-6 w-6 text-white" />
             </div>
             <div>
-              <h3 className="text-white font-semibold">VoucherX AI Assistant</h3>
-              <p className="text-white/80 text-xs">Always here to help</p>
+              <h3 className="text-white font-semibold">VoucherX Smart Assistant</h3>
+              <p className="text-white/80 text-xs">Rule-based voucher insights</p>
             </div>
           </div>
           <button

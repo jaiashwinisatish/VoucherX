@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Auth from './components/Auth';
 import Layout from './components/Layout';
-import AIAssistant from './components/AIAssistant';
+import SmartAssistant from './components/SmartAssistant';
 import Home from './pages/Home';
 import Marketplace from './pages/Marketplace';
 import Exchange from './pages/Exchange';
@@ -12,7 +12,7 @@ import Challenges from './pages/Challenges';
 import Wishlist from './pages/Wishlist';
 import Profile from './pages/Profile';
 import { Voucher } from './types';
-import { Bot } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import ExpiryInsights from "./pages/ExpiryInsights";
 import ErrorBoundary from "./components/ErrorBoundary";
 
@@ -144,7 +144,7 @@ function AppContent() {
         {renderPage()}
       </Layout>
 
-      <AIAssistant
+      <SmartAssistant
         isOpen={isAIOpen}
         onClose={() => setIsAIOpen(false)}
         userVouchers={mockUserVouchers}
@@ -155,9 +155,9 @@ function AppContent() {
         <button
           onClick={() => setIsAIOpen(true)}
           className="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-r from-purple-500 to-blue-600 text-white rounded-full shadow-2xl hover:scale-110 transition-all flex items-center justify-center z-40"
-          title="Open AI Assistant"
+          title="Open Smart Assistant"
         >
-          <Bot className="h-7 w-7" />
+          <Sparkles className="h-7 w-7" />
         </button>
       )}
     </>

@@ -1,5 +1,5 @@
 
-import { TrendingUp, Star, Tag, Calendar, Eye, Bot } from 'lucide-react';
+import { TrendingUp, Star, Tag, Calendar, Eye, Sparkles } from 'lucide-react';
 import { Voucher } from '../types';
 
 interface HomeProps {
@@ -133,7 +133,7 @@ export default function Home({ onNavigate, onOpenAI }: HomeProps) {
             Don't Let Your Vouchers Expire
           </h1>
           <p className="text-xl mb-8 text-white/90">
-            Trade, buy, and sell vouchers with confidence. Get AI-powered recommendations and never miss a great deal.
+            Trade, buy, and sell vouchers with confidence. Get smart recommendations and never miss a great deal.
           </p>
           <div className="flex flex-wrap gap-4">
             <button
@@ -146,8 +146,8 @@ export default function Home({ onNavigate, onOpenAI }: HomeProps) {
               onClick={onOpenAI}
               className="px-8 py-4 bg-white/20 backdrop-blur-sm text-white rounded-xl font-semibold hover:bg-white/30 transition-all flex items-center space-x-2"
             >
-              <Bot className="h-5 w-5" />
-              <span>Try AI Assistant</span>
+              <Sparkles className="h-5 w-5" />
+              <span>Try Smart Assistant</span>
             </button>
           </div>
         </div>

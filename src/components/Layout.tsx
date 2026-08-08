@@ -1,5 +1,5 @@
 import { ReactNode, useState } from 'react';
-import {  Bell,Menu, X, Home, ShoppingBag, Repeat, Wallet, Star, Trophy, Heart, User, LogOut, Bot, Calendar } from 'lucide-react';
+import {  Bell,Menu, X, Home, ShoppingBag, Repeat, Wallet, Star, Trophy, Heart, User, LogOut, Sparkles, Calendar } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 
@@ -84,9 +84,9 @@ export default function Layout({ children, currentPage, onNavigate, onOpenAI }: 
               <button
                 onClick={onOpenAI}
                 className="relative p-2 text-slate-600 hover:bg-purple-50 hover:text-purple-600 rounded-full transition-colors"
-                title="AI Assistant"
+                title="Smart Assistant"
               >
-                <Bot className="h-5 w-5" />
+                <Sparkles className="h-5 w-5" />
                 <span className="absolute top-1 right-1 w-2 h-2 bg-purple-500 rounded-full animate-pulse"></span>
               </button>
 
@@ -158,8 +158,8 @@ export default function Layout({ children, currentPage, onNavigate, onOpenAI }: 
                 }}
                 className="w-full px-4 py-3 rounded-lg flex items-center space-x-3 text-purple-600 hover:bg-purple-50"
               >
-                <Bot className="h-5 w-5" />
-                <span className="font-medium">AI Assistant</span>
+                <Sparkles className="h-5 w-5" />
+                <span className="font-medium">Smart Assistant</span>
               </button>
               <button
                 onClick={handleSignOut}
@@ -190,7 +190,7 @@ export default function Layout({ children, currentPage, onNavigate, onOpenAI }: 
                 </span>
               </div>
               <p className="text-sm text-slate-600 mb-4">
-                Don't let your vouchers expire. Trade, earn, and repeat with AI-powered insights.
+                Don't let your vouchers expire. Trade, earn, and repeat with smart insights.
               </p>
               <p className="text-xs text-slate-500">
                 Built for savvy shoppers who want to unlock the full value of their vouchers.
