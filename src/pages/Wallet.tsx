@@ -124,21 +124,21 @@ export default function Wallet() {
       </div>
 
       <div className="grid md:grid-cols-3 gap-6">
-        <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-slate-200">
+        <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-slate-200 cursor-pointer hover:shadow-lg hover:scale-[1.03] hover:-translate-y-1 transition-all duration-300">
           <div className="flex items-center justify-between mb-2">
             <span className="text-slate-600">Active Vouchers</span>
             <Tag className="h-5 w-5 text-teal-600" />
           </div>
           <div className="text-3xl font-bold text-slate-800">{activeVouchers.length}</div>
         </div>
-        <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-slate-200">
+        <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-slate-200 cursor-pointer hover:shadow-lg hover:scale-[1.03] hover:-translate-y-1 transition-all duration-300">
           <div className="flex items-center justify-between mb-2">
             <span className="text-slate-600">Total Value</span>
             <Star className="h-5 w-5 text-amber-500 fill-amber-500" />
           </div>
           <div className="text-3xl font-bold text-slate-800">${totalValue}</div>
         </div>
-        <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-slate-200">
+        <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-slate-200 cursor-pointer hover:shadow-lg hover:scale-[1.03] hover:-translate-y-1 transition-all duration-300">
           <div className="flex items-center justify-between mb-2">
             <span className="text-slate-600">Total Savings</span>
             <CheckCircle className="h-5 w-5 text-emerald-600" />
@@ -180,10 +180,10 @@ export default function Wallet() {
             return (
               <div
                 key={voucher.id}
-                className={`bg-white border-2 rounded-xl p-6 transition-all ${
+                className={`bg-white border-2 rounded-xl p-6 cursor-pointer transition-all duration-300 ${
                   isExpiringSoon && !isRedeemed
-                    ? 'border-red-300 bg-red-50'
-                    : 'border-slate-200 hover:shadow-lg'
+                    ? 'border-red-300 bg-red-50 hover:shadow-lg hover:shadow-red-200'
+                    : 'border-slate-200 hover:shadow-lg hover:scale-[1.01] hover:-translate-y-0.5'
                 }`}
               >
                 <div className="flex items-start justify-between mb-4">
