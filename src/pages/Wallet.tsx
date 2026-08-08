@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Wallet as WalletIcon, Star, Calendar, CheckCircle, Clock, Copy, Tag } from 'lucide-react';
 import { Voucher } from '../types';
+import VoucherProofUpload from '../components/VoucherProofUpload';
 
 const activeVouchers: Voucher[] = [
   {
@@ -89,6 +90,19 @@ const redeemedVouchers: Voucher[] = [
 export default function Wallet() {
   const [activeTab, setActiveTab] = useState<'active' | 'redeemed'>('active');
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
+  const [proofUrls, setProofUrls] = useState<Record<string, string>>({});
+
+  const handleProofUploaded = (voucherId: string, url: string) => {
+    setProofUrls(prev => ({ ...prev, [voucherId]: url }));
+  };
+
+  const handleProofRemoved = (voucherId: string) => {
+    setProofUrls(prev => {
+      const next = { ...prev };
+      delete next[voucherId];
+      return next;
+    });
+  };
 
   const getDaysUntilExpiry = (expiryDate: string) => {
     const today = new Date();
@@ -248,6 +262,17 @@ export default function Wallet() {
                         <span>{copiedCode === voucher.id ? 'Copied!' : 'Copy'}</span>
                       </button>
                     </div>
+                  </div>
+                )}
+
+                {!isRedeemed && (
+                  <div className="mb-4">
+                    <VoucherProofUpload
+                      voucherId={voucher.id}
+                      currentProofUrl={voucher.proof_url ?? proofUrls[voucher.id]}
+                      onUploadComplete={(url) => handleProofUploaded(voucher.id, url)}
+                      onRemove={() => handleProofRemoved(voucher.id)}
+                    />
                   </div>
                 )}
 
