@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Wallet as WalletIcon, Star, Calendar, CheckCircle, Clock, Copy, Tag } from 'lucide-react';
 import { Voucher } from '../types';
+import { trackCopyCode, trackRedeemVoucher, trackTradeVoucher, trackSellVoucher } from '../utils/analytics';
 
 const activeVouchers: Voucher[] = [
   {
@@ -98,9 +99,10 @@ export default function Wallet() {
     return diffDays;
   };
 
-  const handleCopyCode = (code: string, voucherId: string) => {
+  const handleCopyCode = (code: string, voucherId: string, brandName: string) => {
     navigator.clipboard.writeText(code);
     setCopiedCode(voucherId);
+    trackCopyCode(brandName);
     setTimeout(() => setCopiedCode(null), 2000);
   };
 
@@ -241,7 +243,7 @@ export default function Wallet() {
                         <div className="text-lg font-mono font-bold text-slate-800">{voucher.voucher_code}</div>
                       </div>
                       <button
-                        onClick={() => handleCopyCode(voucher.voucher_code!, voucher.id)}
+                        onClick={() => handleCopyCode(voucher.voucher_code!, voucher.id, voucher.brand_name)}
                         className="flex items-center space-x-2 px-4 py-2 bg-white hover:bg-slate-50 text-teal-600 rounded-lg font-medium text-sm transition-colors"
                       >
                         <Copy className="h-4 w-4" />
@@ -262,13 +264,13 @@ export default function Wallet() {
 
                 {!isRedeemed && (
                   <div className="flex flex-wrap gap-3">
-                    <button className="flex-1 min-w-[150px] bg-gradient-to-r from-teal-500 to-blue-600 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all">
+                    <button onClick={() => trackRedeemVoucher(voucher.brand_name, voucher.original_value)} className="flex-1 min-w-[150px] bg-gradient-to-r from-teal-500 to-blue-600 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all">
                       Redeem Now
                     </button>
-                    <button className="px-6 py-3 bg-slate-100 text-slate-700 rounded-lg font-semibold hover:bg-slate-200 transition-colors">
+                    <button onClick={() => trackTradeVoucher(voucher.brand_name)} className="px-6 py-3 bg-slate-100 text-slate-700 rounded-lg font-semibold hover:bg-slate-200 transition-colors">
                       Trade
                     </button>
-                    <button className="px-6 py-3 bg-slate-100 text-slate-700 rounded-lg font-semibold hover:bg-slate-200 transition-colors">
+                    <button onClick={() => trackSellVoucher(voucher.brand_name)} className="px-6 py-3 bg-slate-100 text-slate-700 rounded-lg font-semibold hover:bg-slate-200 transition-colors">
                       Sell
                     </button>
                   </div>

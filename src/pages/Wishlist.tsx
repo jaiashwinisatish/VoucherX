@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 import { WishlistItem } from '../types';
 import { useCategories } from '../hooks/useCategories';
+import { trackAddToWishlist, trackRemoveFromWishlist } from '../utils/analytics';
 
 export default function Wishlist() {
   const { user } = useAuth();
@@ -72,6 +73,7 @@ export default function Wishlist() {
       if (error) throw error;
 
       setItems([data, ...items]);
+      trackAddToWishlist(brandName, category);
       setBrandName('');
       setCategory('');
       setMaxPrice('');
@@ -85,6 +87,7 @@ export default function Wishlist() {
   };
 
   const handleDelete = async (id: string) => {
+    const deletedItem = items.find(item => item.id === id);
     try {
       const { error } = await supabase
         .from('wishlists')
@@ -92,6 +95,7 @@ export default function Wishlist() {
         .eq('id', id);
 
       if (error) throw error;
+      if (deletedItem) trackRemoveFromWishlist(deletedItem.brand_name);
       setItems(items.filter(item => item.id !== id));
     } catch (error) {
       console.error('Error deleting item:', error);
