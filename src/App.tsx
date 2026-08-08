@@ -130,6 +130,8 @@ function AppContent() {
         return <Wishlist />;
       case 'profile':
         return <Profile />;
+      case 'contact':
+        return <Contact />;
       case 'expiry-insights':
         return <ExpiryInsights />;
 
