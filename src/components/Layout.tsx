@@ -1,5 +1,5 @@
 import { ReactNode, useState } from 'react';
-import {  Bell,Menu, X, Home, ShoppingBag, Repeat, Wallet, Star, Trophy, Heart, User, LogOut, Bot, Calendar } from 'lucide-react';
+import {  Bell,Menu, X, Home, ShoppingBag, Repeat, Wallet, Star, Trophy, Heart, User, LogOut, Bot, Calendar, MessageSquare } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 
@@ -22,6 +22,7 @@ export default function Layout({ children, currentPage, onNavigate, onOpenAI }: 
     { id: 'wallet', label: 'My Wallet', icon: Wallet },
     { id: 'challenges', label: 'Challenges', icon: Trophy },
     { id: 'wishlist', label: 'Wishlist', icon: Heart },
+    { id: 'community', label: 'Community', icon: MessageSquare },
     { id: 'expiry-insights', label: 'Expiry Insights', icon: Calendar },
 
   ];

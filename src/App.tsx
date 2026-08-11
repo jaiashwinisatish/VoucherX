@@ -1,5 +1,4 @@
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Auth from './components/Auth';
 import Layout from './components/Layout';
@@ -11,7 +10,9 @@ import Wallet from './pages/Wallet';
 import Challenges from './pages/Challenges';
 import Wishlist from './pages/Wishlist';
 import Profile from './pages/Profile';
-import { Voucher } from './types';
+import PublicProfile from './pages/PublicProfile';
+import Community from './pages/Community';
+import type { Voucher } from './types';
 import { Bot } from 'lucide-react';
 import ExpiryInsights from "./pages/ExpiryInsights";
 import ErrorBoundary from "./components/ErrorBoundary";
@@ -98,6 +99,7 @@ function AppContent() {
   const { user, loading } = useAuth();
   const [currentPage, setCurrentPage] = useState('home');
   const [isAIOpen, setIsAIOpen] = useState(false);
+  const [publicProfileUsername, setPublicProfileUsername] = useState<string | null>(null);
 
   if (loading) {
     return (
@@ -113,6 +115,18 @@ function AppContent() {
   if (!user) {
     return <Auth />;
   }
+
+  // Handle public profile route (e.g., /profile/username)
+  useEffect(() => {
+    const path = window.location.pathname;
+    const profileMatch = path.match(/^\/profile\/([^/]+)$/);
+    if (profileMatch) {
+      setPublicProfileUsername(profileMatch[1]);
+      setCurrentPage('public-profile');
+    } else if (path === '/community') {
+      setCurrentPage('community');
+    }
+  }, []);
 
   const renderPage = () => {
     switch (currentPage) {
@@ -130,6 +144,12 @@ function AppContent() {
         return <Wishlist />;
       case 'profile':
         return <Profile />;
+      case 'public-profile':
+        return publicProfileUsername ? (
+          <PublicProfile username={publicProfileUsername} onNavigate={setCurrentPage} />
+        ) : null;
+      case 'community':
+        return <Community />;
       case 'expiry-insights':
         return <ExpiryInsights />;
 
